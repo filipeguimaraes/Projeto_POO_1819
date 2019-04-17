@@ -7,17 +7,70 @@ import java.util.List;
  * @version (a version number or a date)
  */
 public class CarroHibrido extends Carro{
+    private double bateria;
+    private double gasolina;
+    private double consumoBateria;
+    private double consumoGasolina;
 
     public CarroHibrido(){
         super();
+        this.bateria=0.0;
+        this.gasolina=0.0;
+        this.consumoBateria=0.0;
+        this.consumoGasolina=0.0;
     }
     
-    public CarroHibrido(int velocidade, double preco, double consumo, int classificacao, Point coordenada, double autonomia, List<Aluguer> historico){
-        super(velocidade,preco,consumo,classificacao,coordenada,autonomia,historico);
+    public CarroHibrido(int velocidade, double preco, int classificacao, Point coordenada, List<Aluguer> historico, Proprietario p, double bateria, double gasolina, double consumoBateria, double consumoGasolina){
+        super(velocidade,preco,classificacao,coordenada,historico,p);
+        this.bateria=bateria;
+        this.gasolina=gasolina;
+        this.consumoBateria=consumoBateria;
+        this.consumoGasolina=consumoGasolina;
     }
     
     public CarroHibrido(CarroHibrido umCarroHibrido){
         super(umCarroHibrido);
+        this.bateria=umCarroHibrido.getBateria();
+        this.gasolina=umCarroHibrido.getGasolina();
+        this.consumoBateria=umCarroHibrido.getConsumoBateria();
+        this.consumoGasolina=umCarroHibrido.getConsumoGasolina();
+
+    }
+    
+        public double getBateria(){
+        return this.bateria;
+    }
+    
+    public void setBateria(double b){
+        this.bateria=b;
+    }
+    
+    public double getGasolina (){
+        return this.gasolina;
+    }
+
+    public void setGasolina(double g){
+        this.gasolina=g;
+    }
+
+    public double getConsumoBateria(){
+        return this.consumoBateria;
+    }
+    
+    public void setConsumoBateria(double cb){
+        this.consumoBateria=cb;
+    }
+    
+    public double getConsumoGasolina(){
+        return this.consumoGasolina;
+    }
+    
+    public void setConsumoGasolina(double cg){
+        this.consumoGasolina=cg;
+    }
+    
+    public double AutonomiaHibrido(){
+        return (bateria*consumoBateria)+(gasolina*consumoGasolina);
     }
 }
 

@@ -5,14 +5,14 @@ import java.util.Date;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Atores{
+public class Ator{
     private String email;
     private String nome;
     private String password;
     private String morada;
     private Date data;
     
-    public Atores(){
+    public Ator(){
         this.email = "";
         this.nome = "";
         this.password = "";
@@ -20,7 +20,7 @@ public class Atores{
         this.data = new Date();
     }
     
-    public Atores(String email, String nome, String password, String morada, Date data){
+    public Ator(String email, String nome, String password, String morada, Date data){
         this.email = email;
         this.nome = nome;
         this.password = password;
@@ -28,7 +28,7 @@ public class Atores{
         this.data = new Date(data.getYear(),data.getMonth(),data.getDate());
     }
     
-    public Atores(Atores c){
+    public Ator(Ator c){
         this.email = c.getEmail();
         this.nome = c.getNome();
         this.password = c.getPassword();
@@ -79,7 +79,7 @@ public class Atores{
     public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
-        Atores c = (Atores) o;
+        Ator c = (Ator) o;
         return this.email.equals(c.getEmail()) 
             && this.nome.equals(c.getNome()) 
             && this.password.equals(c.getPassword()) 
@@ -87,8 +87,8 @@ public class Atores{
             && this.data.equals(c.getData());
     }
     
-    public Atores clone(){
-        return new Atores(this);
+    public Ator clone(){
+        return new Ator(this);
     }
 
 }

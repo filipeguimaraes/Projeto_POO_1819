@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Proprietario extends Atores{
+public class Proprietario extends Ator{
     private int classificacao;
     private List<Aluguer> historico;
     

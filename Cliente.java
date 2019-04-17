@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Cliente extends Atores{
+public class Cliente extends Ator{
     private Point coordenada;
     private List<Aluguer> historico;
     
@@ -53,27 +53,19 @@ public class Cliente extends Atores{
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
         Cliente c = (Cliente) o;
-        return this.getEmail().equals(c.getEmail()) 
-            && this.getNome().equals(c.getNome()) 
-            && this.getPassword().equals(c.getPassword()) 
-            && this.getMorada().equals(c.getMorada())
-            && this.getData().equals(c.getData())
+        return super.equals(c) 
             && this.coordenada.equals(c.getCoordenada())
             && this.historico.equals(c.getHistorico());
     }
     
     public String toString(){
         StringBuilder s= new StringBuilder("Cliente\n");
-        s.append(" Email: " + this.getEmail());
-        s.append(" Nome: " + this.getNome());
-        s.append(" Password: " + this.getPassword());
-        s.append(" Morada: " + this.getMorada());
-        s.append(" Data: " + this.getData());
+        s.append(super.toString());
         s.append(" Coordenada: " + this.coordenada);
         s.append(" Historico: " + this.historico.toString());
         return s.toString();
     }
-    
+
     public Cliente clone(){
         return new Cliente(this);
     }
