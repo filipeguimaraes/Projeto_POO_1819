@@ -2,7 +2,6 @@
 
 Serviço de aluguer de veiculo particulares pela internet, muito parecido com o serviço de aluguer de casas Airbnb. 
 
-```
 
 ## Authors
 
