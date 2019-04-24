@@ -32,5 +32,6 @@ hs_err_pid*
 *.xml
 *.iml
 *.defs
+*.TXT
 
 # End of https://www.gitignore.io/api/java

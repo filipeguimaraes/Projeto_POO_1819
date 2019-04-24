@@ -8,7 +8,7 @@ public class Test
     public static void main(String args[]) {
 
         Date date = new Date();
-        
+
         Ator umAtor = new Ator("fmtfg99@gmail.com", "filipe guimarães", "password", "Rua qualquer", date);
         System.out.println("Ator"+umAtor.toString()+'\n');
 
