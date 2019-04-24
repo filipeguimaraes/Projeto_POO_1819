@@ -91,4 +91,14 @@ public class Ator{
         return new Ator(this);
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "email='" + email + '\'' +
+                ", nome='" + nome + '\'' +
+                ", password='" + password + '\'' +
+                ", morada='" + morada + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

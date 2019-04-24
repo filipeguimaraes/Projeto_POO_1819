@@ -2,8 +2,8 @@ import java.awt.Point;
 import java.util.Date;
 
 public class Aluguer{
-    private Point inicio; //carro
-    private Point fim; //carro
+    private Point inicioCarro; //carro
+    private Point fimCarro; //carro
     private Carro car;
     private Cliente cli;
     private Point i; //cliente
@@ -19,15 +19,15 @@ public class Aluguer{
     
    
     public Aluguer(){
-        this.inicio=new Point();
-        this.fim=new Point();
+        this.inicioCarro=new Point();
+        this.fimCarro=new Point();
         this.car=new Carro();
         this.estado=PENDENTE;
     }
 
-    public Aluguer(Point inicio, Point fim, Carro car, Cliente cli, Point i, Point f, Date dataInicio, Date dataFim, int classificacao, int estado) {
-        this.inicio = inicio;
-        this.fim = fim;
+    public Aluguer(Point inicioCarro, Point Carro, Carro car, Cliente cli, Point i, Point f, Date dataInicio, Date dataFim, int classificacao, int estado) {
+        this.inicioCarro = inicioCarro;
+        this.fimCarro = fimCarro;
         this.car = car;
         this.cli = cli;
         this.i = i;
@@ -39,8 +39,8 @@ public class Aluguer{
     }
 
     public Aluguer(Aluguer umAluguer){
-        this.inicio= umAluguer.getInicio();
-        this.fim= umAluguer.getFim();
+        this.inicioCarro= umAluguer.getInicioCarro();
+        this.fimCarro= umAluguer.getFimCarro();
         this.car= umAluguer.getCar();
         this.cli = umAluguer.getCli();
         this.i = umAluguer.getI();
@@ -51,20 +51,20 @@ public class Aluguer{
         this.estado= umAluguer.getEstado();
     }
 
-    public Point getInicio() {
-        return inicio;
+    public Point getInicioCarro() {
+        return inicioCarro;
     }
 
-    public void setInicio(Point inicio) {
-        this.inicio = inicio;
+    public void setInicioCarro(Point inicioCarro) {
+        this.inicioCarro = inicioCarro;
     }
 
-    public Point getFim() {
-        return fim;
+    public Point getFimCarro() {
+        return fimCarro;
     }
 
-    public void setFim(Point fim) {
-        this.fim = fim;
+    public void setFimCarro(Point fimCarro) {
+        this.fimCarro = fimCarro;
     }
 
     public Carro getCar() {
@@ -131,7 +131,7 @@ public class Aluguer{
         this.estado = estado;
     }
 
-    
+
     public Aluguer clone(){
         return new Aluguer(this);
     }
@@ -140,13 +140,13 @@ public class Aluguer{
         if(this==o) return true;
         if(o==null || o.getClass()!=this.getClass()) return false;
         Aluguer c = (Aluguer) o;
-        return c.getInicio().equals(this.inicio) && c.getFim().equals(this.fim) && c.getCar().equals(this.car) && c.getEstado()==this.estado;
+        return c.getInicioCarro().equals(this.inicioCarro) && c.getFimCarro().equals(this.fimCarro) && c.getCar().equals(this.car) && c.getEstado()==this.estado;
     }
     
     public String toString(){
         StringBuilder s= new StringBuilder("Aluguer\n");
-        s.append(" Ponto inicial" + this.inicio);
-        s.append(" Ponto final" + this.fim);
+        s.append(" Ponto inicial" + this.inicioCarro);
+        s.append(" Ponto final" + this.fimCarro);
         s.append(" Carro" + this.car);
         s.append(" Estado: " + this.estado);
         return s.toString();

@@ -1,8 +1,9 @@
 import java.awt.Point;
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Date;
+
 /**
  * Write a description of class Servico here.
  *
@@ -15,7 +16,7 @@ public class Servico{
     private List<CarroGasolina> carrosgasolina;
     
     public void desloca(Aluguer a,Point fim){
-        a.setFim(fim);
+        a.setFimCarro(fim);
     }
     
     public Servico(){
@@ -88,13 +89,15 @@ public class Servico{
         return new Servico(this);
     }
     
-    public void arrenda(Carro car, Cliente c, Proprietario p, Point f, Date data){
+
+/*    public void arrenda(Carro car,Point inicioCarro, Point fimCarro,Cliente cli,Point i, Point f, Date dataInicio, Date dataFim){
         Aluguer novoAluguer = new Aluguer(inicio, fim, car, cli, inicial, f, classificacao,PENDENTE);
         car.getHistorico().add(novoAluguer);
         c.getHistorico().add(novoAluguer);
         p.getHistorico().add(novoAluguer);
     }
-        
+*/
+
     public boolean temAutonomia(Carro c, Point i,Point f){
         double autonomia;
         double distancia;
@@ -117,15 +120,15 @@ public class Servico{
             autonomiaFinal=distancia*((CarroGasolina) c).getConsumo();
             return(autonomiaFinal<10 && autonomiaFinal<=autonomia);
         }
-
+        return false;
     }
-    
+
     public double custo(Carro c, Point i, Point f){
         double distancia;
         distancia=Math.sqrt(Math.pow(i.getX()-f.getX(), 2) +Math.pow(i.getY()-f.getY(), 2));
         return c.getPreco()*distancia;
     }
-    
+
     public double tempo(Cliente cli, Carro car){
         double distancia= distancia=Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2));
         return (distancia/4);
@@ -140,6 +143,6 @@ public class Servico{
     }
 
     public void fimInicio(Aluguer a){
-        a.setInicio(a.getFim());
+        a.setInicioCarro(a.getFimCarro());
     }
 }

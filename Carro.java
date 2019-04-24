@@ -14,8 +14,7 @@ public class Carro{
     private Point coordenada;
     private List<Aluguer> historico;
     private Proprietario p;
-    
-    
+
     public Carro(){
         this.velocidade=0;
         this.preco=0;

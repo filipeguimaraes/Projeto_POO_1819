@@ -64,11 +64,7 @@ public class Proprietario extends Ator{
     
     public String toString(){
         StringBuilder s= new StringBuilder("Proprietario\n");
-        s.append(" Email: " + this.getEmail());
-        s.append(" Nome: " + this.getNome());
-        s.append(" Password: " + this.getPassword());
-        s.append(" Morada: " + this.getMorada());
-        s.append(" Data: " + this.getData());
+        s.append(super.toString());
         s.append(" Classificacao: " + this.classificacao);
         s.append(" Historico: " + this.historico.toString());
         return s.toString();
