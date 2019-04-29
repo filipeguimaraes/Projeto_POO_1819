@@ -6,6 +6,7 @@ public class Aluguer{
     private Point fimCarro; //carro
     private Carro car;
     private Cliente cli;
+    private Proprietario p;
     private Point i; //cliente
     private Point f; //cliente
     private Date dataInicio;
@@ -19,17 +20,25 @@ public class Aluguer{
     
    
     public Aluguer(){
-        this.inicioCarro=new Point();
-        this.fimCarro=new Point();
-        this.car=new Carro();
-        this.estado=PENDENTE;
+        this.inicioCarro = new Point();
+        this.fimCarro = new Point();
+        this.car = new Carro();
+        this.cli = new Cliente();
+        this.p = new Proprietario();
+        this.i = new Point();
+        this.f = new Point();
+        this.dataInicio = new Date();
+        this.dataFim = new Date();
+        this.classificacao = 1;
+        this.estado = PENDENTE;
     }
 
-    public Aluguer(Point inicioCarro, Point Carro, Carro car, Cliente cli, Point i, Point f, Date dataInicio, Date dataFim, int classificacao, int estado) {
+    public Aluguer(Point inicioCarro, Point fimCarro, Carro car, Cliente cli, Proprietario p, Point i, Point f, Date dataInicio, Date dataFim, int classificacao, int estado) {
         this.inicioCarro = inicioCarro;
         this.fimCarro = fimCarro;
         this.car = car;
         this.cli = cli;
+        this.p = p;
         this.i = i;
         this.f = f;
         this.dataInicio = dataInicio;
@@ -43,6 +52,7 @@ public class Aluguer{
         this.fimCarro= umAluguer.getFimCarro();
         this.car= umAluguer.getCar();
         this.cli = umAluguer.getCli();
+        this.p= umAluguer.getP();
         this.i = umAluguer.getI();
         this.f = umAluguer.getF();
         this.dataInicio = umAluguer.getDataInicio();
@@ -81,6 +91,14 @@ public class Aluguer{
 
     public void setCli(Cliente cli) {
         this.cli = cli;
+    }
+    
+    public Proprietario getP(){
+        return p;
+    }
+    
+    public void setP(Proprietario p){
+        this.p=p;
     }
 
     public Point getI() {
@@ -131,7 +149,6 @@ public class Aluguer{
         this.estado = estado;
     }
 
-
     public Aluguer clone(){
         return new Aluguer(this);
     }
@@ -140,15 +157,25 @@ public class Aluguer{
         if(this==o) return true;
         if(o==null || o.getClass()!=this.getClass()) return false;
         Aluguer c = (Aluguer) o;
-        return c.getInicioCarro().equals(this.inicioCarro) && c.getFimCarro().equals(this.fimCarro) && c.getCar().equals(this.car) && c.getEstado()==this.estado;
+        return c.getInicioCarro().equals(this.inicioCarro) && c.getFimCarro().equals(this.fimCarro) && c.getCar().equals(this.car)
+        && c.getCli().equals(this.cli) && c.getP().equals(this.p) && c.getI().equals(this.i) && c.getF().equals(this.f) 
+        && c.getDataInicio().equals(this.dataInicio) && c.getDataFim().equals(this.dataFim) && c.getClassificacao()==this.classificacao
+        && c.getEstado()==this.estado;
     }
     
     public String toString(){
         StringBuilder s= new StringBuilder("Aluguer\n");
-        s.append(" Ponto inicial" + this.inicioCarro);
-        s.append(" Ponto final" + this.fimCarro);
+        s.append(" Ponto inicial carro" + this.inicioCarro);
+        s.append(" Ponto final carro" + this.fimCarro);
         s.append(" Carro" + this.car);
-        s.append(" Estado: " + this.estado);
+        s.append(" Cliente" + this.cli);
+        s.append(" Proprietario" + this.p);
+        s.append(" Ponto inicial cliente" + this.i);
+        s.append(" Ponto final cliente" + this.f);
+        s.append(" Data inicial" + this.dataInicio);
+        s.append(" Data final" + this.dataFim);
+        s.append(" Classificacao" + this.classificacao);
+        s.append(" Estado" + this.estado);
         return s.toString();
     }
    

@@ -14,11 +14,7 @@ public class Servico{
     private List<CarroEletrico> carroseletricos;
     private List<CarroHibrido> carroshibridos;
     private List<CarroGasolina> carrosgasolina;
-    
-    public void desloca(Aluguer a,Point fim){
-        a.setFimCarro(fim);
-    }
-    
+        
     public Servico(){
         this.carroseletricos= new ArrayList<>();
         this.carroshibridos= new ArrayList<>();
@@ -90,6 +86,11 @@ public class Servico{
     }
     
 
+    public void desloca(Aluguer a,Point fim){
+        a.setFimCarro(fim);
+    }
+    
+    
 /*    public void arrenda(Carro car,Point inicioCarro, Point fimCarro,Cliente cli,Point i, Point f, Date dataInicio, Date dataFim){
         Aluguer novoAluguer = new Aluguer(inicio, fim, car, cli, inicial, f, classificacao,PENDENTE);
         car.getHistorico().add(novoAluguer);
@@ -133,7 +134,7 @@ public class Servico{
         double distancia= distancia=Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2));
         return (distancia/4);
     }
-    
+        
     public void aceitaEstado(Aluguer a){
         a.setEstado(Aluguer.ACEITE);
     }
