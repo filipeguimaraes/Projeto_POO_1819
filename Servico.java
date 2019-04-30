@@ -57,7 +57,6 @@ public class Servico{
         this.carrosgasolina = carrosgasolina;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -67,12 +66,6 @@ public class Servico{
                 Objects.equals(carrosgasolina, servico.carrosgasolina);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(carroseletricos, carroshibridos, carrosgasolina);
-    }
-
-    @Override
     public String toString() {
         return "Servico{" +
                 "carroseletricos=" + carroseletricos +
@@ -130,7 +123,8 @@ public class Servico{
         return c.getPreco()*distancia;
     }
 
-    public double tempo(Cliente cli, Carro car){
+    /*Tempo em horas*/
+    public double tempoCliente(Cliente cli, Carro car,Meteorologia meteo){
         double distancia= distancia=Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2));
         return (distancia/4);
     }

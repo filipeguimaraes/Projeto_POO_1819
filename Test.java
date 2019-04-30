@@ -21,6 +21,11 @@ public class Test
         Cliente umCliente= new Cliente("cliente@email.com", "cli", "password", "Rua qualquer", date, coordenadasCliente,historicoCliente);
         System.out.println(umCliente.toString());
 
+        Meteorologia hoje= new Meteorologia(30,15,50);
+        int minutos= hoje.medicaoMinutos();
+
+        System.out.println("Minutos: "+minutos);
+
 
     }
 }

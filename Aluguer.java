@@ -12,6 +12,7 @@ public class Aluguer{
     private Date dataInicio;
     private Date dataFim;
     private int classificacao;
+    private Meteorologia meteorologia;
     private int estado;
     
     public static final int REJEITADO = 0;
@@ -30,10 +31,11 @@ public class Aluguer{
         this.dataInicio = new Date();
         this.dataFim = new Date();
         this.classificacao = 1;
+        this.meteorologia= new Meteorologia();
         this.estado = PENDENTE;
     }
 
-    public Aluguer(Point inicioCarro, Point fimCarro, Carro car, Cliente cli, Proprietario p, Point i, Point f, Date dataInicio, Date dataFim, int classificacao, int estado) {
+    public Aluguer(Point inicioCarro, Point fimCarro, Carro car, Cliente cli, Proprietario p, Point i, Point f, Date dataInicio, Date dataFim, int classificacao, Meteorologia meteorologia, int estado) {
         this.inicioCarro = inicioCarro;
         this.fimCarro = fimCarro;
         this.car = car;
@@ -44,6 +46,7 @@ public class Aluguer{
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.classificacao = classificacao;
+        this.meteorologia= meteorologia;
         this.estado = estado;
     }
 
@@ -58,7 +61,16 @@ public class Aluguer{
         this.dataInicio = umAluguer.getDataInicio();
         this.dataFim = umAluguer.getDataFim();
         this.classificacao = umAluguer.getClassificacao();
+        this.meteorologia = umAluguer.getMeteorologia();
         this.estado= umAluguer.getEstado();
+    }
+
+    public Meteorologia getMeteorologia() {
+        return meteorologia;
+    }
+
+    public void setMeteorologia(Meteorologia meteorologia) {
+        this.meteorologia = meteorologia;
     }
 
     public Point getInicioCarro() {
@@ -152,17 +164,17 @@ public class Aluguer{
     public Aluguer clone(){
         return new Aluguer(this);
     }
-    
+
     public boolean equals(Object o){
         if(this==o) return true;
         if(o==null || o.getClass()!=this.getClass()) return false;
         Aluguer c = (Aluguer) o;
         return c.getInicioCarro().equals(this.inicioCarro) && c.getFimCarro().equals(this.fimCarro) && c.getCar().equals(this.car)
-        && c.getCli().equals(this.cli) && c.getP().equals(this.p) && c.getI().equals(this.i) && c.getF().equals(this.f) 
+        && c.getCli().equals(this.cli) && c.getP().equals(this.p) && c.getI().equals(this.i) && c.getF().equals(this.f)
         && c.getDataInicio().equals(this.dataInicio) && c.getDataFim().equals(this.dataFim) && c.getClassificacao()==this.classificacao
-        && c.getEstado()==this.estado;
+        && c.getMeteorologia()==this.meteorologia && c.getEstado()==this.estado;
     }
-    
+
     public String toString(){
         StringBuilder s= new StringBuilder("Aluguer\n");
         s.append(" Ponto inicial carro" + this.inicioCarro);
@@ -175,6 +187,7 @@ public class Aluguer{
         s.append(" Data inicial" + this.dataInicio);
         s.append(" Data final" + this.dataFim);
         s.append(" Classificacao" + this.classificacao);
+        s.append(" Meteorologia" + this.meteorologia);
         s.append(" Estado" + this.estado);
         return s.toString();
     }
