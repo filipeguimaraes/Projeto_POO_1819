@@ -25,12 +25,13 @@ public class Test
         Carro c1 = new CarroEletrico();
         c1.setVelocidade(20);
         c1.setHistorico(historico);
+        umProprietario.setNome("Filipe");
         umProprietario.setClassificacao(5);
-        //c1.setProprietario(umProprietario);
         carros.add(c1.clone());
+        c1.setProprietario(umProprietario);
         umProprietario.setListaCarros(carros);
         System.out.println(carros.toString());
-        System.out.println(umProprietario.toString()+'\n');
+        //System.out.println(umProprietario.toString()+'\n');
 
 
         Point coordenadasCliente = new Point();

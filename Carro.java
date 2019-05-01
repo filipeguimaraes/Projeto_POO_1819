@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 /**
  * Escreva a descrição da classe Carro aqui.
  * 
@@ -60,11 +62,7 @@ public class Carro{
     }
     
     public List<Aluguer> getHistorico(){
-        List<Aluguer> copia= new ArrayList<>(historico.size());
-        for (Aluguer l: historico){
-            copia.add(l.clone());
-        }
-        return copia; 
+        return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
     }
     
     public Proprietario getProprietario(){
@@ -114,13 +112,13 @@ public class Carro{
     }
     
     public String toString(){
-        StringBuilder s= new StringBuilder("Carro\n");
+        StringBuilder s= new StringBuilder("{Carro->");
         s.append(" Velocidade: " + this.velocidade);
         s.append(" Preço: " + this.preco);
         s.append(" Classificaçao: " + this.classificacao);
         s.append(" Coordenada: " + this.coordenada);
         s.append(" Historico: " + this.historico.toString());
-        s.append(" Proprietario "+ this.p);
+        s.append(" Proprietario: "+ this.p.toString()+'}');
         return s.toString();
     }
     

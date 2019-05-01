@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Proprietario extends Ator{
+public class Proprietario extends Ator {
     private int classificacao;
     private List<Aluguer> historico;
     private List<Carro> listaCarros;
 
 
-    public Proprietario(){
+    public Proprietario() {
         super();
         this.classificacao = 0;
         this.historico = new ArrayList<>();
@@ -29,53 +29,44 @@ public class Proprietario extends Ator{
         this.listaCarros = listaCarros;
     }
 
-    
-    public Proprietario(Proprietario umProprietario){
+
+    public Proprietario(Proprietario umProprietario) {
         super(umProprietario);
         this.classificacao = umProprietario.getClassificacao();
         this.historico = umProprietario.getHistorico();
         this.listaCarros = umProprietario.getListaCarros();
     }
 
-    public List<Carro> getListaCarros() {
-        return listaCarros;
-    }
 
-    public void setListaCarros(List<Carro> listaCarros) {
-        this.listaCarros = listaCarros;
-    }
-    public int getClassificacao(){
+
+    public int getClassificacao() {
         return this.classificacao;
     }
 
-    public void setClassificacao(int classificacao){
+    public void setClassificacao(int classificacao) {
         this.classificacao = classificacao;
     }
 
-    public List<Aluguer> getHistorico() {
-        return historico;
+    public List<Carro> getListaCarros() {
+        return this.listaCarros.stream().map(Carro::clone).collect(Collectors.toList());
     }
 
-    public void setHistorico(List<Aluguer> historico) {
-        this.historico = historico;
-    }
-/*
-    public void setListaCarros(List<Carro> listaCarros){
+    public void setListaCarros(List<Carro> listaCarros) {
         this.listaCarros = new ArrayList<>(listaCarros.size());
-        for(Carro a : listaCarros)
+        for (Carro a : listaCarros)
             this.listaCarros.add(a.clone());
     }
 
-        public List<Aluguer> getHistorico(){
-            return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
-        }
+    public List<Aluguer> getHistorico() {
+        return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
+    }
 
-        public void setHistorico(List<Aluguer> historico){
-            this.historico = new ArrayList<>(historico.size());
-            for(Aluguer a : historico)
-                this.historico.add(a.clone());
-        }
-*/
+    public void setHistorico(List<Aluguer> historico) {
+        this.historico = new ArrayList<>(historico.size());
+        for (Aluguer a : historico)
+            this.historico.add(a.clone());
+    }
+
     public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
