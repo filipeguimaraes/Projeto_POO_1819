@@ -18,7 +18,6 @@ public class Test
 
 
         List<Aluguer> historico=new ArrayList<>();
-        List<Carro> carros =new ArrayList<>();
 
         Point2D p= new Point2D.Double(3.4,5.5);
         Proprietario umProprietario= new Proprietario();
@@ -27,11 +26,10 @@ public class Test
         c1.setHistorico(historico);
         umProprietario.setNome("Filipe");
         umProprietario.setClassificacao(5);
-        carros.add(c1.clone());
         c1.setProprietario(umProprietario);
-        umProprietario.setListaCarros(carros);
-        System.out.println(carros.toString());
-        //System.out.println(umProprietario.toString()+'\n');
+        umProprietario.getListaCarros().add(c1);
+        System.out.println(c1.toString());
+        System.out.println(umProprietario.toString()+'\n');
 
 
         Point coordenadasCliente = new Point();

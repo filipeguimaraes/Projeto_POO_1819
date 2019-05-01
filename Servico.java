@@ -1,5 +1,6 @@
-import java.awt.Point;
-import java.util.Date;
+import java.awt.geom.Point2D;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -79,20 +80,18 @@ public class Servico{
     }
     
 
-    public void desloca(Aluguer a,Point fim){
+    public void desloca(Aluguer a,Point2D fim){
         a.setFimCarro(fim);
     }
-    
-    
-/*    public void arrenda(Carro car,Point inicioCarro, Point fimCarro,Cliente cli,Point i, Point f, Date dataInicio, Date dataFim){
-        Aluguer novoAluguer = new Aluguer(inicio, fim, car, cli, inicial, f, classificacao,PENDENTE);
+
+    public void arrenda(Point2D inicioCarro, Point2D fimCarro, Carro car, Cliente cli, Proprietario p, Point2D inicioCliente, Point2D fimCliente, LocalDateTime dataInicio, LocalDateTime dataFim, int classificacao, Meteorologia meteorologia, int estado){
+        Aluguer novoAluguer = new Aluguer(inicioCarro, fimCarro, car,cli, p, inicioCliente, fimCliente,dataInicio,dataFim,classificacao, meteorologia, estado);
         car.getHistorico().add(novoAluguer);
-        c.getHistorico().add(novoAluguer);
+        cli.getHistorico().add(novoAluguer);
         p.getHistorico().add(novoAluguer);
     }
-*/
 
-    public boolean temAutonomia(Carro c, Point i,Point f){
+    public boolean temAutonomia(Carro c, Point2D i,Point2D f){
         double autonomia;
         double distancia;
         double autonomiaFinal;
@@ -117,18 +116,117 @@ public class Servico{
         return false;
     }
 
-    public double custo(Carro c, Point i, Point f){
+    public double  distanciaAoCarro(Cliente cli,Carro car){
+        return Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2));
+    }
+
+    public double custo(Carro c, Point2D i, Point2D f){
         double distancia;
         distancia=Math.sqrt(Math.pow(i.getX()-f.getX(), 2) +Math.pow(i.getY()-f.getY(), 2));
         return c.getPreco()*distancia;
     }
-
     /*Tempo em horas*/
-    public double tempoCliente(Cliente cli, Carro car,Meteorologia meteo){
-        double distancia= distancia=Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2));
-        return (distancia/4);
+    public double tempoCliente(Cliente cli, Carro car){
+        return (distanciaAoCarro(cli,car)/4);
     }
-        
+
+    public double  distanciaAoPonto(Cliente cli,Point2D ponto){
+        return Math.sqrt(Math.pow(cli.getCoordenada().getX()-ponto.getX(), 2) +Math.pow(cli.getCoordenada().getY()-ponto.getY(), 2));
+    }
+
+    public Carro carroMaisProximo(Cliente cli){
+        Point2D localizacaoCliente = cli.getCoordenada();
+        Comparator<Carro> c = (Carro c1, Carro c2) -> {
+            if(distanciaAoPonto(cli,c1.getCoordenada())<distanciaAoPonto(cli,c2.getCoordenada())) return -1;
+            if(distanciaAoPonto(cli,c1.getCoordenada())>distanciaAoPonto(cli,c2.getCoordenada())) return 1;
+            else return 0;
+        };
+        Carro cG = this.carrosgasolina.stream()
+                                      .sorted(c)
+                                      .findFirst()
+                                      .get()
+                                      .clone();
+        Carro cE = this.carroseletricos.stream()
+                                       .sorted(c)
+                                       .findFirst()
+                                       .get()
+                                       .clone();
+
+        Carro cH = this.carroshibridos.stream()
+                                      .sorted(c)
+                                      .findFirst()
+                                      .get()
+                                      .clone();
+        if(distanciaAoCarro(cli,cG)<distanciaAoCarro(cli,cE) && distanciaAoCarro(cli,cG)<distanciaAoCarro(cli,cH)){
+            return cG;
+        }else if(distanciaAoCarro(cli,cE)<distanciaAoCarro(cli,cG) && distanciaAoCarro(cli,cE)<distanciaAoCarro(cli,cH)){
+            return cE;
+        }else return cH;
+    }
+
+    public Carro carroMaisBarato(){
+        Comparator<Carro> c = (Carro c1, Carro c2) -> {
+            if(c1.getPreco()<c2.getPreco()) return -1;
+            if(c1.getPreco()>c2.getPreco()) return 1;
+            else return 0;
+        };
+        Carro cG = this.carrosgasolina.stream()
+                .sorted(c)
+                .findFirst()
+                .get()
+                .clone();
+        Carro cE = this.carroseletricos.stream()
+                .sorted(c)
+                .findFirst()
+                .get()
+                .clone();
+
+        Carro cH = this.carroshibridos.stream()
+                .sorted(c)
+                .findFirst()
+                .get()
+                .clone();
+        if(cG.getPreco()<cE.getPreco() && cG.getPreco()<cH.getPreco()){
+            return cG;
+        } else if(cE.getPreco()<cG.getPreco() && cE.getPreco()<cH.getPreco()){
+            return cE;
+        } else return cH;
+    }
+
+    public Carro carroProximoMaisBarato(Cliente cli, Double distancia){
+        Comparator<Carro> c = (Carro c1, Carro c2) -> {
+            if(c1.getPreco()<c2.getPreco()) return -1;
+            if(c1.getPreco()>c2.getPreco()) return 1;
+            else return 0;
+        };
+
+        Carro cG = this.carrosgasolina.stream()
+                                      .filter(car-> distanciaAoCarro(cli,car)<=distancia)
+                                      .sorted(c)
+                                      .findFirst()
+                                      .get()
+                                      .clone();
+
+        Carro cE = this.carroseletricos.stream()
+                                       .filter(car-> distanciaAoCarro(cli,car)<=distancia)
+                                       .sorted(c)
+                                       .findFirst()
+                                       .get()
+                                       .clone();
+
+        Carro cH = this.carroshibridos.stream()
+                                      .filter(car-> distanciaAoCarro(cli,car)<=distancia)
+                                      .sorted(c)
+                                      .findFirst()
+                                      .get()
+                                      .clone();
+        if(cG.getPreco()<cE.getPreco() && cG.getPreco()<cH.getPreco()){
+            return cG;
+        } else if(cE.getPreco()<cG.getPreco() && cE.getPreco()<cH.getPreco()){
+            return cE;
+        } else return cH;
+    }
+
     public void aceitaEstado(Aluguer a){
         a.setEstado(Aluguer.ACEITE);
     }

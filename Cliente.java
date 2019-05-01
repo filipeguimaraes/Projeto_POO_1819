@@ -1,6 +1,5 @@
 import java.awt.geom.Point2D;
 import java.time.LocalDateTime;
-import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ public class Cliente extends Ator{
         this.historico = new ArrayList<>();
     }
     
-    public Cliente(String email, String nome, String password, String morada, LocalDateTime data, Point coordenada, List historico){
+    public Cliente(String email, String nome, String password, String morada, LocalDateTime data, Point2D coordenada, List historico){
         super(email, nome, password, morada, data);
         this.coordenada = coordenada;
         this.setHistorico(historico);
@@ -40,7 +39,7 @@ public class Cliente extends Ator{
         return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
     }
         
-    public void setCoordenada(Point coordenada){
+    public void setCoordenada(Point2D coordenada){
         this.coordenada = coordenada;
     }
     

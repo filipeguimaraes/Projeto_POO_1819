@@ -1,4 +1,4 @@
-import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
@@ -17,7 +17,7 @@ public class CarroEletrico extends Carro{
         this.bateria=0.0;
     }
     
-    public CarroEletrico(int velocidade, double preco, int classificacao, Point coordenada, List<Aluguer> historico, Proprietario p, double consumo, double bateria){
+    public CarroEletrico(int velocidade, double preco, int classificacao, Point2D coordenada, List<Aluguer> historico, Proprietario p, double consumo, double bateria){
         super(velocidade,preco,classificacao,coordenada,historico,p);
         this.consumo=consumo;
         this.bateria=bateria;

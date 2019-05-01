@@ -1,16 +1,17 @@
-import java.awt.Point;
-import java.util.Date;
+import java.awt.geom.Point2D;
+import java.time.LocalDateTime;
+
 
 public class Aluguer{
-    private Point inicioCarro; //carro
-    private Point fimCarro; //carro
+    private Point2D inicioCarro; //carro
+    private Point2D fimCarro; //carro
     private Carro car;
     private Cliente cli;
     private Proprietario p;
-    private Point i; //cliente
-    private Point f; //cliente
-    private Date dataInicio;
-    private Date dataFim;
+    private Point2D i; //cliente
+    private Point2D f; //cliente
+    private LocalDateTime dataInicio;
+    private LocalDateTime dataFim;
     private int classificacao;
     private Meteorologia meteorologia;
     private int estado;
@@ -21,21 +22,21 @@ public class Aluguer{
     
    
     public Aluguer(){
-        this.inicioCarro = new Point();
-        this.fimCarro = new Point();
+        this.inicioCarro = new Point2D.Double();
+        this.fimCarro = new Point2D.Double();
         this.car = new Carro();
         this.cli = new Cliente();
         this.p = new Proprietario();
-        this.i = new Point();
-        this.f = new Point();
-        this.dataInicio = new Date();
-        this.dataFim = new Date();
+        this.i = new Point2D.Double();
+        this.f = new Point2D.Double();
+        this.dataInicio = LocalDateTime.now();
+        this.dataFim = LocalDateTime.now();
         this.classificacao = 1;
         this.meteorologia= new Meteorologia();
         this.estado = PENDENTE;
     }
 
-    public Aluguer(Point inicioCarro, Point fimCarro, Carro car, Cliente cli, Proprietario p, Point i, Point f, Date dataInicio, Date dataFim, int classificacao, Meteorologia meteorologia, int estado) {
+    public Aluguer(Point2D inicioCarro, Point2D fimCarro, Carro car, Cliente cli, Proprietario p, Point2D i, Point2D f, LocalDateTime dataInicio, LocalDateTime dataFim, int classificacao, Meteorologia meteorologia, int estado) {
         this.inicioCarro = inicioCarro;
         this.fimCarro = fimCarro;
         this.car = car;
@@ -73,19 +74,19 @@ public class Aluguer{
         this.meteorologia = meteorologia;
     }
 
-    public Point getInicioCarro() {
+    public Point2D getInicioCarro() {
         return inicioCarro;
     }
 
-    public void setInicioCarro(Point inicioCarro) {
+    public void setInicioCarro(Point2D inicioCarro) {
         this.inicioCarro = inicioCarro;
     }
 
-    public Point getFimCarro() {
+    public Point2D getFimCarro() {
         return fimCarro;
     }
 
-    public void setFimCarro(Point fimCarro) {
+    public void setFimCarro(Point2D fimCarro) {
         this.fimCarro = fimCarro;
     }
 
@@ -113,35 +114,35 @@ public class Aluguer{
         this.p=p;
     }
 
-    public Point getI() {
+    public Point2D getI() {
         return i;
     }
 
-    public void setI(Point i) {
+    public void setI(Point2D i) {
         this.i = i;
     }
 
-    public Point getF() {
+    public Point2D getF() {
         return f;
     }
 
-    public void setF(Point f) {
+    public void setF(Point2D f) {
         this.f = f;
     }
 
-    public Date getDataInicio() {
+    public LocalDateTime getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(Date dataInicio) {
+    public void setDataInicio(LocalDateTime dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public Date getDataFim() {
+    public LocalDateTime getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(Date dataFim) {
+    public void setDataFim(LocalDateTime dataFim) {
         this.dataFim = dataFim;
     }
 
