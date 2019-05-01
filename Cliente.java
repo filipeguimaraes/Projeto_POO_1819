@@ -59,10 +59,10 @@ public class Cliente extends Ator{
     }
     
     public String toString(){
-        StringBuilder s= new StringBuilder("Cliente\n");
+        StringBuilder s= new StringBuilder("Cliente");
         s.append(super.toString());
-        s.append(" Coordenada: " + this.coordenada);
-        s.append(" Historico: " + this.historico.toString());
+        s.append("\n Coordenada: " + this.coordenada);
+        s.append("\n Historico: " + this.historico.toString());
         return s.toString();
     }
 
