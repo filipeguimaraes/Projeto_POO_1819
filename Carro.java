@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.ArrayList;
 /**
@@ -11,7 +12,7 @@ public class Carro{
     private int velocidade;
     private double preco;
     private int classificacao;
-    private Point coordenada;
+    private Point2D coordenada;
     private List<Aluguer> historico;
     private Proprietario p;
 
@@ -19,12 +20,12 @@ public class Carro{
         this.velocidade=0;
         this.preco=0;
         this.classificacao=0;
-        this.coordenada=new Point();
+        this.coordenada=new Point2D.Double();
         this.historico=new ArrayList<>();
         this.p=new Proprietario();
     }
 
-    public Carro(int velocidade, double preco, int classificacao, Point coordenada, List<Aluguer> historico, Proprietario p){
+    public Carro(int velocidade, double preco, int classificacao, Point2D coordenada, List<Aluguer> historico, Proprietario p){
         this.velocidade=velocidade;
         this.preco=preco;
         this.classificacao=classificacao;
@@ -54,7 +55,7 @@ public class Carro{
         return this.classificacao;
     }
     
-    public Point getCoordenada() {
+    public Point2D getCoordenada() {
         return this.coordenada;
     }
     

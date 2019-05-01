@@ -1,10 +1,10 @@
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * Write a description of class Proprietario here.
+ * Casse mais especifica que o ator que contem as variaveis para um proprietario e os metodos correspendentes
  *
  * @author (your name)
  * @version (a version number or a date)
@@ -22,7 +22,7 @@ public class Proprietario extends Ator{
         this.listaCarros = new ArrayList<>();
     }
 
-    public Proprietario(String email, String nome, String password, String morada, Date data, int classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
+    public Proprietario(String email, String nome, String password, String morada, LocalDateTime data, int classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
         super(email, nome, password, morada, data);
         this.classificacao = classificacao;
         this.historico = historico;
@@ -44,7 +44,6 @@ public class Proprietario extends Ator{
     public void setListaCarros(List<Carro> listaCarros) {
         this.listaCarros = listaCarros;
     }
-
     public int getClassificacao(){
         return this.classificacao;
     }
@@ -60,8 +59,13 @@ public class Proprietario extends Ator{
     public void setHistorico(List<Aluguer> historico) {
         this.historico = historico;
     }
+/*
+    public void setListaCarros(List<Carro> listaCarros){
+        this.listaCarros = new ArrayList<>(listaCarros.size());
+        for(Carro a : listaCarros)
+            this.listaCarros.add(a.clone());
+    }
 
-    /*
         public List<Aluguer> getHistorico(){
             return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
         }
@@ -71,7 +75,7 @@ public class Proprietario extends Ator{
             for(Aluguer a : historico)
                 this.historico.add(a.clone());
         }
-        */
+*/
     public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;

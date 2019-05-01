@@ -1,4 +1,4 @@
-import java.util.Date;
+import java.time.LocalDateTime;
 /**
  * Write a description of class Atores here.
  *
@@ -10,22 +10,22 @@ public class Ator{
     private String nome;
     private String password;
     private String morada;
-    private Date data;
+    private LocalDateTime data;
     
     public Ator(){
         this.email = "";
         this.nome = "";
         this.password = "";
         this.morada = "";
-        this.data = new Date();
+        this.data = LocalDateTime.now();
     }
     
-    public Ator(String email, String nome, String password, String morada, Date data){
+    public Ator(String email, String nome, String password, String morada, LocalDateTime data){
         this.email = email;
         this.nome = nome;
         this.password = password;
         this.morada = morada;
-        this.data = new Date(data.getYear(),data.getMonth(),data.getDate());
+        this.data = data;
     }
     
     public Ator(Ator c){
@@ -52,7 +52,7 @@ public class Ator{
         return this.morada;
     }
     
-    public Date getData(){
+    public LocalDateTime getData(){
         return this.data;
     }
         
@@ -72,7 +72,7 @@ public class Ator{
         this.morada = morada;
     }
     
-    public void setData(Date data){
+    public void setData(LocalDateTime data){
         this.data = data;
     }
         
@@ -91,14 +91,14 @@ public class Ator{
         return new Ator(this);
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                "email='" + email + '\'' +
-                ", nome='" + nome + '\'' +
-                ", password='" + password + '\'' +
-                ", morada='" + morada + '\'' +
-                ", data=" + data +
-                '}';
+    public String toString(){
+        StringBuilder s= new StringBuilder("Proprietario");
+        s.append(super.toString());
+        s.append("\n Email: " + this.email);
+        s.append("\n Nome: " + this.nome);
+        s.append("\n Password: " + this.password);
+        s.append("\n Morada: " + this.morada);
+        s.append("\n Data: " + this.data.toString());
+        return s.toString();
     }
 }
