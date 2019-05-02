@@ -164,33 +164,53 @@ public class Servico{
         }else return cH;
     }
 
+
+
     public Carro carroMaisBarato(){
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
             if(c1.getPreco()<c2.getPreco()) return -1;
             if(c1.getPreco()>c2.getPreco()) return 1;
             else return 0;
         };
-        Carro cG = this.carrosgasolina.stream()
-                .sorted(c)
-                .findFirst()
-                .get()
-                .clone();
-        Carro cE = this.carroseletricos.stream()
-                .sorted(c)
-                .findFirst()
-                .get()
-                .clone();
 
-        Carro cH = this.carroshibridos.stream()
-                .sorted(c)
-                .findFirst()
-                .get()
-                .clone();
-        if(cG.getPreco()<cE.getPreco() && cG.getPreco()<cH.getPreco()){
-            return cG;
-        } else if(cE.getPreco()<cG.getPreco() && cE.getPreco()<cH.getPreco()){
-            return cE;
-        } else return cH;
+        Carro cG = null;
+        Carro cE = null;
+        Carro cH = null;
+
+        if (!this.carrosgasolina.isEmpty()) {
+            cG = this.carrosgasolina.stream()
+                    .sorted(c)
+                    .findFirst()
+                    .get()
+                    .clone();
+        }
+
+        if (!this.carroseletricos.isEmpty()) {
+            cE = this.carroseletricos.stream()
+                    .sorted(c)
+                    .findFirst()
+                    .get()
+                    .clone();
+        }
+
+        if (!this.carroshibridos.isEmpty()) {
+            cH = this.carroshibridos.stream()
+                    .sorted(c)
+                    .findFirst()
+                    .get()
+                    .clone();
+        }
+
+        if(cE==null || cG==null || cH==null){
+            return null;
+        }else if (cG.carroValido() && cE.carroValido() && cH.carroValido() && cG.getPreco() < cE.getPreco() && cG.getPreco() < cH.getPreco()) {
+                return cG;
+            } else if (cG.carroValido() && cE.carroValido() && cH.carroValido() && cE.getPreco() < cG.getPreco() && cE.getPreco() < cH.getPreco()) {
+                return cE;
+            } else if (cH.carroValido()){
+            return cH;
+        }else return null;
+
     }
 
     public Carro carroProximoMaisBarato(Cliente cli, Double distancia){

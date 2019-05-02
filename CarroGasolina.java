@@ -46,4 +46,12 @@ public class CarroGasolina extends Carro{
     public double AutonomiaGasolina(){
         return gasolina*consumo;
     }
+
+    public String toString(){
+        StringBuilder s= new StringBuilder("Carro ->");
+        s.append(super.toString());
+        s.append("Específico{ Consumo: " + this.consumo);
+        s.append(", Gasolina: "+ this.gasolina+'}');
+        return s.toString();
+    }
 }

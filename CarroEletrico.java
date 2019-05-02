@@ -50,6 +50,14 @@ public class CarroEletrico extends Carro{
     public double AutonomiaEletrico(){
         return consumo*bateria;
     }
+
+    public String toString(){
+        StringBuilder s= new StringBuilder("Carro ->");
+        s.append(super.toString());
+        s.append("Específico{ Consumo: " + this.consumo);
+        s.append(", Bateria: "+ this.bateria+'}');
+        return s.toString();
+    }
 }
 
 

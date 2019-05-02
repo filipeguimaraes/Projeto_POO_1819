@@ -34,11 +34,17 @@ public class Cliente extends Ator{
     public Point2D getCoordenada(){
         return this.coordenada;
     }
-    
+
+    /*
     public List<Aluguer> getHistorico(){
         return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
     }
-        
+    */
+
+    public List<Aluguer> getHistorico() {
+        return historico;
+    }
+
     public void setCoordenada(Point2D coordenada){
         this.coordenada = coordenada;
     }

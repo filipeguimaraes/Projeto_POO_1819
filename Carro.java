@@ -44,7 +44,7 @@ public class Carro{
         this.historico=umCarro.getHistorico();
         this.p=umCarro.getProprietario();
     }
-        
+
     public int getVelocidade() {
         return this.velocidade;
     }
@@ -52,23 +52,23 @@ public class Carro{
     public double getPreco() {
         return this.preco;
     }
-    
+
     public int getClassificacao() {
         return this.classificacao;
     }
-    
+
     public Point2D getCoordenada() {
         return this.coordenada;
     }
-    
+
     public List<Aluguer> getHistorico(){
         return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
     }
-    
+
     public Proprietario getProprietario(){
         return this.p;
     }
-        
+
     public void setVelocidade(int v) {
         this.velocidade=v;
     }
@@ -76,52 +76,56 @@ public class Carro{
     public void setPreco(double p) {
         this.preco=p;
     }
-    
+
     public void setClassificacao(int cl) {
         this.classificacao=cl;
     }
-    
-    public void setCoordenada(Point xy) {
+
+    public void setCoordenada(Point2D xy) {
         this.coordenada=xy;
     }
-    
+
     public void setHistorico(List<Aluguer> hst){
         this.historico=new  ArrayList<>(hst.size());
         for (Aluguer l: hst)
             this.historico.add(l.clone());
     }
-    
+
     public void setProprietario(Proprietario prop){
         this.p=prop;
+    }
+
+    public boolean carroValido(){
+        return this.preco>0 && this.velocidade>0;
     }
 
     public Carro clone(){
        return new Carro(this);
     }
-    
+
     public boolean equals(Object o){
         if(this==o) return true;
         if(o==null || o.getClass()!=this.getClass()) return false;
         Carro c = (Carro) o;
-        return c.getVelocidade()==this.velocidade 
+        return c.getVelocidade()==this.velocidade
             && c.getPreco()==this.preco
             && c.getClassificacao()==this.classificacao
             && c.getCoordenada().equals(this.coordenada)
             && c.getHistorico().equals(this.historico)
             && c.getProprietario().equals(this.p);
     }
-    
+
     public String toString(){
-        StringBuilder s= new StringBuilder("{Carro->");
+        StringBuilder s= new StringBuilder("Geral{");
         s.append(" Velocidade: " + this.velocidade);
-        s.append(" Preço: " + this.preco);
-        s.append(" Classificaçao: " + this.classificacao);
-        s.append(" Coordenada: " + this.coordenada);
-        s.append(" Historico: " + this.historico.toString());
-        s.append(" Proprietario: "+ this.p.toString()+'}');
+        s.append(", Preço: " + this.preco);
+        s.append(", Classificaçao: " + this.classificacao);
+        s.append(", Coordenada: " + this.coordenada);
+        s.append(", Historico: " + this.historico.toString());
+        s.append(", Proprietario: "+ this.p.getNome()+'}');
         return s.toString();
     }
-    
+
 }
 
 

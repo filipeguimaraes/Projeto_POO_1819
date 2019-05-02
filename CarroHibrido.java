@@ -72,5 +72,14 @@ public class CarroHibrido extends Carro{
     public double AutonomiaHibrido(){
         return (bateria*consumoBateria)+(gasolina*consumoGasolina);
     }
+
+    public String toString(){
+        StringBuilder s= new StringBuilder("Carro ->");
+        s.append(super.toString());
+        s.append("Específico{ Consumo: Bateria - " + this.consumoBateria+"Gasolina - "+this.consumoGasolina);
+        s.append(", Bateria: "+ this.bateria);
+        s.append(", Gasolina: "+ this.gasolina+'}');
+        return s.toString();
+    }
 }
 

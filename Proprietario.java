@@ -47,6 +47,7 @@ public class Proprietario extends Ator {
         this.classificacao = classificacao;
     }
 
+
     public List<Carro> getListaCarros() {
         return this.listaCarros.stream().map(Carro::clone).collect(Collectors.toList());
     }
@@ -67,6 +68,10 @@ public class Proprietario extends Ator {
             this.historico.add(a.clone());
     }
 
+    public void adicionaCarro(Carro car){
+        this.listaCarros.add(car.clone());
+    }
+
     public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
@@ -81,11 +86,11 @@ public class Proprietario extends Ator {
     }
     
     public String toString(){
-        StringBuilder s= new StringBuilder("Proprietario");
+        StringBuilder s= new StringBuilder("Proprietario ->");
         s.append(super.toString());
-        s.append("\n Classificacao: " + this.classificacao);
-        s.append("\n Historico: " + this.historico.toString());
-        s.append("\n Carros: " + this.listaCarros.toString());
+        s.append("Específico{ Classificacao: " + this.classificacao);
+        s.append(", Historico: " + this.historico.toString());
+        s.append(", Carros: " + this.listaCarros.toString()+'}');
         return s.toString();
     }
     

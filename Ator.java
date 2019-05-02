@@ -92,13 +92,13 @@ public class Ator{
     }
 
     public String toString(){
-        StringBuilder s= new StringBuilder("Proprietario");
-        s.append(super.toString());
-        s.append("\n Email: " + this.email);
-        s.append("\n Nome: " + this.nome);
-        s.append("\n Password: " + this.password);
-        s.append("\n Morada: " + this.morada);
-        s.append("\n Data: " + this.data.toString());
+        StringBuilder s= new StringBuilder();
+        s.append("Geral{");
+        s.append(" Email: " + this.email);
+        s.append(", Nome: " + this.nome);
+        s.append(", Password: " + this.password);
+        s.append(", Morada: " + this.morada);
+        s.append(", Data: " + this.data.toString()+'}');
         return s.toString();
     }
 }
