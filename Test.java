@@ -28,26 +28,12 @@ public class Test
         //Carro c1
         Point2D p1= new Point2D.Double(3.4,5.5);
         CarroEletrico c1 = new CarroEletrico(20,100,0,p1,new ArrayList<>(),umProprietario,0.5,50);
-        umProprietario.getListaCarros().add(c1.clone());
-        //System.out.println(c1.toString());
-        System.out.println(umProprietario.toString());
+        umProprietario.adicionaCarro(c1);
 
-
-        //Carro c2
-        CarroEletrico c2 = new CarroEletrico();
-        c2.setVelocidade(50);
-        c2.setPreco(180);
-        c2.setClassificacao(0);
-        Point2D p2= new Point2D.Double(4,10.6);
-        c2.setCoordenada(p2);
-        c2.setProprietario(umProprietario);
-        //System.out.println(c2.toString());
-
-
-        umProprietario.getListaCarros().add(c1);
-        umProprietario.getListaCarros().add(c2);
+        CarroEletrico c2 = new CarroEletrico(70,150,3,p1,new ArrayList<>(),umProprietario,0.65,100);
         //System.out.println(umProprietario.toString()+'\n');
 
+        System.out.println(umProprietario.toString());
 
         Servico umServico= new Servico();
         umServico.getCarroseletricos().add(c1);
