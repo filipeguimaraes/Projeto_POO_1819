@@ -11,38 +11,44 @@ import java.util.stream.Collectors;
  */
 public class Cliente extends Ator{
     private Point2D coordenada;
+    private int classificacao;
     private List<Aluguer> historico;
     
     public Cliente(){
         super();
+        this.classificacao=0;
         this.coordenada = new Point2D.Double();
         this.historico = new ArrayList<>();
     }
-    
-    public Cliente(String email, String nome, String password, String morada, LocalDateTime data, Point2D coordenada, List historico){
-        super(email, nome, password, morada, data);
+
+    public Cliente(String email, int nib, String nome, String password, String morada, LocalDateTime data, Point2D coordenada, int classificacao, List<Aluguer> historico) {
+        super(email, nib, nome, password, morada, data);
         this.coordenada = coordenada;
-        this.setHistorico(historico);
+        this.classificacao = classificacao;
+        this.historico = historico;
     }
-    
+
     public Cliente(Cliente c){
         super(c);
+        this.classificacao=c.getClassificacao();
         this.coordenada = c.getCoordenada();
         this.historico = c.getHistorico();
     }
-        
+
+    public int getClassificacao() {
+        return classificacao;
+    }
+
+    public void setClassificacao(int classificacao) {
+        this.classificacao = classificacao;
+    }
+
     public Point2D getCoordenada(){
         return this.coordenada;
     }
 
-    /*
     public List<Aluguer> getHistorico(){
         return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
-    }
-    */
-
-    public List<Aluguer> getHistorico() {
-        return historico;
     }
 
     public void setCoordenada(Point2D coordenada){

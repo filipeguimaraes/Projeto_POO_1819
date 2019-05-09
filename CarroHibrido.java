@@ -7,79 +7,55 @@ import java.util.List;
  * @version (a version number or a date)
  */
 public class CarroHibrido extends Carro{
-    private double bateria;
-    private double gasolina;
-    private double consumoBateria;
-    private double consumoGasolina;
+    private double consumo;
+    private double autonomia;
 
-    public CarroHibrido(){
+    public CarroHibrido() {
         super();
-        this.bateria=0.0;
-        this.gasolina=0.0;
-        this.consumoBateria=0.0;
-        this.consumoGasolina=0.0;
-    }
-    
-    public CarroHibrido(int velocidade, double preco, int classificacao, Point2D coordenada, List<Aluguer> historico, Proprietario p, double bateria, double gasolina, double consumoBateria, double consumoGasolina){
-        super(velocidade,preco,classificacao,coordenada,historico,p);
-        this.bateria=bateria;
-        this.gasolina=gasolina;
-        this.consumoBateria=consumoBateria;
-        this.consumoGasolina=consumoGasolina;
-    }
-    
-    public CarroHibrido(CarroHibrido umCarroHibrido){
-        super(umCarroHibrido);
-        this.bateria=umCarroHibrido.getBateria();
-        this.gasolina=umCarroHibrido.getGasolina();
-        this.consumoBateria=umCarroHibrido.getConsumoBateria();
-        this.consumoGasolina=umCarroHibrido.getConsumoGasolina();
-
-    }
-    
-        public double getBateria(){
-        return this.bateria;
-    }
-    
-    public void setBateria(double b){
-        this.bateria=b;
-    }
-    
-    public double getGasolina (){
-        return this.gasolina;
+        this.consumo = 0.0;
+        this.autonomia = 0.0;
     }
 
-    public void setGasolina(double g){
-        this.gasolina=g;
+    public CarroHibrido(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, int classificacao, Point2D coordenada, List<Aluguer> historico, double consumo, double autonomia) {
+        super(marca, matricula, proprietario, velocidade, preco, classificacao, coordenada, historico);
+        this.consumo = consumo;
+        this.autonomia = autonomia;
     }
 
-    public double getConsumoBateria(){
-        return this.consumoBateria;
+    public CarroHibrido(CarroHibrido umCarro){
+        super(umCarro);
+        this.consumo=umCarro.getConsumo();
+        this.autonomia=umCarro.getAutonomia();
     }
-    
-    public void setConsumoBateria(double cb){
-        this.consumoBateria=cb;
+
+    public double getConsumo() {
+        return consumo;
     }
-    
-    public double getConsumoGasolina(){
-        return this.consumoGasolina;
+
+    public void setConsumo(double consumo) {
+        this.consumo = consumo;
     }
-    
-    public void setConsumoGasolina(double cg){
-        this.consumoGasolina=cg;
+
+    public double getAutonomia() {
+        return autonomia;
     }
-    
-    public double AutonomiaHibrido(){
-        return (bateria*consumoBateria)+(gasolina*consumoGasolina);
+
+    public void setAutonomia(double autonomia) {
+        this.autonomia = autonomia;
     }
+
 
     public String toString(){
         StringBuilder s= new StringBuilder("Carro ->");
         s.append(super.toString());
-        s.append("Específico{ Consumo: Bateria - " + this.consumoBateria+"Gasolina - "+this.consumoGasolina);
-        s.append(", Bateria: "+ this.bateria);
-        s.append(", Gasolina: "+ this.gasolina+'}');
+        s.append("Específico{ ");
+        s.append(" Consumo: "+ this.consumo);
+        s.append(", Autonomia: "+ this.autonomia+" }");
         return s.toString();
+    }
+
+    public CarroHibrido clone(){
+        return new CarroHibrido(this);
     }
 }
 

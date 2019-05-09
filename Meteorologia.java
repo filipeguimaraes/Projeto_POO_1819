@@ -58,7 +58,8 @@ public class Meteorologia
         if (this.velocidadeVento>=36 && this.velocidadeVento<=55) m+=2;
         if (this.velocidadeVento>=56) m+=3;
 
-        if (this.temperatura<=0) m+=1;
+        if (this.temperatura<=0) m+=2;
+        if (this.temperatura>=0 && this.temperatura<=10) m+=1;
         if (this.temperatura>=25 && this.temperatura<=30) m+=1;
         if (this.temperatura<=31)m+=2;
 

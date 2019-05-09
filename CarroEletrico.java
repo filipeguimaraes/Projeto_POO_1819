@@ -9,24 +9,24 @@ import java.util.List;
  */
 public class CarroEletrico extends Carro{
     private double consumo;
-    private double bateria;
+    private double autonomia;
 
     public CarroEletrico(){
         super();
         this.consumo=0.0;
-        this.bateria=0.0;
+        this.autonomia=0.0;
     }
-    
-    public CarroEletrico(int velocidade, double preco, int classificacao, Point2D coordenada, List<Aluguer> historico, Proprietario p, double consumo, double bateria){
-        super(velocidade,preco,classificacao,coordenada,historico,p);
-        this.consumo=consumo;
-        this.bateria=bateria;
+
+    public CarroEletrico(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, int classificacao, Point2D coordenada, List<Aluguer> historico, double consumo, double autonomia) {
+        super(marca, matricula, proprietario, velocidade, preco, classificacao, coordenada, historico);
+        this.consumo = consumo;
+        this.autonomia = autonomia;
     }
-    
+
     public CarroEletrico(CarroEletrico umCarroEletrico){
         super(umCarroEletrico);
         this.consumo=umCarroEletrico.getConsumo();
-        this.bateria=umCarroEletrico.getBateria();
+        this.autonomia=umCarroEletrico.getAutonomia();
 
     }
     
@@ -38,25 +38,30 @@ public class CarroEletrico extends Carro{
         this.consumo=c;
     }
 
-    public double getBateria(){
-        return this.bateria;
+    public double getAutonomia() {
+        return autonomia;
     }
 
-    public void setBateria(double b){
-        this.bateria=b;
+    public void setAutonomia(double autonomia) {
+        this.autonomia = autonomia;
     }
 
-    
+    /*
     public double AutonomiaEletrico(){
         return consumo*bateria;
     }
+    */
 
     public String toString(){
         StringBuilder s= new StringBuilder("Carro ->");
         s.append(super.toString());
         s.append("Específico{ Consumo: " + this.consumo);
-        s.append(", Bateria: "+ this.bateria+'}');
+        s.append(", Autonomia: "+ this.autonomia+'}');
         return s.toString();
+    }
+
+    public CarroEletrico clone(){
+        return new CarroEletrico(this);
     }
 }
 

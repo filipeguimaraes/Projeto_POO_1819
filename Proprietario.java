@@ -22,13 +22,12 @@ public class Proprietario extends Ator {
         this.listaCarros = new ArrayList<>();
     }
 
-    public Proprietario(String email, String nome, String password, String morada, LocalDateTime data, int classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
-        super(email, nome, password, morada, data);
+    public Proprietario(String email, int nib, String nome, String password, String morada, LocalDateTime data, int classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
+        super(email, nib, nome, password, morada, data);
         this.classificacao = classificacao;
         this.historico = historico;
         this.listaCarros = listaCarros;
     }
-
 
     public Proprietario(Proprietario umProprietario) {
         super(umProprietario);

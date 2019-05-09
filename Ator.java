@@ -6,23 +6,26 @@ import java.time.LocalDateTime;
  * @version (a version number or a date)
  */
 public class Ator{
-    private String email;
     private String nome;
+    private int nib;
+    private String email;
     private String password;
     private String morada;
     private LocalDateTime data;
     
     public Ator(){
         this.email = "";
+        this.nib = 0;
         this.nome = "";
         this.password = "";
         this.morada = "";
         this.data = LocalDateTime.now();
     }
     
-    public Ator(String email, String nome, String password, String morada, LocalDateTime data){
+    public Ator(String email,int nib, String nome, String password, String morada, LocalDateTime data){
         this.email = email;
         this.nome = nome;
+        this.nib=nib;
         this.password = password;
         this.morada = morada;
         this.data = data;
@@ -31,6 +34,7 @@ public class Ator{
     public Ator(Ator c){
         this.email = c.getEmail();
         this.nome = c.getNome();
+        this.nib=c.getNib();
         this.password = c.getPassword();
         this.morada = c.getMorada();
         this.data = c.getData();
@@ -75,7 +79,15 @@ public class Ator{
     public void setData(LocalDateTime data){
         this.data = data;
     }
-        
+
+    public int getNib() {
+        return nib;
+    }
+
+    public void setNib(int nib) {
+        this.nib = nib;
+    }
+
     public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;

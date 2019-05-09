@@ -1,9 +1,8 @@
+import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Write a description of class Servico here.
@@ -15,27 +14,36 @@ public class Servico{
     private List<CarroEletrico> carroseletricos;
     private List<CarroHibrido> carroshibridos;
     private List<CarroGasolina> carrosgasolina;
+    private Map<Integer,Proprietario> listaProprietarios;
+    private Map<Integer,Cliente> listaClientes;
         
     public Servico(){
         this.carroseletricos= new ArrayList<>();
         this.carroshibridos= new ArrayList<>();
         this.carrosgasolina= new ArrayList<>();
+        this.listaProprietarios= new HashMap<>();
+        this.listaClientes= new HashMap<>();
     }
+
 
     public Servico(List<CarroEletrico> carroseletricos,List<CarroHibrido> carroshibridos, List<CarroGasolina> carrosgasolina){
         this.setCarroseletricos(carroseletricos);
         this.setCarroshibridos(carroshibridos);
         this.setCarrosgasolina(carrosgasolina);
+        this.setListaProprietarios(listaProprietarios);
+        this.setListaClientes(listaClientes);
     }
 
     public Servico(Servico umServico){
         this.carroseletricos=umServico.getCarroseletricos();
         this.carroshibridos=umServico.getCarroshibridos();
         this.carrosgasolina=umServico.getCarrosgasolina();
+        this.listaProprietarios=umServico.getListaProprietarios();
+        this.listaClientes=umServico.getListaClientes();
     }
 
     public List<CarroEletrico> getCarroseletricos() {
-        return carroseletricos;
+        return this.carroseletricos.stream().map(CarroEletrico::clone).collect(Collectors.toList());
     }
 
     public void setCarroseletricos(List<CarroEletrico> carroseletricos) {
@@ -43,7 +51,7 @@ public class Servico{
     }
 
     public List<CarroHibrido> getCarroshibridos() {
-        return carroshibridos;
+        return this.carroshibridos.stream().map(CarroHibrido::clone).collect(Collectors.toList());
     }
 
     public void setCarroshibridos(List<CarroHibrido> carroshibridos) {
@@ -51,11 +59,48 @@ public class Servico{
     }
 
     public List<CarroGasolina> getCarrosgasolina() {
-        return carrosgasolina;
+        return this.carrosgasolina.stream().map(CarroGasolina::clone).collect(Collectors.toList());
     }
 
     public void setCarrosgasolina(List<CarroGasolina> carrosgasolina) {
         this.carrosgasolina = carrosgasolina;
+    }
+
+    public Map<Integer, Proprietario> getListaProprietarios() {
+        return listaProprietarios;
+    }
+
+    public void setListaProprietarios(Map<Integer, Proprietario> listaProprietarios) {
+        this.listaProprietarios = listaProprietarios;
+    }
+
+    public Map<Integer, Cliente> getListaClientes() {
+        return listaClientes;
+    }
+
+    public void setListaClientes(Map<Integer, Cliente> listaClientes) {
+        this.listaClientes = listaClientes;
+    }
+
+
+    public void adicionaCarroEletrico(CarroEletrico e){
+        this.carroseletricos.add(e);
+    }
+
+    public void adicionaCarroGasolina(CarroGasolina g){
+        this.carrosgasolina.add(g);
+    }
+
+    public void adicionaCarroHibrido(CarroHibrido h){
+        this.carroshibridos.add(h);
+    }
+
+    public void adicionaCliente(Cliente c){
+        this.listaClientes.put(c.getNib(),c);
+    }
+
+    public void adicionaProprietario(Proprietario p){
+        this.listaProprietarios.put(p.getNib(),p);
     }
 
     public boolean equals(Object o) {
@@ -69,9 +114,11 @@ public class Servico{
 
     public String toString() {
         return "Servico{" +
-                "carroseletricos=" + carroseletricos +
-                ", carroshibridos=" + carroshibridos +
-                ", carrosgasolina=" + carrosgasolina +
+                "\ncarroseletricos=" + carroseletricos +
+                ",\ncarroshibridos=" + carroshibridos +
+                ",\ncarrosgasolina=" + carrosgasolina +
+                ",\nLista Proprietarios=" + listaProprietarios +
+                ",\nLista Clientes=" + listaClientes +
                 '}';
     }
 
@@ -90,7 +137,7 @@ public class Servico{
         cli.getHistorico().add(novoAluguer);
         p.getHistorico().add(novoAluguer);
     }
-
+/*
     public boolean temAutonomia(Carro c, Point2D i,Point2D f){
         double autonomia;
         double distancia;
@@ -115,7 +162,7 @@ public class Servico{
         }
         return false;
     }
-
+*/
     public double  distanciaAoCarro(Cliente cli,Carro car){
         return Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2));
     }
@@ -125,7 +172,12 @@ public class Servico{
         distancia=Math.sqrt(Math.pow(i.getX()-f.getX(), 2) +Math.pow(i.getY()-f.getY(), 2));
         return c.getPreco()*distancia;
     }
-    /*Tempo em horas*/
+
+
+    /**
+    *
+    *Tempo em horas
+    * */
     public double tempoCliente(Cliente cli, Carro car){
         return (distanciaAoCarro(cli,car)/4);
     }
