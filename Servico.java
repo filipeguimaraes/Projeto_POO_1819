@@ -103,6 +103,10 @@ public class Servico{
         this.listaProprietarios.put(p.getNib(),p);
     }
 
+    public Proprietario procuraProprietario(int nif){
+        return this.listaProprietarios.get(nif);
+    }
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -218,50 +222,42 @@ public class Servico{
 
 
 
-    public Carro carroMaisBarato(){
+    public Carro carroMaisBarato(String tipo){
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
             if(c1.getPreco()<c2.getPreco()) return -1;
             if(c1.getPreco()>c2.getPreco()) return 1;
             else return 0;
         };
 
-        Carro cG = null;
-        Carro cE = null;
-        Carro cH = null;
 
-        if (!this.carrosgasolina.isEmpty()) {
-            cG = this.carrosgasolina.stream()
+        if (tipo.contains("Gasolina") && !carrosgasolina.isEmpty()) {
+            CarroGasolina cG = this.carrosgasolina.stream()
                     .sorted(c)
                     .findFirst()
                     .get()
                     .clone();
+            return cG;
         }
 
-        if (!this.carroseletricos.isEmpty()) {
-            cE = this.carroseletricos.stream()
+        if (tipo.contains("Electrico") && !carroseletricos.isEmpty()) {
+            CarroEletrico cE = this.carroseletricos.stream()
                     .sorted(c)
                     .findFirst()
                     .get()
                     .clone();
+            return cE;
         }
 
-        if (!this.carroshibridos.isEmpty()) {
-            cH = this.carroshibridos.stream()
+        if (tipo.contains("Hibrido") && !carroshibridos.isEmpty()) {
+            CarroHibrido cH = this.carroshibridos.stream()
                     .sorted(c)
                     .findFirst()
                     .get()
                     .clone();
+        return cH;
         }
-
-        if(cE==null || cG==null || cH==null){
-            return null;
-        }else if (cG.carroValido() && cE.carroValido() && cH.carroValido() && cG.getPreco() < cE.getPreco() && cG.getPreco() < cH.getPreco()) {
-                return cG;
-            } else if (cG.carroValido() && cE.carroValido() && cH.carroValido() && cE.getPreco() < cG.getPreco() && cE.getPreco() < cH.getPreco()) {
-                return cE;
-            } else if (cH.carroValido()){
-            return cH;
-        }else return null;
+        //erro caso a lista esteja vazia
+        return null;
 
     }
 

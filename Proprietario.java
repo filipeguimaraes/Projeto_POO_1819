@@ -10,19 +10,19 @@ import java.util.stream.Collectors;
  * @version (a version number or a date)
  */
 public class Proprietario extends Ator {
-    private int classificacao;
+    private Classificacao classificacao;
     private List<Aluguer> historico;
     private List<Carro> listaCarros;
 
 
     public Proprietario() {
         super();
-        this.classificacao = 0;
+        this.classificacao = new Classificacao();
         this.historico = new ArrayList<>();
         this.listaCarros = new ArrayList<>();
     }
 
-    public Proprietario(String email, int nib, String nome, String password, String morada, LocalDateTime data, int classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
+    public Proprietario(String email, int nib, String nome, String password, String morada, LocalDateTime data, Classificacao classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
         super(email, nib, nome, password, morada, data);
         this.classificacao = classificacao;
         this.historico = historico;
@@ -38,11 +38,11 @@ public class Proprietario extends Ator {
 
 
 
-    public int getClassificacao() {
+    public Classificacao getClassificacao() {
         return this.classificacao;
     }
 
-    public void setClassificacao(int classificacao) {
+    public void setClassificacao(Classificacao classificacao) {
         this.classificacao = classificacao;
     }
 

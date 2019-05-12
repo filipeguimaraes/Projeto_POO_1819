@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Write a description of class Classificacao here.
@@ -34,5 +35,18 @@ public class Classificacao {
     public void classificacaoMedia(){
         this.classificacoes.stream().mapToDouble(Integer::doubleValue).average().orElse(0.0);
 
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Classificacao that = (Classificacao) o;
+        return Objects.equals(classificacoes, that.classificacoes);
+    }
+
+    public String toString() {
+        return "Classificacao{" +
+                "classificacoes=" + classificacoes +
+                '}';
     }
 }

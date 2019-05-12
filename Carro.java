@@ -15,7 +15,7 @@ public class Carro{
     private Proprietario proprietario;
     private int velocidade;
     private double preco;
-    private int classificacao;
+    private Classificacao classificacao;
     private Point2D coordenada;
     private List<Aluguer> historico;
 
@@ -25,12 +25,12 @@ public class Carro{
         this.proprietario=new Proprietario();
         this.velocidade=0;
         this.preco=0;
-        this.classificacao=0;
+        this.classificacao=new Classificacao();
         this.coordenada=new Point2D.Double();
         this.historico=new ArrayList<>();
     }
 
-    public Carro(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, int classificacao, Point2D coordenada, List<Aluguer> historico) {
+    public Carro(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, Classificacao classificacao, Point2D coordenada, List<Aluguer> historico) {
         this.marca = marca;
         this.matricula = matricula;
         this.proprietario = proprietario;
@@ -44,7 +44,7 @@ public class Carro{
     
     public Carro(Carro umCarro){
         this.marca=umCarro.getMarca();
-        this.matricula=umCarro.getMarca();
+        this.matricula=umCarro.getMatricula();
         this.proprietario=umCarro.getProprietario();
         this.velocidade=umCarro.getVelocidade();
         this.preco=umCarro.getPreco();
@@ -93,11 +93,11 @@ public class Carro{
         this.preco = preco;
     }
 
-    public int getClassificacao() {
+    public Classificacao getClassificacao() {
         return classificacao;
     }
 
-    public void setClassificacao(int classificacao) {
+    public void setClassificacao(Classificacao classificacao) {
         this.classificacao = classificacao;
     }
 
@@ -141,6 +141,8 @@ public class Carro{
 
     public String toString(){
         StringBuilder s= new StringBuilder("Geral{");
+        s.append(" Marca: " + this.marca);
+        s.append(" Matrícula: " + this.matricula);
         s.append(" Velocidade: " + this.velocidade);
         s.append(", Preço: " + this.preco);
         s.append(", Classificaçao: " + this.classificacao);

@@ -17,7 +17,7 @@ public class CarroEletrico extends Carro{
         this.autonomia=0.0;
     }
 
-    public CarroEletrico(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, int classificacao, Point2D coordenada, List<Aluguer> historico, double consumo, double autonomia) {
+    public CarroEletrico(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, Classificacao classificacao, Point2D coordenada, List<Aluguer> historico, double consumo, double autonomia) {
         super(marca, matricula, proprietario, velocidade, preco, classificacao, coordenada, historico);
         this.consumo = consumo;
         this.autonomia = autonomia;
@@ -55,7 +55,7 @@ public class CarroEletrico extends Carro{
     public String toString(){
         StringBuilder s= new StringBuilder("Carro ->");
         s.append(super.toString());
-        s.append("Específico{ Consumo: " + this.consumo);
+        s.append("Específico{ Tipo: Eletrico, Consumo: " + this.consumo);
         s.append(", Autonomia: "+ this.autonomia+'}');
         return s.toString();
     }

@@ -11,17 +11,17 @@ import java.util.stream.Collectors;
  */
 public class Cliente extends Ator{
     private Point2D coordenada;
-    private int classificacao;
+    private Classificacao classificacao;
     private List<Aluguer> historico;
     
     public Cliente(){
         super();
-        this.classificacao=0;
+        this.classificacao=new Classificacao();
         this.coordenada = new Point2D.Double();
         this.historico = new ArrayList<>();
     }
 
-    public Cliente(String email, int nib, String nome, String password, String morada, LocalDateTime data, Point2D coordenada, int classificacao, List<Aluguer> historico) {
+    public Cliente(String email, int nib, String nome, String password, String morada, LocalDateTime data, Point2D coordenada, Classificacao classificacao, List<Aluguer> historico) {
         super(email, nib, nome, password, morada, data);
         this.coordenada = coordenada;
         this.classificacao = classificacao;
@@ -35,11 +35,11 @@ public class Cliente extends Ator{
         this.historico = c.getHistorico();
     }
 
-    public int getClassificacao() {
+    public Classificacao getClassificacao() {
         return classificacao;
     }
 
-    public void setClassificacao(int classificacao) {
+    public void setClassificacao(Classificacao classificacao) {
         this.classificacao = classificacao;
     }
 

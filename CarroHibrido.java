@@ -16,7 +16,7 @@ public class CarroHibrido extends Carro{
         this.autonomia = 0.0;
     }
 
-    public CarroHibrido(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, int classificacao, Point2D coordenada, List<Aluguer> historico, double consumo, double autonomia) {
+    public CarroHibrido(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, Classificacao classificacao, Point2D coordenada, List<Aluguer> historico, double consumo, double autonomia) {
         super(marca, matricula, proprietario, velocidade, preco, classificacao, coordenada, historico);
         this.consumo = consumo;
         this.autonomia = autonomia;
@@ -49,7 +49,7 @@ public class CarroHibrido extends Carro{
         StringBuilder s= new StringBuilder("Carro ->");
         s.append(super.toString());
         s.append("Específico{ ");
-        s.append(" Consumo: "+ this.consumo);
+        s.append(" Tipo: Hibrido, Consumo: "+ this.consumo);
         s.append(", Autonomia: "+ this.autonomia+" }");
         return s.toString();
     }
