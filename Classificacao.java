@@ -32,8 +32,8 @@ public class Classificacao {
         this.classificacoes.add(classificacao);
     }
 
-    public void classificacaoMedia(){
-        this.classificacoes.stream().mapToDouble(Integer::doubleValue).average().orElse(0.0);
+    public double classificacaoMedia(){
+       return this.classificacoes.stream().mapToDouble(Integer::doubleValue).average().orElse(0.0);
 
     }
 
@@ -45,8 +45,9 @@ public class Classificacao {
     }
 
     public String toString() {
-        return "Classificacao{" +
-                "classificacoes=" + classificacoes +
+        return '{' +
+                " Classificações=" + this.classificacoes +
+                " Classificação média=" + this.classificacaoMedia() +
                 '}';
     }
 }

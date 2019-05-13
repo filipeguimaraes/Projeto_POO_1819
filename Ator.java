@@ -1,4 +1,6 @@
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 /**
  * Write a description of class Atores here.
  *
@@ -12,6 +14,7 @@ public class Ator{
     private String password;
     private String morada;
     private LocalDateTime data;
+    private Classificacao classificacao;
     
     public Ator(){
         this.email = "";
@@ -20,15 +23,17 @@ public class Ator{
         this.password = "";
         this.morada = "";
         this.data = LocalDateTime.now();
+        this.classificacao= new Classificacao();
     }
     
-    public Ator(String email,int nib, String nome, String password, String morada, LocalDateTime data){
+    public Ator(String email,int nib, String nome, String password, String morada, LocalDateTime data,Classificacao classificacao){
         this.email = email;
         this.nome = nome;
         this.nib=nib;
         this.password = password;
         this.morada = morada;
         this.data = data;
+        this.classificacao=classificacao;
     }
     
     public Ator(Ator c){
@@ -38,6 +43,7 @@ public class Ator{
         this.password = c.getPassword();
         this.morada = c.getMorada();
         this.data = c.getData();
+        this.classificacao = c.getClassificacao();
     }
     
     public String getEmail(){
@@ -88,17 +94,32 @@ public class Ator{
         this.nib = nib;
     }
 
-    public boolean equals(Object o){
-        if(this == o) return true;
-        if(o == null || o.getClass() != this.getClass()) return false;
-        Ator c = (Ator) o;
-        return this.email.equals(c.getEmail()) 
-            && this.nome.equals(c.getNome()) 
-            && this.password.equals(c.getPassword()) 
-            && this.morada.equals(c.getMorada())
-            && this.data.equals(c.getData());
+    public Classificacao getClassificacao() {
+        return classificacao;
     }
-    
+
+    public void setClassificacao(Classificacao classificacao) {
+        this.classificacao = classificacao;
+    }
+
+    public void adicionaClassificacao(int classificacao){
+        this.classificacao.adicionaClassificacao(classificacao);
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ator ator = (Ator) o;
+        return nib == ator.nib &&
+                Objects.equals(nome, ator.nome) &&
+                Objects.equals(email, ator.email) &&
+                Objects.equals(password, ator.password) &&
+                Objects.equals(morada, ator.morada) &&
+                Objects.equals(data, ator.data) &&
+                Objects.equals(classificacao, ator.classificacao);
+    }
+
+
     public Ator clone(){
         return new Ator(this);
     }
@@ -110,7 +131,8 @@ public class Ator{
         s.append(", Nome: " + this.nome);
         s.append(", Password: " + this.password);
         s.append(", Morada: " + this.morada);
-        s.append(", Data: " + this.data.toString()+'}');
+        s.append(", Data: " + this.data.toString());
+        s.append(", Classificação: " + this.classificacao.toString() +'}');
         return s.toString();
     }
 }

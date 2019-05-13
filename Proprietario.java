@@ -10,41 +10,28 @@ import java.util.stream.Collectors;
  * @version (a version number or a date)
  */
 public class Proprietario extends Ator {
-    private Classificacao classificacao;
     private List<Aluguer> historico;
     private List<Carro> listaCarros;
 
 
     public Proprietario() {
         super();
-        this.classificacao = new Classificacao();
         this.historico = new ArrayList<>();
         this.listaCarros = new ArrayList<>();
     }
 
     public Proprietario(String email, int nib, String nome, String password, String morada, LocalDateTime data, Classificacao classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
-        super(email, nib, nome, password, morada, data);
-        this.classificacao = classificacao;
+        super(email, nib, nome, password, morada, data,classificacao);
         this.historico = historico;
         this.listaCarros = listaCarros;
     }
 
     public Proprietario(Proprietario umProprietario) {
         super(umProprietario);
-        this.classificacao = umProprietario.getClassificacao();
         this.historico = umProprietario.getHistorico();
         this.listaCarros = umProprietario.getListaCarros();
     }
 
-
-
-    public Classificacao getClassificacao() {
-        return this.classificacao;
-    }
-
-    public void setClassificacao(Classificacao classificacao) {
-        this.classificacao = classificacao;
-    }
 
 
     public List<Carro> getListaCarros() {
@@ -80,14 +67,13 @@ public class Proprietario extends Ator {
             && this.getPassword().equals(c.getPassword()) 
             && this.getMorada().equals(c.getMorada())
             && this.getData().equals(c.getData())
-            && this.classificacao == c.getClassificacao()
             && this.historico.equals(c.getHistorico());
     }
     
     public String toString(){
         StringBuilder s= new StringBuilder("Proprietario ->");
         s.append(super.toString());
-        s.append("Específico{ Classificacao: " + this.classificacao);
+        s.append("Específico{");
         s.append(", Historico: " + this.historico.toString());
         s.append(", Carros: " + this.listaCarros.toString()+'}');
         return s.toString();

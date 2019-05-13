@@ -295,6 +295,42 @@ public class Servico{
         } else return cH;
     }
 
+    public void classificarCarro(String matricula, int classificação){
+        CarroEletrico cE = this.carroseletricos.stream()
+                    .filter(x->matricula.equals(x.getMatricula()))
+                    .findAny()
+                    .orElse(null);
+
+        CarroGasolina cG = this.carrosgasolina.stream()
+                .filter(x->matricula.equals(x.getMatricula()))
+                .findAny()
+                .orElse(null);
+
+        CarroHibrido cH = this.carroshibridos.stream()
+                .filter(x->matricula.equals(x.getMatricula()))
+                .findAny()
+                .orElse(null);
+
+        if(cE!=null && cG==null && cH==null){
+            cE.adicionaClassificacao(classificação);
+        }else if(cE==null && cG!=null && cH==null){
+            cG.adicionaClassificacao(classificação);
+        } else if(cE==null && cG==null && cH!=null){
+            cH.adicionaClassificacao(classificação);
+        }
+        //adicionar erro
+    }
+
+    public void classificarAtores(int nif,int classificacao){
+        if(!listaProprietarios.isEmpty() && listaProprietarios.containsKey(nif)){
+            listaProprietarios.get(nif).adicionaClassificacao(classificacao);
+        }else if(!listaClientes.isEmpty() && listaClientes.containsKey(nif)){
+            listaClientes.get(nif).adicionaClassificacao(classificacao);
+        }else System.out.println("error");
+         //exception
+    }
+
+
     public void aceitaEstado(Aluguer a){
         a.setEstado(Aluguer.ACEITE);
     }
