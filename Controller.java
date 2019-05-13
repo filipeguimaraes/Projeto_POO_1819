@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class Test {
+public class Controller {
 
     public static void main(String args[]) throws IOException {
 
