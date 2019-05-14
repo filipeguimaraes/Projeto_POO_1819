@@ -140,28 +140,5 @@ public class CarregarBAK {
         }
         inicio.close();
     }
-/*
-    public void realizaClassificacoes(Servico servico) throws IOException {
-        BufferedReader wey = new BufferedReader(new FileReader(this.path));
-        while (wey.ready()) {
-            String linha = wey.readLine();
-            if (!linha.contains("--")) {
-                String[] aux = linha.split(":");
-                if (linha.contains("Classificar:")) {
-                    String[] campos = aux[1].split(",");
-                    if (campos[0].contains("-")){
-                        System.out.println("linha!");
-                        String matricula = campos[0];
-                        int classificacao = Integer.valueOf(campos[1]);
-                        servico.classificarCarro(matricula,classificacao);
-                    }
-                }
-            }
-           wey.close();
-        }
-    }
-
- */
-
 
 }

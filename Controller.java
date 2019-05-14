@@ -3,14 +3,26 @@ import java.io.IOException;
 
 public class Controller {
 
-    public static void main(String args[]) throws IOException {
+    private Servico servico;
 
-        CarregarBAK backup=new CarregarBAK("logsPOO_carregamentoInicial.bak");
-        Servico servico = new Servico();
-        backup.carregaAtoresCarros(servico);
-        System.out.println(servico.toString());
+    public static void main(String args[]) throws IOException {
+        new Controller().run();
     }
 
+    private Controller(){
+        this.servico= new Servico();
+    }
+
+    public void run()throws IOException{
+        String path="logsPOO_carregamentoInicial.bak";
+        CarregarBAK backup=new CarregarBAK(path);
+        View view = new View();
+        String[] opcoes={"ola","mundo"};
+        view.mainMenu(opcoes);
+        //backup.carregaAtoresCarros(this.servico);
+        //System.out.println(this.servico.toString());
+
+    }
 
 
 

@@ -9,7 +9,7 @@ import java.util.Objects;
  */
 public class Ator{
     private String nome;
-    private int nib;
+    private int nif;
     private String email;
     private String password;
     private String morada;
@@ -18,7 +18,7 @@ public class Ator{
     
     public Ator(){
         this.email = "";
-        this.nib = 0;
+        this.nif = 0;
         this.nome = "";
         this.password = "";
         this.morada = "";
@@ -26,10 +26,10 @@ public class Ator{
         this.classificacao= new Classificacao();
     }
     
-    public Ator(String email,int nib, String nome, String password, String morada, LocalDateTime data,Classificacao classificacao){
+    public Ator(String email,int nif, String nome, String password, String morada, LocalDateTime data,Classificacao classificacao){
         this.email = email;
         this.nome = nome;
-        this.nib=nib;
+        this.nif=nif;
         this.password = password;
         this.morada = morada;
         this.data = data;
@@ -39,7 +39,7 @@ public class Ator{
     public Ator(Ator c){
         this.email = c.getEmail();
         this.nome = c.getNome();
-        this.nib=c.getNib();
+        this.nif=c.getNif();
         this.password = c.getPassword();
         this.morada = c.getMorada();
         this.data = c.getData();
@@ -86,12 +86,12 @@ public class Ator{
         this.data = data;
     }
 
-    public int getNib() {
-        return nib;
+    public int getNif() {
+        return nif;
     }
 
-    public void setNib(int nib) {
-        this.nib = nib;
+    public void setNif(int nif) {
+        this.nif = nif;
     }
 
     public Classificacao getClassificacao() {
@@ -106,11 +106,15 @@ public class Ator{
         this.classificacao.adicionaClassificacao(classificacao);
     }
 
+    public double classificacaoMedia(){
+        return this.classificacao.classificacaoMedia();
+    }
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ator ator = (Ator) o;
-        return nib == ator.nib &&
+        return nif == ator.nif &&
                 Objects.equals(nome, ator.nome) &&
                 Objects.equals(email, ator.email) &&
                 Objects.equals(password, ator.password) &&

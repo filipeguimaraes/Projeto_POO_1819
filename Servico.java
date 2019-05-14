@@ -1,7 +1,9 @@
-import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -11,27 +13,30 @@ import java.util.stream.Collectors;
  * @version (a version number or a date)
  */
 public class Servico{
-    private List<CarroEletrico> carroseletricos;
-    private List<CarroHibrido> carroshibridos;
-    private List<CarroGasolina> carrosgasolina;
+    private Map<String,CarroEletrico> carroseletricos;
+    private Map<String,CarroHibrido> carroshibridos;
+    private Map<String,CarroGasolina> carrosgasolina;
     private Map<Integer,Proprietario> listaProprietarios;
     private Map<Integer,Cliente> listaClientes;
+    private Meteorologia meteorologia;
         
     public Servico(){
-        this.carroseletricos= new ArrayList<>();
-        this.carroshibridos= new ArrayList<>();
-        this.carrosgasolina= new ArrayList<>();
+        this.carroseletricos= new HashMap<>();
+        this.carroshibridos= new HashMap<>();
+        this.carrosgasolina= new HashMap<>();
         this.listaProprietarios= new HashMap<>();
         this.listaClientes= new HashMap<>();
+        this.meteorologia=new Meteorologia();
     }
 
 
-    public Servico(List<CarroEletrico> carroseletricos,List<CarroHibrido> carroshibridos, List<CarroGasolina> carrosgasolina){
-        this.setCarroseletricos(carroseletricos);
-        this.setCarroshibridos(carroshibridos);
-        this.setCarrosgasolina(carrosgasolina);
-        this.setListaProprietarios(listaProprietarios);
-        this.setListaClientes(listaClientes);
+    public Servico(Map<String, CarroEletrico> carroseletricos, Map<String, CarroHibrido> carroshibridos, Map<String, CarroGasolina> carrosgasolina, Map<Integer, Proprietario> listaProprietarios, Map<Integer, Cliente> listaClientes) {
+        this.carroseletricos = carroseletricos;
+        this.carroshibridos = carroshibridos;
+        this.carrosgasolina = carrosgasolina;
+        this.listaProprietarios = listaProprietarios;
+        this.listaClientes = listaClientes;
+        this.meteorologia = new Meteorologia();
     }
 
     public Servico(Servico umServico){
@@ -40,29 +45,30 @@ public class Servico{
         this.carrosgasolina=umServico.getCarrosgasolina();
         this.listaProprietarios=umServico.getListaProprietarios();
         this.listaClientes=umServico.getListaClientes();
+        this.meteorologia=umServico.getMeteorologia();
     }
 
-    public List<CarroEletrico> getCarroseletricos() {
-        return this.carroseletricos.stream().map(CarroEletrico::clone).collect(Collectors.toList());
+    public Map<String, CarroEletrico> getCarroseletricos() {
+        return carroseletricos;
     }
 
-    public void setCarroseletricos(List<CarroEletrico> carroseletricos) {
+    public void setCarroseletricos(Map<String, CarroEletrico> carroseletricos) {
         this.carroseletricos = carroseletricos;
     }
 
-    public List<CarroHibrido> getCarroshibridos() {
-        return this.carroshibridos.stream().map(CarroHibrido::clone).collect(Collectors.toList());
+    public Map<String, CarroHibrido> getCarroshibridos() {
+        return carroshibridos;
     }
 
-    public void setCarroshibridos(List<CarroHibrido> carroshibridos) {
+    public void setCarroshibridos(Map<String, CarroHibrido> carroshibridos) {
         this.carroshibridos = carroshibridos;
     }
 
-    public List<CarroGasolina> getCarrosgasolina() {
-        return this.carrosgasolina.stream().map(CarroGasolina::clone).collect(Collectors.toList());
+    public Map<String, CarroGasolina> getCarrosgasolina() {
+        return carrosgasolina;
     }
 
-    public void setCarrosgasolina(List<CarroGasolina> carrosgasolina) {
+    public void setCarrosgasolina(Map<String, CarroGasolina> carrosgasolina) {
         this.carrosgasolina = carrosgasolina;
     }
 
@@ -82,25 +88,32 @@ public class Servico{
         this.listaClientes = listaClientes;
     }
 
+    public Meteorologia getMeteorologia() {
+        return meteorologia;
+    }
+
+    public void setMeteorologia(Meteorologia meteorologia) {
+        this.meteorologia = meteorologia;
+    }
 
     public void adicionaCarroEletrico(CarroEletrico e){
-        this.carroseletricos.add(e);
+        this.carroseletricos.put(e.getMatricula(),e);
     }
 
     public void adicionaCarroGasolina(CarroGasolina g){
-        this.carrosgasolina.add(g);
+        this.carrosgasolina.put(g.getMatricula(),g);
     }
 
     public void adicionaCarroHibrido(CarroHibrido h){
-        this.carroshibridos.add(h);
+        this.carroshibridos.put(h.getMatricula(),h);
     }
 
     public void adicionaCliente(Cliente c){
-        this.listaClientes.put(c.getNib(),c);
+        this.listaClientes.put(c.getNif(),c);
     }
 
     public void adicionaProprietario(Proprietario p){
-        this.listaProprietarios.put(p.getNib(),p);
+        this.listaProprietarios.put(p.getNif(),p);
     }
 
     public Proprietario procuraProprietario(int nif){
@@ -129,44 +142,47 @@ public class Servico{
     public Servico clone(){
         return new Servico(this);
     }
-    
 
-    public void desloca(Aluguer a,Point2D fim){
+/*
+    public void desloca(Aluguer a,Point2D fim) {
         a.setFimCarro(fim);
     }
 
     public void arrenda(Point2D inicioCarro, Point2D fimCarro, Carro car, Cliente cli, Proprietario p, Point2D inicioCliente, Point2D fimCliente, LocalDateTime dataInicio, LocalDateTime dataFim, int classificacao, Meteorologia meteorologia, int estado){
-        Aluguer novoAluguer = new Aluguer(inicioCarro, fimCarro, car,cli, p, inicioCliente, fimCliente,dataInicio,dataFim,classificacao, meteorologia, estado);
-        car.getHistorico().add(novoAluguer);
-        cli.getHistorico().add(novoAluguer);
-        p.getHistorico().add(novoAluguer);
+            Aluguer novoAluguer = new Aluguer(inicioCarro, fimCarro, car,cli, p, inicioCliente, fimCliente,dataInicio,dataFim,classificacao, meteorologia, estado);
+            car.getHistorico().add(novoAluguer);
+            cli.getHistorico().add(novoAluguer);
+            p.getHistorico().add(novoAluguer);
     }
-/*
+
+ */
+
+
     public boolean temAutonomia(Carro c, Point2D i,Point2D f){
         double autonomia;
         double distancia;
         double autonomiaFinal;
         if(c.getClass().equals(CarroEletrico.class)){
-            autonomia=((CarroEletrico) c).AutonomiaEletrico();
+            autonomia=((CarroEletrico) c).getAutonomia();
             distancia=Math.sqrt(Math.pow(i.getX()-f.getX(), 2) +Math.pow(i.getY()-f.getY(), 2));
             autonomiaFinal=distancia*((CarroEletrico) c).getConsumo();
             return(autonomiaFinal<10 && autonomiaFinal<=autonomia);
         }
         if(c.getClass().equals(CarroHibrido.class)){
-            autonomia=((CarroHibrido) c).AutonomiaHibrido();
+            autonomia=((CarroHibrido) c).getAutonomia();
             distancia=Math.sqrt(Math.pow(i.getX()-f.getX(), 2) +Math.pow(i.getY()-f.getY(), 2));
-            autonomiaFinal=distancia*(((CarroHibrido) c).getConsumoGasolina()*((CarroHibrido) c).getConsumoBateria());
+            autonomiaFinal=distancia*(((CarroHibrido) c).getConsumo()*((CarroHibrido) c).getConsumo());
             return(autonomiaFinal<10 && autonomiaFinal<=autonomia);
         }
         if(c.getClass().equals(CarroGasolina.class)){
-            autonomia=((CarroGasolina) c).AutonomiaGasolina();
+            autonomia=((CarroGasolina) c).getAutonomia();
             distancia=Math.sqrt(Math.pow(i.getX()-f.getX(), 2) +Math.pow(i.getY()-f.getY(), 2));
             autonomiaFinal=distancia*((CarroGasolina) c).getConsumo();
             return(autonomiaFinal<10 && autonomiaFinal<=autonomia);
         }
         return false;
     }
-*/
+
     public double  distanciaAoCarro(Cliente cli,Carro car){
         return Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2));
     }
@@ -177,14 +193,6 @@ public class Servico{
         return c.getPreco()*distancia;
     }
 
-
-    /**
-    *
-    *Tempo em horas
-    * */
-    public double tempoCliente(Cliente cli, Carro car){
-        return (distanciaAoCarro(cli,car)/4);
-    }
 
     public double  distanciaAoPonto(Cliente cli,Point2D ponto){
         return Math.sqrt(Math.pow(cli.getCoordenada().getX()-ponto.getX(), 2) +Math.pow(cli.getCoordenada().getY()-ponto.getY(), 2));
@@ -197,18 +205,18 @@ public class Servico{
             if(distanciaAoPonto(cli,c1.getCoordenada())>distanciaAoPonto(cli,c2.getCoordenada())) return 1;
             else return 0;
         };
-        Carro cG = this.carrosgasolina.stream()
+        Carro cG = this.carrosgasolina.values().stream()
                                       .sorted(c)
                                       .findFirst()
                                       .get()
                                       .clone();
-        Carro cE = this.carroseletricos.stream()
+        Carro cE = this.carroseletricos.values().stream()
                                        .sorted(c)
                                        .findFirst()
                                        .get()
                                        .clone();
 
-        Carro cH = this.carroshibridos.stream()
+        Carro cH = this.carroshibridos.values().stream()
                                       .sorted(c)
                                       .findFirst()
                                       .get()
@@ -220,8 +228,6 @@ public class Servico{
         }else return cH;
     }
 
-
-
     public Carro carroMaisBarato(String tipo){
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
             if(c1.getPreco()<c2.getPreco()) return -1;
@@ -231,7 +237,7 @@ public class Servico{
 
 
         if (tipo.contains("Gasolina") && !carrosgasolina.isEmpty()) {
-            CarroGasolina cG = this.carrosgasolina.stream()
+            CarroGasolina cG = this.carrosgasolina.values().stream()
                     .sorted(c)
                     .findFirst()
                     .get()
@@ -240,7 +246,7 @@ public class Servico{
         }
 
         if (tipo.contains("Electrico") && !carroseletricos.isEmpty()) {
-            CarroEletrico cE = this.carroseletricos.stream()
+            CarroEletrico cE = this.carroseletricos.values().stream()
                     .sorted(c)
                     .findFirst()
                     .get()
@@ -249,7 +255,7 @@ public class Servico{
         }
 
         if (tipo.contains("Hibrido") && !carroshibridos.isEmpty()) {
-            CarroHibrido cH = this.carroshibridos.stream()
+            CarroHibrido cH = this.carroshibridos.values().stream()
                     .sorted(c)
                     .findFirst()
                     .get()
@@ -261,6 +267,7 @@ public class Servico{
 
     }
 
+    //distancia maxima
     public Carro carroProximoMaisBarato(Cliente cli, Double distancia){
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
             if(c1.getPreco()<c2.getPreco()) return -1;
@@ -268,21 +275,21 @@ public class Servico{
             else return 0;
         };
 
-        Carro cG = this.carrosgasolina.stream()
+        Carro cG = this.carrosgasolina.values().stream()
                                       .filter(car-> distanciaAoCarro(cli,car)<=distancia)
                                       .sorted(c)
                                       .findFirst()
                                       .get()
                                       .clone();
 
-        Carro cE = this.carroseletricos.stream()
+        Carro cE = this.carroseletricos.values().stream()
                                        .filter(car-> distanciaAoCarro(cli,car)<=distancia)
                                        .sorted(c)
                                        .findFirst()
                                        .get()
                                        .clone();
 
-        Carro cH = this.carroshibridos.stream()
+        Carro cH = this.carroshibridos.values().stream()
                                       .filter(car-> distanciaAoCarro(cli,car)<=distancia)
                                       .sorted(c)
                                       .findFirst()
@@ -296,17 +303,17 @@ public class Servico{
     }
 
     public void classificarCarro(String matricula, int classificação){
-        CarroEletrico cE = this.carroseletricos.stream()
+        CarroEletrico cE = this.carroseletricos.values().stream()
                     .filter(x->matricula.equals(x.getMatricula()))
                     .findAny()
                     .orElse(null);
 
-        CarroGasolina cG = this.carrosgasolina.stream()
+        CarroGasolina cG = this.carrosgasolina.values().stream()
                 .filter(x->matricula.equals(x.getMatricula()))
                 .findAny()
                 .orElse(null);
 
-        CarroHibrido cH = this.carroshibridos.stream()
+        CarroHibrido cH = this.carroshibridos.values().stream()
                 .filter(x->matricula.equals(x.getMatricula()))
                 .findAny()
                 .orElse(null);
@@ -331,6 +338,33 @@ public class Servico{
     }
 
 
+    /**
+     *
+     *Tempo em minutos
+     * */
+    public double tempoCliente(Cliente cli, Carro car){
+        return (distanciaAoCarro(cli,car)/4)*60;
+    }
+
+/**
+ * Tempo do cliente chegar ao carro+ atraso devido á metereologia+tempo da viagem
+ **/
+    public long duracaoAluguer(Cliente cli,Carro car,Point2D destino){
+        return Math.round(this.meteorologia.medicaoMinutos()+tempoCliente(cli,car)+car.tempoViagem(destino));
+    }
+
+    public void pedidoAluguer(int nifCliente,Point2D destino, Carro car){
+        //adicionar try
+        Cliente c = this.listaClientes.get(nifCliente);
+        Proprietario p = listaProprietarios.get(car.getProprietario().getNif());
+        Point2D localizacaoCarro = car.getCoordenada();
+        LocalDateTime dataInicio = LocalDateTime.now();
+        LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,car,destino));
+        int estado=Aluguer.PENDENTE;
+    }
+
+
+
     public void aceitaEstado(Aluguer a){
         a.setEstado(Aluguer.ACEITE);
     }
@@ -339,7 +373,4 @@ public class Servico{
         a.setEstado(Aluguer.REJEITADO);
     }
 
-    public void fimInicio(Aluguer a){
-        a.setInicioCarro(a.getFimCarro());
-    }
 }

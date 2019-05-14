@@ -127,6 +127,10 @@ public class Carro{
         return this.getPreco()>0 && this.getVelocidade()>0;
     }
 
+    public double tempoViagem(Point2D fim){
+        return (this.coordenada.distance(fim)/this.velocidade);
+    }
+
     public Carro clone(){
        return new Carro(this);
     }
