@@ -18,6 +18,7 @@ public class Servico{
     private Map<String,CarroGasolina> carrosgasolina;
     private Map<Integer,Proprietario> listaProprietarios;
     private Map<Integer,Cliente> listaClientes;
+    private Map<LocalDateTime,Aluguer> alugueres;
     private Meteorologia meteorologia;
         
     public Servico(){
@@ -27,16 +28,18 @@ public class Servico{
         this.listaProprietarios= new HashMap<>();
         this.listaClientes= new HashMap<>();
         this.meteorologia=new Meteorologia();
+        this.alugueres=new HashMap<>();
     }
 
 
-    public Servico(Map<String, CarroEletrico> carroseletricos, Map<String, CarroHibrido> carroshibridos, Map<String, CarroGasolina> carrosgasolina, Map<Integer, Proprietario> listaProprietarios, Map<Integer, Cliente> listaClientes) {
+    public Servico(Map<String, CarroEletrico> carroseletricos, Map<String, CarroHibrido> carroshibridos, Map<String, CarroGasolina> carrosgasolina, Map<Integer, Proprietario> listaProprietarios, Map<Integer, Cliente> listaClientes, Meteorologia meteorologia, Map<LocalDateTime,Aluguer> alugueres) {
         this.carroseletricos = carroseletricos;
         this.carroshibridos = carroshibridos;
         this.carrosgasolina = carrosgasolina;
         this.listaProprietarios = listaProprietarios;
         this.listaClientes = listaClientes;
-        this.meteorologia = new Meteorologia();
+        this.meteorologia = meteorologia;
+        this.alugueres = alugueres;
     }
 
     public Servico(Servico umServico){
@@ -96,6 +99,14 @@ public class Servico{
         this.meteorologia = meteorologia;
     }
 
+    public Map<LocalDateTime, Aluguer> getAlugueres() {
+        return alugueres;
+    }
+
+    public void setAlugueres(Map<LocalDateTime, Aluguer> alugueres) {
+        this.alugueres = alugueres;
+    }
+
     public void adicionaCarroEletrico(CarroEletrico e){
         this.carroseletricos.put(e.getMatricula(),e);
     }
@@ -118,6 +129,10 @@ public class Servico{
 
     public Proprietario procuraProprietario(int nif){
         return this.listaProprietarios.get(nif);
+    }
+
+    public void adicionaAluguer(Aluguer a){
+        this.alugueres.put(a.getDataInicio(),a);
     }
 
     public void atualizaMetereologia(int velocidadeVento,int temperatura,int precepitacao){
@@ -359,17 +374,28 @@ public class Servico{
 
     public void pedidoAluguer(int nifCliente,Point2D destino, Carro car){
         //adicionar try
+        Carro carro;
+        if(carroseletricos.containsKey(car.getMatricula())){
+            carro = carroseletricos.get(car.getMatricula());
+        } else if(carrosgasolina.containsKey(car.getMatricula())){
+            carro = carrosgasolina.get(car.getMatricula());
+        } else{
+            carro = carroshibridos.get(car.getMatricula());
+        }
+        //pode não existir carro
         Cliente c = this.listaClientes.get(nifCliente);
         Proprietario p = listaProprietarios.get(car.getProprietario().getNif());
         Point2D localizacaoCarro = car.getCoordenada();
         LocalDateTime dataInicio = LocalDateTime.now();
         LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,car,destino));
         int estado=Aluguer.PENDENTE;
+        Aluguer aluguer= new Aluguer(carro,c,p,localizacaoCarro,destino,dataInicio,dataFimPrevista,estado);
+        this.adicionaAluguer(aluguer);
 
-
+        c.adicionaAluguer(alugueres.get(aluguer.getDataInicio()));
+        p.adicionaAluguer(alugueres.get(aluguer.getDataInicio()));
+        carro.adicionaAluguer(alugueres.get(aluguer.getDataInicio()));
     }
-
-
 
     public void aceitaEstado(Aluguer a){
         a.setEstado(Aluguer.ACEITE);

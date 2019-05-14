@@ -98,13 +98,16 @@ public class View
     public void cyan(){
         System.out.println("\033[0;36m");
     }
+    public void red(){
+        System.out.println("\033[0;31m");
+    }
 
     public void resetColor(){
         System.out.println("\033[0m");
     }
 
     public void printOpcao(int i,String s){
-        System.out.println("     "+i+")  "+s);
+        System.out.println("     "+CYAN_BOLD+i+")"+RESET+"  "+s);
     }
 
     public void ban() {
@@ -134,8 +137,34 @@ public class View
         cyan();
         line();
         resetColor();
-        System.out.println("     Opção pretendida:");
+        System.out.print("     Opção pretendida: ");
+    }
 
+    public void fim(){
+        cyan();
+        line();
+        System.out.println(" $$$$$$\\        $$\\                               $$\\ ");
+        System.out.println("$$  __$$\\       $$ |                              $$ |");
+        System.out.println("$$ /  $$ | $$$$$$$ | $$$$$$\\  $$\\   $$\\  $$$$$$$\\ $$ |");
+        System.out.println("$$$$$$$$ |$$  __$$ |$$  __$$\\ $$ |  $$ |$$  _____|$$ |");
+        System.out.println("$$  __$$ |$$ /  $$ |$$$$$$$$ |$$ |  $$ |\\$$$$$$\\  \\__|");
+        System.out.println("$$ |  $$ |$$ |  $$ |$$   ____|$$ |  $$ | \\____$$\\     ");
+        System.out.println("$$ |  $$ |\\$$$$$$$ |\\$$$$$$$\\ \\$$$$$$  |$$$$$$$  |$$\\ ");
+        System.out.println("\\__|  \\__| \\_______| \\_______| \\______/ \\_______/ \\__|");
+        line();
+        clear(17);
+        resetColor();
+    }
+
+    public void erroFicheiro(){
+        red();
+        System.out.println("Erro ao carregar ficheiro");
+        resetColor();
+        System.out.print("Continuar(1) Sair(-1)");
 
     }
+
+
+
+
 }

@@ -113,14 +113,18 @@ public class Carro{
         return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
     }
 
-    public void adicionaClassificacao(int classificacao){
-        this.classificacao.adicionaClassificacao(classificacao);
-    }
-
     public void setHistorico(List<Aluguer> hst){
         this.historico=new  ArrayList<>(hst.size());
         for (Aluguer l: hst)
             this.historico.add(l.clone());
+    }
+
+    public void adicionaClassificacao(int classificacao){
+        this.classificacao.adicionaClassificacao(classificacao);
+    }
+
+    public void adicionaAluguer(Aluguer aluguer){
+        this.historico.add(aluguer);
     }
 
     public boolean carroValido(){

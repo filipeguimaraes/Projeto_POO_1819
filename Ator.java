@@ -1,5 +1,8 @@
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Write a description of class Atores here.
@@ -15,6 +18,7 @@ public class Ator{
     private String morada;
     private LocalDateTime data;
     private Classificacao classificacao;
+    private List<Aluguer> historico;
     
     public Ator(){
         this.email = "";
@@ -24,9 +28,10 @@ public class Ator{
         this.morada = "";
         this.data = LocalDateTime.now();
         this.classificacao= new Classificacao();
+        this.historico = new ArrayList<>();
     }
     
-    public Ator(String email,int nif, String nome, String password, String morada, LocalDateTime data,Classificacao classificacao){
+    public Ator(String email,int nif, String nome, String password, String morada, LocalDateTime data,Classificacao classificacao,List<Aluguer> historico){
         this.email = email;
         this.nome = nome;
         this.nif=nif;
@@ -34,16 +39,18 @@ public class Ator{
         this.morada = morada;
         this.data = data;
         this.classificacao=classificacao;
+        this.historico = historico;
     }
     
     public Ator(Ator c){
         this.email = c.getEmail();
         this.nome = c.getNome();
-        this.nif=c.getNif();
+        this.nif = c.getNif();
         this.password = c.getPassword();
         this.morada = c.getMorada();
         this.data = c.getData();
         this.classificacao = c.getClassificacao();
+        this.historico = c.getHistorico();
     }
     
     public String getEmail(){
@@ -106,6 +113,20 @@ public class Ator{
         this.classificacao.adicionaClassificacao(classificacao);
     }
 
+    public List<Aluguer> getHistorico() {
+        return this.historico.stream().map(Aluguer::clone).collect(Collectors.toList());
+    }
+
+    public void setHistorico(List<Aluguer> historico) {
+        this.historico = new ArrayList<>(historico.size());
+        for (Aluguer a : historico)
+            this.historico.add(a.clone());
+    }
+
+    public void adicionaAluguer(Aluguer aluguer){
+        this.historico.add(aluguer);
+    }
+
     public double classificacaoMedia(){
         return this.classificacao.classificacaoMedia();
     }
@@ -137,6 +158,7 @@ public class Ator{
         s.append(", Morada: " + this.morada);
         s.append(", Data: " + this.data.toString());
         s.append(", Classificação: " + this.classificacao.toString() +'}');
+        s.append(", Historico: " + this.historico.toString() +'}');
         return s.toString();
     }
 }
