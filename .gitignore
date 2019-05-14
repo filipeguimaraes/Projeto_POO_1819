@@ -33,5 +33,6 @@ hs_err_pid*
 *.iml
 *.defs
 *.TXT
+*.bat
 
 # End of https://www.gitignore.io/api/java

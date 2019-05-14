@@ -120,6 +120,10 @@ public class Servico{
         return this.listaProprietarios.get(nif);
     }
 
+    public void atualizaMetereologia(int velocidadeVento,int temperatura,int precepitacao){
+        this.meteorologia = new Meteorologia(velocidadeVento,temperatura,precepitacao);
+    }
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -361,6 +365,8 @@ public class Servico{
         LocalDateTime dataInicio = LocalDateTime.now();
         LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,car,destino));
         int estado=Aluguer.PENDENTE;
+
+
     }
 
 

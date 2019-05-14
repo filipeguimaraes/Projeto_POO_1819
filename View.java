@@ -91,8 +91,24 @@ public class View
         System.out.println(LINE);
     }
 
+    public void mudarLinha(){
+        System.out.println();
+    }
+
+    public void cyan(){
+        System.out.println("\033[0;36m");
+    }
+
+    public void resetColor(){
+        System.out.println("\033[0m");
+    }
+
+    public void printOpcao(int i,String s){
+        System.out.println("     "+i+")  "+s);
+    }
+
     public void ban() {
-        System.out.println(CYAN);
+        cyan();
         line();
         line();
         System.out.println("$$\\   $$\\ $$\\      $$\\  $$$$$$\\                                             $$$$$\\           $$\\ ");
@@ -105,16 +121,20 @@ public class View
         System.out.println(" \\______/ \\__|     \\__| \\______/  \\_______|\\__|      \\__|       \\______/  \\______/  \\_______|\\__| ");
         line();
         line();
-        System.out.println(RESET);
+        resetColor();
     }
 
     public void mainMenu(String[] opcoes){
         ban();
         int i=1;
         for(String s: opcoes){
-            System.out.println(i+")    "+s);
+            printOpcao(i,s);
             i++;
         }
+        cyan();
+        line();
+        resetColor();
+        System.out.println("     Opção pretendida:");
 
 
     }
