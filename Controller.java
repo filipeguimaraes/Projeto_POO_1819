@@ -6,8 +6,11 @@ public class Controller {
 
     private Servico servico;
 
+    private static String BAK_PATH = "logsPOO_carregamentoInicial.bak";
+    private static String OBJ_PATH = "estado.obj";
+
     public static void main(String args[]) throws IOException {
-        new Controller().runMainMenu();
+        new Controller().run();
     }
 
     private Controller(){
@@ -15,41 +18,58 @@ public class Controller {
     }
 
 
-    private void run(){
-    }
 
 
-    private void runMainMenu()throws IOException{
+    private void run()throws IOException{
         View view = new View();
-        String[] opcoes={"Carregar ficheiro de inicio","Carregar estado anterior"};
+        String[] opcoes={"Carregar ficheiro de inicio","Carregar estado anterior","Sair e guardar estado"};
+        String[] opcoes2={"ola","mundo"};
         view.mainMenu(opcoes);
 
         int escolha=0;
         while (escolha!=-1) {
             escolha = lerInt();
             switch (escolha) {
+                //Carregar ficheiro de inicio
                 case 1:
                     try {
-                        String path = "logsPOO_carregamentoInicial.bak";
-                        CarregarBAK backup = new CarregarBAK(path);
+                        CarregarBAK backup = new CarregarBAK(BAK_PATH);
                         backup.carregaAtoresCarros(this.servico);
                         System.out.println(this.servico.toString());
-                        String[] opcoes2={"ola","mundo"};
-                        view.mainMenu(opcoes2);
-                    }catch (IOException e){
+                        view.mainMenu(opcoes);
+                    } catch (IOException e){
                         view.erroFicheiro();
                         escolha=lerInt();
                         continue;
                     }
                     break;
+                    //carregar estado anterior
                 case 2:
-                    System.out.println("Ficheiro de obj aqui");
+                    try {
+                        this.servico = Carregamento.lerFicheiroObjeto(OBJ_PATH);
+                        System.out.println(this.servico.toString());
+                        view.mainMenu(opcoes);
+                    } catch (IOException e){
+                        view.erroFicheiro();
+                        continue;
+                    } catch (ClassNotFoundException e){
+                        System.out.println("Erro: "+e);
+                        continue;
+                    }
+                    break;
+                    //gravar estado1
+                case 3:
+                    try {
+                        Carregamento.escreverFicheiroOjeto(this.servico,OBJ_PATH);
+                        System.out.println("Guardado com sucesso");
+                    } catch (IOException e){
+                        System.out.println(View.RED+"Erro ao escrever ficheiro: "+View.RESET+e);
+                    }
                     break;
                 case -1:
                     view.fim();
                     break;
                 default:
-                    System.out.println("calmaaaa");
                     break;
             }
         }

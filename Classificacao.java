@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +9,7 @@ import java.util.Objects;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Classificacao {
+public class Classificacao implements Serializable {
 
     private List<Integer> classificacoes;
 

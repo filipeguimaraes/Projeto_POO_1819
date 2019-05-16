@@ -1,4 +1,5 @@
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
  * @author (seu nome) 
  * @version (número de versão ou data)
  */
-public class Carro{
+public class Carro implements Serializable {
     private String marca;
     private String matricula;
     private Proprietario proprietario;

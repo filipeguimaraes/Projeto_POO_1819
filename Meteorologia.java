@@ -1,3 +1,4 @@
+import java.io.Serializable;
 
 /**
  * Classe que contem as condições metereologicas e o tempo de atraso que as mesmas provocam
@@ -5,8 +6,7 @@
  *
  * @version (a version number or a date)
  */
-public class Meteorologia
-{
+public class Meteorologia implements Serializable {
     private int velocidadeVento; //km/h
     private int temperatura; //graus
     private int precipitacao; //0-100

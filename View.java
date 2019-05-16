@@ -158,7 +158,7 @@ public class View
 
     public void erroFicheiro(){
         red();
-        System.out.println("Erro ao carregar ficheiro");
+        System.out.println("Erro ao carregar/escrever ficheiro");
         resetColor();
         System.out.print("Continuar(1) Sair(-1)");
 
