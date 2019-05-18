@@ -132,10 +132,10 @@ public class Controller {
                     String[] registo = view.registarMenu();
                     String email = registo[View.EMAIL];
                     String pass = registo[View.PASS];
-                    String nifi = registo[View.NIF];
+                    int nifi = Integer.valueOf(registo[View.NIF]);
                     String nome = registo[View.NOME];
                     String morada = registo[View.MORADA];
-                    
+
                     String[] dataf = registo[View.DATA].split("/");
                     int dia = Integer.valueOf(dataf[0]);
                     int mes = Integer.valueOf(dataf[1]);

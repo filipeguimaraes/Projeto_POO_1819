@@ -82,16 +82,33 @@ public class Servico implements Serializable {
         this.listaCarros.put(h.getMatricula(),h);
     }
 
-    public void adicionaCliente(Cliente c){
-        this.listaAtores.put(c.getNif(),c);
+    public void adicionaCliente(Cliente c) throws AtorException{
+        if(!listaAtores.containsKey(c.getNif())){
+            this.listaAtores.put(c.getNif(),c.clone());
+        } else {
+            throw new AtorException("Utilizador já existe!");
+        }
     }
 
-    public void adicionaProprietario(Proprietario p){
-        this.listaAtores.put(p.getNif(),p);
+    public void adicionaCliente(String email, String password, int nif, String nome, String morada, LocalDateTime data) throws AtorException{
+        if(!listaAtores.containsKey(nif)){
+            Cliente c = new Cliente(email, nif, nome, password, morada, data, new Point2D.Double(), new Classificacao(), new ArrayList<Aluguer>());
+        } else {
+            throw new AtorException("Utilizador já existe!");
+        }
     }
 
-    public Proprietario procuraProprietario(int nif){
-        return (Proprietario)this.listaAtores.get(nif);
+    public void adicionaProprietario(Proprietario p) throws AtorException{
+        if(!listaAtores.containsKey(p.getNif())){
+            this.listaAtores.put(p.getNif(),p.clone());
+        } else {
+            throw new AtorException("Utilizador já existe!");
+        }
+    }
+
+    public Proprietario procuraProprietario(int nif) throws AtorException{
+        if (listaAtores.containsKey(nif)) return (Proprietario)this.listaAtores.get(nif);
+        else throw new AtorException("Não existe o Proprietario");
     }
 
     public Cliente procuraCliente(int nif){
@@ -106,7 +123,6 @@ public class Servico implements Serializable {
         this.meteorologia = new Meteorologia(velocidadeVento,temperatura,precepitacao);
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -117,12 +133,6 @@ public class Servico implements Serializable {
                 Objects.equals(meteorologia, servico.meteorologia);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(listaCarros, listaAtores, listaAlugueres, meteorologia);
-    }
-
-    @Override
     public String toString() {
         return "Servico{" +
                 "listaCarros=" + listaCarros +
@@ -283,30 +293,42 @@ public class Servico implements Serializable {
         //adicionar erro
     }
 
-    public void classificarAtores(int nif,int classificacao){
-        if(!listaAtores.isEmpty() && listaAtores.containsKey(nif)){
-            listaAtores.get(nif).adicionaClassificacao(classificacao);
-        } else System.out.println("error");
-         //exception
+    /**
+     * Método que atribui classificações aos utilizadores
+     * @param nif nif do utilizador em questão
+     * @param classificacao classificação a atribuir
+     * @throws AtorException Quando não existe o utilizador no sistema
+     */
+    public void classificarAtores(int nif,int classificacao) throws AtorException{
+        if(listaAtores.containsKey(nif)){
+            throw new AtorException("Utilizador inválido");
+        } else listaAtores.get(nif).adicionaClassificacao(classificacao);
     }
 
 
     /**
-     *
-     *Tempo em minutos
-     * */
+     * Método que calcura o tempo que o cliente demora a chegar ao carro
+     * @param cli cliente
+     * @param car carro
+     * @return tempo em minutos
+     */
     public double tempoCliente(Cliente cli, Carro car){
         return (distanciaAoCarro(cli,car)/4)*60;
     }
 
-/**
- * Tempo do cliente chegar ao carro+ atraso devido á metereologia+tempo da viagem
- **/
+    /**
+     * Método que calcula a duração estimada da viagem
+     *
+     * @param cli cliente
+     * @param car carro
+     * @param destino destino da viagem
+     * @return duração da viagem em minutos
+     */
     public long duracaoAluguer(Cliente cli,Carro car,Point2D destino){
         return Math.round(this.meteorologia.medicaoMinutos()+tempoCliente(cli,car)+car.tempoViagem(destino));
     }
 
-    public void pedidoAluguer(int nifCliente,Point2D destino, Carro car){
+    public void pedidoAluguer(int nifCliente,Point2D destino, Carro car) throws AtorException{
         //adicionar try
         Carro carro = listaCarros.get(car.getMatricula());
 
@@ -328,18 +350,25 @@ public class Servico implements Serializable {
     public void aceitaEstado(Aluguer a){
         a.setEstado(Aluguer.ACEITE);
     }
-    
+
+    /**
+     * 
+     * @param a aluguer a rejeitar
+     */
     public void rejeitaEstado(Aluguer a){
         a.setEstado(Aluguer.REJEITADO);
     }
 
 
+
+
+
     /**
-     * Função que trata do login dos atores do sistema devoldo o seu identificador caso estejam registados no sistema.
+     * Método que trata do login dos atores do sistema devoldo o seu identificador caso estejam registados no sistema.
      * @param email inserido pelo utilizador
      * @param password inserido pelo utilizador
-     * @return nif do ator
-     * @throws AutenticacaoExeption caso o utilizador não esteja registado ou a password não esteja correta mas o utilizador exista
+     * @return nif do ator dentro do sistema
+     * @throws AutenticacaoException caso o utilizador não esteja registado ou a password não esteja correta mas o utilizador exista
      */
     public int login(String email,String password) throws AutenticacaoException{
         int nif;

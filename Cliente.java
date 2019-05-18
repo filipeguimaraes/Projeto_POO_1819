@@ -17,8 +17,8 @@ public class Cliente extends Ator{
         this.coordenada = new Point2D.Double();
     }
 
-    public Cliente(String email, int nib, String nome, String password, String morada, LocalDateTime data, Point2D coordenada, Classificacao classificacao, List<Aluguer> historico) {
-        super(email, nib, nome, password, morada, data,classificacao,historico);
+    public Cliente(String email, int nif, String nome, String password, String morada, LocalDateTime data, Point2D coordenada, Classificacao classificacao, List<Aluguer> historico) {
+        super(email, nif, nome, password, morada, data,classificacao,historico);
         this.coordenada = coordenada;
     }
 

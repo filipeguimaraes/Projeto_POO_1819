@@ -27,7 +27,7 @@ public class CarregarBAK {
         this.path = path;
     }
 
-    public void carregaAtoresCarros(Servico servico) throws IOException {
+    public void carregaAtoresCarros(Servico servico) throws IOException,AtorException {
         BufferedReader inicio = new BufferedReader(new FileReader(this.path));
 
         while (inicio.ready()) {
@@ -44,8 +44,11 @@ public class CarregarBAK {
                     String rua = campos[3];
                     LocalDateTime data = LocalDateTime.now();
                     Proprietario novoProprietario = new Proprietario(email, nif, nome, password, rua, data, new Classificacao(), new ArrayList<>(), new ArrayList<>());
-                    //PODE JA EXISTIR PROP
-                    servico.adicionaProprietario(novoProprietario.clone());
+                    try{
+                        servico.adicionaProprietario(novoProprietario);
+                    }catch (AtorException e){
+                        System.out.println(e);
+                    }
                 }
 
                 if (linha.contains("NovoCliente:")) {
@@ -58,8 +61,11 @@ public class CarregarBAK {
                     LocalDateTime data = LocalDateTime.now();
                     Point2D ponto = new Point2D.Double(Double.parseDouble(camposCli[4]), Double.parseDouble(camposCli[5]));
                     Cliente novoCliente = new Cliente(email, nif, nome, password, rua, data, ponto, new Classificacao(), new ArrayList<>());
-                    //PODE JA EXISTIR CLIENTE
-                    servico.adicionaCliente(novoCliente.clone());
+                    try {
+                        servico.adicionaCliente(novoCliente);
+                    }catch (AtorException a){
+                        System.out.println(a);
+                    }
                 }
 
                 if (linha.contains("NovoCarro:")){
@@ -73,11 +79,15 @@ public class CarregarBAK {
                         double preco = Double.parseDouble(camposCar[5]);
                         double consumo = Double.parseDouble(camposCar[6]);
                         double autonomia = Double.parseDouble(camposCar[7]);
-                        Proprietario p = servico.procuraProprietario(nif);
-                        //pode não ter prop
-                        Point2D ponto = new Point2D.Double(Double.parseDouble(camposCar[8]),Double.parseDouble(camposCar[9]));
-                        CarroEletrico novoCarro= new CarroEletrico(marca,matricula,p,velocidadeMedia,preco,new Classificacao(),ponto,new ArrayList<>(),consumo,autonomia);
-                        servico.adicionaCarroEletrico(novoCarro.clone());
+                        try {
+                            Proprietario p = servico.procuraProprietario(nif);
+                            Point2D ponto = new Point2D.Double(Double.parseDouble(camposCar[8]),Double.parseDouble(camposCar[9]));
+                            CarroEletrico novoCarro= new CarroEletrico(marca,matricula,p,velocidadeMedia,preco,new Classificacao(),ponto,new ArrayList<>(),consumo,autonomia);
+                            servico.adicionaCarroEletrico(novoCarro.clone());
+                        } catch (AtorException ex){
+                            System.out.println(ex);
+                        }
+
                     }
 
                     if (camposCar[0].contains("Gasolina")){
