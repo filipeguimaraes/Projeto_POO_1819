@@ -1,4 +1,8 @@
+import java.security.PublicKey;
+import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 /**
  * Write a description of class View here.
@@ -6,89 +10,54 @@ import java.util.ResourceBundle;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class View
-{
-    // Line
+public class View {
+    private int ator;
+
+    public static int ECRA=42; //Tamanho do Ecra
+
     public static String LINE = "#################################################################################################";
-    // Reset
-    public static final String RESET = "\033[0m";  // Text Reset
 
-    // Regular Colors
-    public static final String BLACK = "\033[0;30m";   // BLACK
-    public static final String RED = "\033[0;31m";     // RED
-    public static final String GREEN = "\033[0;32m";   // GREEN
-    public static final String YELLOW = "\033[0;33m";  // YELLOW
-    public static final String BLUE = "\033[0;34m";    // BLUE
-    public static final String PURPLE = "\033[0;35m";  // PURPLE
-    public static final String CYAN = "\033[0;36m";    // CYAN
-    public static final String WHITE = "\033[0;37m";   // WHITE
+    public static String RESET = "\033[0m";  // Text Reset
+    public static String RED = "\033[0;31m";     // RED
+    public static String CYAN_BOLD = "\033[1;36m";   // Cyan Bold
 
-    // Bold
-    public static final String BLACK_BOLD = "\033[1;30m";  // BLACK
-    public static final String RED_BOLD = "\033[1;31m";    // RED
-    public static final String GREEN_BOLD = "\033[1;32m";  // GREEN
-    public static final String YELLOW_BOLD = "\033[1;33m"; // YELLOW
-    public static final String BLUE_BOLD = "\033[1;34m";   // BLUE
-    public static final String PURPLE_BOLD = "\033[1;35m"; // PURPLE
-    public static final String CYAN_BOLD = "\033[1;36m";   // CYAN
-    public static final String WHITE_BOLD = "\033[1;37m";  // WHITE
+    public static int CLIENTE = 1;
+    public static int PROPRIETARIO = 2;
 
-    // Underline
-    public static final String BLACK_UNDERLINED = "\033[4;30m";  // BLACK
-    public static final String RED_UNDERLINED = "\033[4;31m";    // RED
-    public static final String GREEN_UNDERLINED = "\033[4;32m";  // GREEN
-    public static final String YELLOW_UNDERLINED = "\033[4;33m"; // YELLOW
-    public static final String BLUE_UNDERLINED = "\033[4;34m";   // BLUE
-    public static final String PURPLE_UNDERLINED = "\033[4;35m"; // PURPLE
-    public static final String CYAN_UNDERLINED = "\033[4;36m";   // CYAN
-    public static final String WHITE_UNDERLINED = "\033[4;37m";  // WHITE
+    public static int EMAIL=0;
+    public static int PASS=1;
+    public static int NIF=2;
+    public static int NOME=3;
+    public static int MORADA=4;
+    public static int DATA=5;
 
-    // Background
-    public static final String BLACK_BACKGROUND = "\033[40m";  // BLACK
-    public static final String RED_BACKGROUND = "\033[41m";    // RED
-    public static final String GREEN_BACKGROUND = "\033[42m";  // GREEN
-    public static final String YELLOW_BACKGROUND = "\033[43m"; // YELLOW
-    public static final String BLUE_BACKGROUND = "\033[44m";   // BLUE
-    public static final String PURPLE_BACKGROUND = "\033[45m"; // PURPLE
-    public static final String CYAN_BACKGROUND = "\033[46m";   // CYAN
-    public static final String WHITE_BACKGROUND = "\033[47m";  // WHITE
 
-    // High Intensity
-    public static final String BLACK_BRIGHT = "\033[0;90m";  // BLACK
-    public static final String RED_BRIGHT = "\033[0;91m";    // RED
-    public static final String GREEN_BRIGHT = "\033[0;92m";  // GREEN
-    public static final String YELLOW_BRIGHT = "\033[0;93m"; // YELLOW
-    public static final String BLUE_BRIGHT = "\033[0;94m";   // BLUE
-    public static final String PURPLE_BRIGHT = "\033[0;95m"; // PURPLE
-    public static final String CYAN_BRIGHT = "\033[0;96m";   // CYAN
-    public static final String WHITE_BRIGHT = "\033[0;97m";  // WHITE
+    public View(){
+        this.ator=0;
+    }
 
-    // Bold High Intensity
-    public static final String BLACK_BOLD_BRIGHT = "\033[1;90m"; // BLACK
-    public static final String RED_BOLD_BRIGHT = "\033[1;91m";   // RED
-    public static final String GREEN_BOLD_BRIGHT = "\033[1;92m"; // GREEN
-    public static final String YELLOW_BOLD_BRIGHT = "\033[1;93m";// YELLOW
-    public static final String BLUE_BOLD_BRIGHT = "\033[1;94m";  // BLUE
-    public static final String PURPLE_BOLD_BRIGHT = "\033[1;95m";// PURPLE
-    public static final String CYAN_BOLD_BRIGHT = "\033[1;96m";  // CYAN
-    public static final String WHITE_BOLD_BRIGHT = "\033[1;97m"; // WHITE
+    public int getAtor() {
+        return ator;
+    }
 
-    // High Intensity backgrounds
-    public static final String BLACK_BACKGROUND_BRIGHT = "\033[0;100m";// BLACK
-    public static final String RED_BACKGROUND_BRIGHT = "\033[0;101m";// RED
-    public static final String GREEN_BACKGROUND_BRIGHT = "\033[0;102m";// GREEN
-    public static final String YELLOW_BACKGROUND_BRIGHT = "\033[0;103m";// YELLOW
-    public static final String BLUE_BACKGROUND_BRIGHT = "\033[0;104m";// BLUE
-    public static final String PURPLE_BACKGROUND_BRIGHT = "\033[0;105m"; // PURPLE
-    public static final String CYAN_BACKGROUND_BRIGHT = "\033[0;106m";  // CYAN
-    public static final String WHITE_BACKGROUND_BRIGHT = "\033[0;107m";   // WHITE
+    public void setAtor(int ator) {
+        this.ator = ator;
+    }
+
+    public void souCliente(){
+        this.ator=CLIENTE;
+    }
+
+    public void souProprietario(){
+        this.ator=PROPRIETARIO;
+    }
 
     public void clear(int number){
         for (int i = 0; i < number; ++i) System.out.println();
     }
 
-    public void line(){
-        System.out.println(LINE);
+    public void line(int numeroDeLinhas){
+        for (int i=0;i<numeroDeLinhas;i++) System.out.println(LINE);
     }
 
     public void mudarLinha(){
@@ -98,6 +67,7 @@ public class View
     public void cyan(){
         System.out.println("\033[0;36m");
     }
+
     public void red(){
         System.out.println("\033[0;31m");
     }
@@ -112,8 +82,7 @@ public class View
 
     public void ban() {
         cyan();
-        line();
-        line();
+        line(2);
         System.out.println("$$\\   $$\\ $$\\      $$\\  $$$$$$\\                                             $$$$$\\           $$\\ ");
         System.out.println("$$ |  $$ |$$$\\    $$$ |$$  __$$\\                                            \\__$$ |          $$ | ");
         System.out.println("$$ |  $$ |$$$$\\  $$$$ |$$ /  \\__| $$$$$$\\   $$$$$$\\   $$$$$$\\   $$$$$$\\        $$ | $$$$$$\\  $$ | ");
@@ -122,49 +91,112 @@ public class View
         System.out.println("$$ |  $$ |$$ |\\$  /$$ |$$ |  $$\\ $$  __$$ |$$ |      $$ |      $$ |  $$ |$$ |  $$ |$$  __$$ |    ");
         System.out.println("\\$$$$$$  |$$ | \\_/ $$ |\\$$$$$$  |\\$$$$$$$ |$$ |      $$ |      \\$$$$$$  |\\$$$$$$  |\\$$$$$$$ |$$\\ ");
         System.out.println(" \\______/ \\__|     \\__| \\______/  \\_______|\\__|      \\__|       \\______/  \\______/  \\_______|\\__| ");
-        line();
-        line();
+        line(2);
+        resetColor();
+    }
+
+    public void fim(){
+        cyan();
+        int number=(ECRA-10)/2;
+        clear(number);
+        line(1);
+        System.out.println("                      $$$$$$\\        $$\\                               $$\\ ");
+        System.out.println("                     $$  __$$\\       $$ |                              $$ |");
+        System.out.println("                     $$ /  $$ | $$$$$$$ | $$$$$$\\  $$\\   $$\\  $$$$$$$\\ $$ |");
+        System.out.println("                     $$$$$$$$ |$$  __$$ |$$  __$$\\ $$ |  $$ |$$  _____|$$ |");
+        System.out.println("                     $$  __$$ |$$ /  $$ |$$$$$$$$ |$$ |  $$ |\\$$$$$$\\  \\__|");
+        System.out.println("                     $$ |  $$ |$$ |  $$ |$$   ____|$$ |  $$ | \\____$$\\     ");
+        System.out.println("                     $$ |  $$ |\\$$$$$$$ |\\$$$$$$$\\ \\$$$$$$  |$$$$$$$  |$$\\ ");
+        System.out.println("                     \\__|  \\__| \\_______| \\_______| \\______/ \\_______/ \\__|");
+        line(1);
+        clear(number);
         resetColor();
     }
 
     public void mainMenu(String[] opcoes){
         ban();
+        int number= ((ECRA - 18) - opcoes.length) / 2;
         int i=1;
+        clear(number);
         for(String s: opcoes){
             printOpcao(i,s);
             i++;
         }
         cyan();
-        line();
+        clear(number);
+        line(1);
         resetColor();
-        System.out.print("     Opção pretendida: ");
+        System.out.println("     Opção pretendida: ");
     }
 
-    public void fim(){
-        cyan();
-        line();
-        System.out.println(" $$$$$$\\        $$\\                               $$\\ ");
-        System.out.println("$$  __$$\\       $$ |                              $$ |");
-        System.out.println("$$ /  $$ | $$$$$$$ | $$$$$$\\  $$\\   $$\\  $$$$$$$\\ $$ |");
-        System.out.println("$$$$$$$$ |$$  __$$ |$$  __$$\\ $$ |  $$ |$$  _____|$$ |");
-        System.out.println("$$  __$$ |$$ /  $$ |$$$$$$$$ |$$ |  $$ |\\$$$$$$\\  \\__|");
-        System.out.println("$$ |  $$ |$$ |  $$ |$$   ____|$$ |  $$ | \\____$$\\     ");
-        System.out.println("$$ |  $$ |\\$$$$$$$ |\\$$$$$$$\\ \\$$$$$$  |$$$$$$$  |$$\\ ");
-        System.out.println("\\__|  \\__| \\_______| \\_______| \\______/ \\_______/ \\__|");
-        line();
-        clear(17);
-        resetColor();
+
+
+    public void continuarSair(){
+        System.out.print("Continuar(0) ou sair(5): ");
+
     }
+
+
+
+    public String[] loginMenu(){
+        String[] emailPassword = new String[2];
+        clear(ECRA);
+        ban();
+        System.out.print("Insira o email: ");
+        emailPassword[EMAIL] = lerString();
+        mudarLinha();
+        System.out.print("Insira a password"+RED+"(Campo visível, cuidado!)"+RESET+": ");
+        emailPassword[PASS] = lerString();
+        mudarLinha();
+        return emailPassword;
+    }
+
+    public String[] registarMenu(){
+        String[] registos = new String[6];
+        clear(ECRA);
+        ban();
+        System.out.print("Insira o seu nome: ");
+        registos[NOME] = lerString();
+        mudarLinha();
+        System.out.print("Insira o email: ");
+        registos[EMAIL] = lerString();
+        mudarLinha();
+        System.out.print("Insira a password"+RED+"(Campo visível, cuidado!)"+RESET+": ");
+        registos[PASS] = lerString();
+        System.out.print("Insira o NIF: ");
+        registos[NIF] = lerString();
+        mudarLinha();System.out.print("Insira a sua Morada: ");
+        registos[MORADA] = lerString();
+        mudarLinha();
+        System.out.print("Insira a data de nascimento(DD/MM/AAAA): ");
+        registos[DATA] = lerString();
+        mudarLinha();
+        return registos;
+    }
+
 
     public void erroFicheiro(){
         red();
         System.out.println("Erro ao carregar/escrever ficheiro");
         resetColor();
-        System.out.print("Continuar(1) Sair(-1)");
+        System.out.print("Continuar(0) Sair(-1)");
 
     }
 
-
-
-
+    public String lerString() {
+        Scanner input = new Scanner(System.in);
+        boolean flag = false;
+        String txt = "";
+        while(!flag) {
+            try {
+                txt = input.nextLine();
+                flag = true;
+            } catch(InputMismatchException e) {
+                System.out.println("Formato inválido");
+                System.out.print("Nova opção: ");
+                input.nextLine();
+            }
+        }
+        return txt;
+    }
 }

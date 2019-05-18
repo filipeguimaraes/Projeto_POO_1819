@@ -1,4 +1,9 @@
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * Classe responsável por guardar o estado do "serviço" em ficheiro objeto bem como os carregar no início da proxima sessão

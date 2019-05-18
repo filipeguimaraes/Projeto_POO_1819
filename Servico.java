@@ -333,4 +333,27 @@ public class Servico implements Serializable {
         a.setEstado(Aluguer.REJEITADO);
     }
 
+
+    /**
+     * Função que trata do login dos atores do sistema devoldo o seu identificador caso estejam registados no sistema.
+     * @param email inserido pelo utilizador
+     * @param password inserido pelo utilizador
+     * @return nif do ator
+     * @throws AutenticacaoExeption caso o utilizador não esteja registado ou a password não esteja correta mas o utilizador exista
+     */
+    public int login(String email,String password) throws AutenticacaoException{
+        int nif;
+        if(this.listaAtores.values().stream().anyMatch(ator-> ator.getEmail().equals(email))){
+            Ator a = this.listaAtores.values().stream().filter(ator-> ator.getEmail().equals(email)).findFirst().get().clone();
+            if(a.getPassword().equals(password)){
+                nif= a.getNif();
+            } else {
+                throw new AutenticacaoException("Password inválida");
+            }
+        }else{
+            throw new AutenticacaoException("Não existe email na base de dados");
+        }
+        return nif;
+    }
+
 }
