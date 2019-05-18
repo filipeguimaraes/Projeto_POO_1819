@@ -35,7 +35,11 @@ public class Controller {
                 case 1:
                     try {
                         CarregarBAK backup = new CarregarBAK(BAK_PATH);
-                        backup.carregaAtoresCarros(this.servico);
+                        try {
+                            backup.carregaAtoresCarros(this.servico);
+                        }catch (AtorException a){
+                            System.out.println(a);
+                        }
                         System.out.println(this.servico.toString());
                         escolha=0;
                     } catch (IOException e){
