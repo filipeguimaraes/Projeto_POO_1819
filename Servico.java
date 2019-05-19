@@ -94,7 +94,7 @@ public class Servico implements Serializable {
         if(!listaAtores.containsKey(nif)){
             Cliente c = new Cliente(email, nif, nome, password, morada, data, new Point2D.Double(), new Classificacao(), new ArrayList<Aluguer>());
         } else {
-            throw new AtorException("Utilizador já existe!");
+            throw new AtorException("Cliente já existe!");
         }
     }
 
@@ -103,6 +103,14 @@ public class Servico implements Serializable {
             this.listaAtores.put(p.getNif(),p.clone());
         } else {
             throw new AtorException("Utilizador já existe!");
+        }
+    }
+
+    public void adicionaProprietario(String email, String password, int nif, String nome, String morada, LocalDateTime data) throws AtorException{
+        if(!listaAtores.containsKey(nif)){
+            Proprietario c = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(), new ArrayList<Aluguer>(),new ArrayList<Carro>());
+        } else {
+            throw new AtorException("Proprietário já existe!");
         }
     }
 
@@ -146,20 +154,6 @@ public class Servico implements Serializable {
         return new Servico(this);
     }
 
-/*
-    public void desloca(Aluguer a,Point2D fim) {
-        a.setFimCarro(fim);
-    }
-
-    public void arrenda(Point2D inicioCarro, Point2D fimCarro, Carro car, Cliente cli, Proprietario p, Point2D inicioCliente, Point2D fimCliente, LocalDateTime dataInicio, LocalDateTime dataFim, int classificacao, Meteorologia meteorologia, int estado){
-            Aluguer novoAluguer = new Aluguer(inicioCarro, fimCarro, car,cli, p, inicioCliente, fimCliente,dataInicio,dataFim,classificacao, meteorologia, estado);
-            car.getHistorico().add(novoAluguer);
-            cli.getHistorico().add(novoAluguer);
-            p.getHistorico().add(novoAluguer);
-    }
-
- */
-
 
     public boolean temAutonomia(Carro c, Point2D i,Point2D f){
         double autonomia;
@@ -201,6 +195,12 @@ public class Servico implements Serializable {
         return Math.sqrt(Math.pow(cli.getCoordenada().getX()-ponto.getX(), 2) +Math.pow(cli.getCoordenada().getY()-ponto.getY(), 2));
     }
 
+
+    /**
+     * Metodo que retorna o carro mais proximo do cliente que realiza o aluguer
+     * @param cli cliente
+     * @return carro
+     */
     public Carro carroMaisProximo(Cliente cli){
         Point2D localizacaoCliente = cli.getCoordenada();
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
@@ -218,51 +218,58 @@ public class Servico implements Serializable {
 
     /**
      *
-     * Classe que da lista de carros encontra o mais barato de um certo tipo
+     * Método que determina o carro mais barato de um certo tipo
      *
      * @param tipo do carro
      * @return carro mais barato
      */
-    public Carro carroMaisBarato(String tipo){
+    public Carro carroMaisBarato(String tipo) throws CarroException{
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
             if(c1.getPreco()<c2.getPreco()) return -1;
             if(c1.getPreco()>c2.getPreco()) return 1;
             else return 0;
         };
 
-        List<CarroEletrico> eletricos = this.listaCarros.values().stream().filter(car -> c.getClass().equals(CarroEletrico.class)).map(ele-> (CarroEletrico)ele).collect(Collectors.toList());
-        List<CarroGasolina> gasolinas = this.listaCarros.values().stream().filter(car -> c.getClass().equals(CarroGasolina.class)).map(gas-> (CarroGasolina)gas).collect(Collectors.toList());
-        List<CarroHibrido> hibridos = this.listaCarros.values().stream().filter(car -> c.getClass().equals(CarroHibrido.class)).map(hib-> (CarroHibrido)hib).collect(Collectors.toList());
+        if (!listaCarros.isEmpty()) {
 
-        if (tipo.contains("Gasolina") && !eletricos.isEmpty()) {
-            CarroGasolina cG = gasolinas.stream()
-                    .sorted(c)
-                    .findFirst()
-                    .get()
-                    .clone();
-            return cG;
-        }
 
-        if (tipo.contains("Electrico") && !eletricos.isEmpty()) {
-            CarroEletrico cE = eletricos.stream()
-                    .sorted(c)
-                    .findFirst()
-                    .get()
-                    .clone();
-            return cE;
-        }
+            if (tipo.contains("Gasolina")) {
+                List<CarroGasolina> gasolinas = this.listaCarros.values().stream().filter(car -> c.getClass().equals(CarroGasolina.class)).map(gas -> (CarroGasolina) gas).collect(Collectors.toList());
+                if (!gasolinas.isEmpty()) {
+                    CarroGasolina cG = gasolinas.stream()
+                            .sorted(c)
+                            .findFirst()
+                            .get()
+                            .clone();
+                    return cG;
+                } else throw new CarroException("Não há carros a gasolina registados!");
+            }
 
-        if (tipo.contains("Hibrido") && !hibridos.isEmpty()) {
-            CarroHibrido cH = hibridos.stream()
-                    .sorted(c)
-                    .findFirst()
-                    .get()
-                    .clone();
-        return cH;
-        }
-        //erro caso a lista esteja vazia
+            if (tipo.contains("Electrico")) {
+                List<CarroEletrico> eletricos = this.listaCarros.values().stream().filter(car -> c.getClass().equals(CarroEletrico.class)).map(ele -> (CarroEletrico) ele).collect(Collectors.toList());
+                if (!eletricos.isEmpty()) {
+                    CarroEletrico cE = eletricos.stream()
+                            .sorted(c)
+                            .findFirst()
+                            .get()
+                            .clone();
+                    return cE;
+                } else throw new CarroException("Não há carros eletricos registados!");
+            }
+
+            if (tipo.contains("Hibrido")) {
+                List<CarroHibrido> hibridos = this.listaCarros.values().stream().filter(car -> c.getClass().equals(CarroHibrido.class)).map(hib -> (CarroHibrido) hib).collect(Collectors.toList());
+                if (!hibridos.isEmpty()) {
+                    CarroHibrido cH = hibridos.stream()
+                            .sorted(c)
+                            .findFirst()
+                            .get()
+                            .clone();
+                    return cH;
+                } else throw new CarroException("Não há carros hibridos registados!");
+            }
+        } else throw new CarroException("Não há carros no sistema!");
         return null;
-
     }
 
     //distancia maxima
@@ -347,16 +354,20 @@ public class Servico implements Serializable {
         carro.adicionaAluguer(listaAlugueres.get(aluguer.getDataInicio()));
     }
 
+    /**
+     * Método que aceita um determinado aluguer
+     * @param a aluguer a aceitar
+     */
     public void aceitaEstado(Aluguer a){
-        a.setEstado(Aluguer.ACEITE);
+        listaAlugueres.get(a.getDataInicio()).setEstado(Aluguer.ACEITE);
     }
 
     /**
-     * 
+     * Método que regeita um determinado aluguer
      * @param a aluguer a rejeitar
      */
     public void rejeitaEstado(Aluguer a){
-        a.setEstado(Aluguer.REJEITADO);
+        listaAlugueres.get(a.getDataInicio()).setEstado(Aluguer.REJEITADO);
     }
 
 

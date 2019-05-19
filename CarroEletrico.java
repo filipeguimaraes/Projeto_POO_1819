@@ -11,6 +11,8 @@ public class CarroEletrico extends Carro{
     private double consumo;
     private double autonomia;
 
+    private final static int autonomiaTotal=1000;
+
     public CarroEletrico(){
         super();
         this.consumo=0.0;

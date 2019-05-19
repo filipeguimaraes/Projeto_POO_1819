@@ -18,8 +18,8 @@ public class Proprietario extends Ator {
         this.listaCarros = new ArrayList<>();
     }
 
-    public Proprietario(String email, int nib, String nome, String password, String morada, LocalDateTime data, Classificacao classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
-        super(email, nib, nome, password, morada, data,classificacao,historico);
+    public Proprietario(String email, int nif, String nome, String password, String morada, LocalDateTime data, Classificacao classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
+        super(email, nif, nome, password, morada, data,classificacao,historico);
         this.listaCarros = listaCarros;
     }
 

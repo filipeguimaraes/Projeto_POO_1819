@@ -10,6 +10,8 @@ public class CarroHibrido extends Carro{
     private double consumo;
     private double autonomia;
 
+    private final static int autonomiaTotal=1500;
+
     public CarroHibrido() {
         super();
         this.consumo = 0.0;

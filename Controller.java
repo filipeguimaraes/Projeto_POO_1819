@@ -1,7 +1,5 @@
 import java.io.IOException;
-import java.lang.invoke.StringConcatFactory;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -40,7 +38,6 @@ public class Controller {
                         }catch (AtorException a){
                             System.out.println(a);
                         }
-                        System.out.println(this.servico.toString());
                         escolha=0;
                     } catch (IOException e){
                         view.erroFicheiro();
@@ -122,7 +119,8 @@ public class Controller {
                     String email1= credenciais[View.EMAIL];
                     String pass1 = credenciais[View.PASS];
                     try {
-                        nif= servico.login(email1,pass1);
+                        nif = servico.login(email1,pass1);
+                        escolha = 0;
                     }catch (AutenticacaoException e){
                         System.out.println();
                         System.out.println();
@@ -145,7 +143,20 @@ public class Controller {
                     int mes = Integer.valueOf(dataf[1]);
                     int ano = Integer.valueOf(dataf[2]);
                     LocalDateTime data = LocalDateTime.of(ano,mes,dia,0,0);
-                    System.out.println(data.toString());
+                    if(view.getAtor()==View.CLIENTE){
+                        try{
+                            servico.adicionaCliente(email,pass,nif,nome,morada,data);
+                        } catch (AtorException a){
+                            System.out.println(a);
+                        }
+                    }
+                    if (view.getAtor()==View.PROPRIETARIO){
+                        try {
+                            servico.adicionaProprietario(email,pass,nif,nome,morada,data);
+                        }catch (AtorException a){
+                            System.out.println(a);
+                        }
+                    }
 
 
                 case 3:

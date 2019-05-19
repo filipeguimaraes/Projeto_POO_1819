@@ -10,6 +10,8 @@ public class CarroGasolina extends Carro{
     private double consumo;
     private double autonomia;
 
+    private final static int autonomiaTotal=1000; //km
+
     public CarroGasolina(){
         super();
         this.consumo=0.0;
