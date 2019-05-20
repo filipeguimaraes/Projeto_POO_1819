@@ -38,6 +38,8 @@ public class Servico implements Serializable {
         this.meteorologia = umServico.getMeteorologia();
     }
 
+
+
     public Map<String, Carro> getListaCarros() {
         return listaCarros;
     }
@@ -70,31 +72,64 @@ public class Servico implements Serializable {
         this.meteorologia = meteorologia;
     }
 
-    public void adicionaCarroEletrico(CarroEletrico e){
-        this.listaCarros.put(e.getMatricula(),e);
+
+
+    public void adicionaCarroEletrico(CarroEletrico e) throws CarroException{
+        if (!this.listaCarros.containsKey(e.getMatricula())){
+            this.listaCarros.put(e.getMatricula(),e.clone());
+        }else throw new CarroException("Já existe este carro registado! "+e.getMatricula());
     }
 
-    public void adicionaCarroGasolina(CarroGasolina g){
-        this.listaCarros.put(g.getMatricula(),g);
+    public void adicionaCarroEletrico(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{
+        if(!listaCarros.containsKey(matricula)){
+            Proprietario p = procuraProprietario(nif);
+            CarroEletrico car = new CarroEletrico(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
+            listaCarros.put(matricula,car);
+        }else throw new CarroException("Erro ao adicionar o carro "+matricula);
     }
 
-    public void adicionaCarroHibrido(CarroHibrido h){
-        this.listaCarros.put(h.getMatricula(),h);
+    public void adicionaCarroGasolina(CarroGasolina g) throws CarroException{
+        if (!this.listaCarros.containsKey(g.getMatricula())){
+            this.listaCarros.put(g.getMatricula(),g.clone());
+        }else throw new CarroException("Já existe este carro registado! "+g.getMatricula());
+    }
+
+    public void adicionaCarroGasolina(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{
+        if(!listaCarros.containsKey(matricula)){
+            Proprietario p = procuraProprietario(nif);
+            CarroGasolina car = new CarroGasolina(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
+            listaCarros.put(matricula,car);
+        }else throw new CarroException("Erro ao adicionar o carro "+matricula);
+    }
+
+    public void adicionaCarroHibrido(CarroHibrido h) throws CarroException{
+        if (!this.listaCarros.containsKey(h.getMatricula())){
+            this.listaCarros.put(h.getMatricula(),h.clone());
+        }else throw new CarroException("Já existe este carro registado! "+h.getMatricula());
+    }
+
+    public void adicionaCarroHibrido(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{
+        if(!listaCarros.containsKey(matricula)){
+            Proprietario p = procuraProprietario(nif);
+            CarroHibrido car = new CarroHibrido(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
+            listaCarros.put(matricula,car);
+        }else throw new CarroException("Erro ao adicionar o carro "+matricula);
     }
 
     public void adicionaCliente(Cliente c) throws AtorException{
         if(!listaAtores.containsKey(c.getNif())){
             this.listaAtores.put(c.getNif(),c.clone());
         } else {
-            throw new AtorException("Utilizador já existe!");
+            throw new AtorException("Utilizador "+c.getNif()+" já existe!");
         }
     }
 
     public void adicionaCliente(String email, String password, int nif, String nome, String morada, LocalDateTime data) throws AtorException{
         if(!listaAtores.containsKey(nif)){
             Cliente c = new Cliente(email, nif, nome, password, morada, data, new Point2D.Double(), new Classificacao(), new ArrayList<Aluguer>());
+            listaAtores.put(nif,c);
         } else {
-            throw new AtorException("Cliente já existe!");
+            throw new AtorException("Cliente "+nif+" já existe!");
         }
     }
 
@@ -102,15 +137,16 @@ public class Servico implements Serializable {
         if(!listaAtores.containsKey(p.getNif())){
             this.listaAtores.put(p.getNif(),p.clone());
         } else {
-            throw new AtorException("Utilizador já existe!");
+            throw new AtorException("Utilizador"+p.getNif()+" já existe!");
         }
     }
 
     public void adicionaProprietario(String email, String password, int nif, String nome, String morada, LocalDateTime data) throws AtorException{
         if(!listaAtores.containsKey(nif)){
-            Proprietario c = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(), new ArrayList<Aluguer>(),new ArrayList<Carro>());
+            Proprietario p = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(), new ArrayList<Aluguer>(),new ArrayList<Carro>());
+            this.listaAtores.put(nif,p);
         } else {
-            throw new AtorException("Proprietário já existe!");
+            throw new AtorException("Proprietário"+nif+" já existe!");
         }
     }
 
@@ -290,14 +326,16 @@ public class Servico implements Serializable {
         return car;
     }
 
-    public void classificarCarro(String matricula, int classificação){
-        Carro car = this.listaCarros.values().stream()
-                    .filter(x->matricula.equals(x.getMatricula()))
-                    .findAny()
-                    .orElse(null);
-
-        car.adicionaClassificacao(classificação);
-        //adicionar erro
+    /**
+     * Método que atribui classificações aos carros
+     * @param matricula matricula do carro em questão
+     * @param classificacao classificação a atribuir
+     * @throws CarroException Quando não existe o carro no sistema
+     */
+    public void classificarCarro(String matricula, int classificacao) throws CarroException{
+        if (listaCarros.containsKey(matricula)){
+            this.listaCarros.get(matricula).adicionaClassificacao(classificacao);
+        } else throw new CarroException("Carro "+matricula+" inválido!");
     }
 
     /**
@@ -307,8 +345,8 @@ public class Servico implements Serializable {
      * @throws AtorException Quando não existe o utilizador no sistema
      */
     public void classificarAtores(int nif,int classificacao) throws AtorException{
-        if(listaAtores.containsKey(nif)){
-            throw new AtorException("Utilizador inválido");
+        if(!listaAtores.containsKey(nif)){
+            throw new AtorException("Utilizador "+nif+" inválido");
         } else listaAtores.get(nif).adicionaClassificacao(classificacao);
     }
 
@@ -348,10 +386,13 @@ public class Servico implements Serializable {
         int estado=Aluguer.PENDENTE;
         Aluguer aluguer= new Aluguer(carro,c,p,localizacaoCarro,destino,dataInicio,dataFimPrevista,estado);
         this.adicionaAluguer(aluguer);
+        atribuiAluguer(aluguer,c,p,carro);
+    }
 
+    public void atribuiAluguer(Aluguer aluguer, Cliente c, Proprietario p, Carro car){
         c.adicionaAluguer(listaAlugueres.get(aluguer.getDataInicio()));
         p.adicionaAluguer(listaAlugueres.get(aluguer.getDataInicio()));
-        carro.adicionaAluguer(listaAlugueres.get(aluguer.getDataInicio()));
+        car.adicionaAluguer(listaAlugueres.get(aluguer.getDataInicio()));
     }
 
     /**

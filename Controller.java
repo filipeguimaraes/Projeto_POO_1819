@@ -1,3 +1,4 @@
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.InputMismatchException;
@@ -35,15 +36,16 @@ public class Controller {
                         CarregarBAK backup = new CarregarBAK(BAK_PATH);
                         try {
                             backup.carregaAtoresCarros(this.servico);
-                        }catch (AtorException a){
+                        } catch (AtorException|CarroException a){
                             System.out.println(a);
+                            view.enterContinuar();
                         }
-                        escolha=0;
                     } catch (IOException e){
                         view.erroFicheiro();
-                        escolha=lerInt();
+                        view.enterContinuar();
                         continue;
                     }
+                    escolha=0;
                     break;
                 //carregar estado anterior
                 case 2:
@@ -54,11 +56,12 @@ public class Controller {
                         escolha=0;
                     } catch (IOException e){
                         view.erroFicheiro();
+                        escolha=0;
                         continue;
                     } catch (ClassNotFoundException e){
                         System.out.println("Erro: "+e);
-                        System.out.print("Introduza 0 para continuar: ");
-                        escolha = lerInt();
+                        view.enterContinuar();
+                        escolha = 0;
                         continue;
                     }
                     break;
@@ -70,15 +73,15 @@ public class Controller {
                     } catch (IOException e){
                         System.out.println(View.RED+"Erro ao escrever ficheiro: "+View.RESET+e);
                     }
-                    view.continuarSair();
-                    escolha=lerInt();
+                    view.enterContinuar();
+                    escolha=0;
                     break;
                 case 4:
                     escolha=runEscolherAtor();
                     break;
                 default:
-                    System.out.print("Ocorreu um erro. Continuar?");
-                    lerInt();
+                    System.out.println("Ocorreu um erro.");
+                    view.enterContinuar();
                     escolha=0;
                     break;
             }
@@ -98,7 +101,8 @@ public class Controller {
                     view.souCliente();
                     escolha = runCliente();
                 case 2 :
-                    view.souCliente();
+                    view.souProprietario();
+                    escolha = runProprietario();
                 default:
                     break;
             }
@@ -122,16 +126,13 @@ public class Controller {
                         nif = servico.login(email1,pass1);
                         escolha = 0;
                     }catch (AutenticacaoException e){
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
                         System.out.println(e);
+                        view.enterContinuar();
                         continue;
                     }
                     break;
                 case 2:
-                    String[] registo = view.registarMenu();
+                    String[] registo = view.registarAtorMenu();
                     String email = registo[View.EMAIL];
                     String pass = registo[View.PASS];
                     int nifi = Integer.valueOf(registo[View.NIF]);
@@ -148,6 +149,7 @@ public class Controller {
                             servico.adicionaCliente(email,pass,nif,nome,morada,data);
                         } catch (AtorException a){
                             System.out.println(a);
+                            view.enterContinuar();
                         }
                     }
                     if (view.getAtor()==View.PROPRIETARIO){
@@ -155,6 +157,7 @@ public class Controller {
                             servico.adicionaProprietario(email,pass,nif,nome,morada,data);
                         }catch (AtorException a){
                             System.out.println(a);
+                            view.enterContinuar();
                         }
                     }
 
@@ -164,21 +167,52 @@ public class Controller {
                    break;
             }
         }while (escolha!=0);
-        System.out.println("NIIIIIIF "+nif);
         return nif;
     }
 
     private int runCliente(){
         String[] opcoes = {"Realizar aluguer","Terminar sessão"};
         int nif=runLogin();
+        int escolha=0;
         if(nif!=0){
+            do{
+                view.mainMenu(opcoes);
+                escolha = lerInt();
+            }while (escolha!=0);
 
         }else System.out.println("Cliente Invalido");
         return -1;
     }
 
     private int runProprietario(){
-        String[] opcoes = {"Registar carro"};
+        String[] opcoes = {"Registar carro","Terminar sessão"};
+        int nif=runLogin();
+        int escolha=0;
+        if(nif!=0){
+            do{
+                view.mainMenu(opcoes);
+                escolha = lerInt();
+                switch (escolha){
+                    case 1:
+                        String[] registo = view.registarCarroMenu();
+                        String marca = registo[View.MARCA];
+                        String Matricula = registo[View.MATRICULA];
+                        int velocidade = Integer.valueOf(registo[View.VELOCIDADE]);
+                        double preco = Double.parseDouble(registo[View.PRECO]);
+                        String[] locs = registo[View.LOCALIZACAO].split(",");
+                        double x = Double.parseDouble(locs[0]);
+                        double y = Double.parseDouble(locs[1]);
+                        Point2D localizacao = new Point2D.Double(x,y);
+                        double consumo = Double.parseDouble(registo[View.CONSUMO]);
+                        double autonomia = Double.parseDouble(registo[View.AUTONOMIA]);
+                        break;
+
+                    default:
+                        break;
+                }
+            }while (escolha!=0);
+
+        }else System.out.println("Cliente Invalido");
         return -1;
     }
 

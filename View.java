@@ -21,12 +21,21 @@ public class View {
     public static int CLIENTE = 1;
     public static int PROPRIETARIO = 2;
 
-    public static int EMAIL=0;
-    public static int PASS=1;
-    public static int NIF=2;
-    public static int NOME=3;
-    public static int MORADA=4;
-    public static int DATA=5;
+    public final static int EMAIL=0;
+    public final static int PASS=1;
+    public final static int NIF=2;
+    public final static int NOME=3;
+    public final static int MORADA=4;
+    public final static int DATA=5;
+
+    public final static int MARCA=0;
+    public final static int MATRICULA=1;
+    public final static int VELOCIDADE=2;
+    public final static int PRECO=3;
+    public final static int LOCALIZACAO=4;
+    public final static int CONSUMO=5;
+    public final static int AUTONOMIA=6;
+
 
 
     public View(){
@@ -148,7 +157,7 @@ public class View {
         return emailPassword;
     }
 
-    public String[] registarMenu(){
+    public String[] registarAtorMenu(){
         String[] registos = new String[6];
         clear(ECRA);
         ban();
@@ -160,6 +169,7 @@ public class View {
         mudarLinha();
         System.out.print("Insira a password"+RED+"(Campo visível, cuidado!)"+RESET+": ");
         registos[PASS] = lerString();
+        mudarLinha();
         System.out.print("Insira o NIF: ");
         registos[NIF] = lerString();
         mudarLinha();System.out.print("Insira a sua Morada: ");
@@ -171,13 +181,62 @@ public class View {
         return registos;
     }
 
+    public String[] registarCarroMenu(){
+        String[] registos = new String[7];
+        clear(ECRA);
+        ban();
+        System.out.print("Marca: ");
+        registos[MARCA] = lerString();
+        mudarLinha();
+        System.out.print("Matricula"+RED+" AA/AA/AA "+RESET+": ");
+        registos[MATRICULA] = lerString();
+        mudarLinha();
+        System.out.print("Velocidade Média: ");
+        registos[VELOCIDADE] = lerString();
+        mudarLinha();
+        System.out.print("Preco por km: ");
+        registos[PRECO] = lerString();
+        mudarLinha();
+        System.out.print("Localização do carro"+RED+" x,y "+RESET+": ");
+        registos[LOCALIZACAO] = lerString();
+        mudarLinha();
+        System.out.print("Consumo: ");
+        registos[CONSUMO] = lerString();
+        System.out.print("Autonomia no momento"+RED+"(em km)"+RESET+": ");
+        registos[AUTONOMIA] = lerString();
+        return registos;
+    }
+
+
+    public void lista(String[] elementos){
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        int i=0;
+        for (String s : elementos){
+            printOpcao(i,elementos[i]);
+            i++;
+        }
+        mudarLinha();
+        cyan();
+        line(1);
+        resetColor();
+        System.out.println("     Escolha: ");
+
+    }
+
 
     public void erroFicheiro(){
         red();
         System.out.println("Erro ao carregar/escrever ficheiro");
         resetColor();
-        System.out.print("Continuar(0) Sair(-1)");
+        enterContinuar();
+    }
 
+    void enterContinuar() {
+        Scanner s=new Scanner(System.in);
+        System.out.print("Precione enter para continuar . . . ");
+        s.nextLine();
     }
 
     public String lerString() {
