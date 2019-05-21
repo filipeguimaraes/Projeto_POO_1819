@@ -1,3 +1,4 @@
+
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -73,11 +74,17 @@ public class Servico implements Serializable {
     }
 
 
-
-    public void adicionaCarroEletrico(CarroEletrico e) throws CarroException{
-        if (!this.listaCarros.containsKey(e.getMatricula())){
-            this.listaCarros.put(e.getMatricula(),e.clone());
-        }else throw new CarroException("Já existe este carro registado! "+e.getMatricula());
+    /**
+     * Método para adicionar um carro eletrico à lista de carros
+     * @param e carro elétrico
+     * @throws CarroException caso o carro já exista
+     */
+    public void adicionaCarroEletrico(CarroEletrico e) throws CarroException,AtorException{
+        if(this.listaAtores.containsKey(e.getProprietario().getNif())){
+            if (!this.listaCarros.containsKey(e.getMatricula())){
+                this.listaCarros.put(e.getMatricula(),e.clone());
+            }else throw new CarroException("Já existe este carro registado! "+e.getMatricula());
+        } else throw new AtorException("Proprietario invalido");
     }
 
     public void adicionaCarroEletrico(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{
@@ -88,10 +95,12 @@ public class Servico implements Serializable {
         }else throw new CarroException("Erro ao adicionar o carro "+matricula);
     }
 
-    public void adicionaCarroGasolina(CarroGasolina g) throws CarroException{
-        if (!this.listaCarros.containsKey(g.getMatricula())){
-            this.listaCarros.put(g.getMatricula(),g.clone());
-        }else throw new CarroException("Já existe este carro registado! "+g.getMatricula());
+    public void adicionaCarroGasolina(CarroGasolina g) throws CarroException,AtorException{
+        if(this.listaAtores.containsKey(g.getProprietario().getNif())){
+            if (!this.listaCarros.containsKey(g.getMatricula())){
+                this.listaCarros.put(g.getMatricula(),g.clone());
+            }else throw new CarroException("Já existe este carro registado! "+g.getMatricula());
+        } else throw new AtorException("Proprietario invalido");
     }
 
     public void adicionaCarroGasolina(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{
@@ -102,10 +111,13 @@ public class Servico implements Serializable {
         }else throw new CarroException("Erro ao adicionar o carro "+matricula);
     }
 
-    public void adicionaCarroHibrido(CarroHibrido h) throws CarroException{
-        if (!this.listaCarros.containsKey(h.getMatricula())){
-            this.listaCarros.put(h.getMatricula(),h.clone());
-        }else throw new CarroException("Já existe este carro registado! "+h.getMatricula());
+    public void adicionaCarroHibrido(CarroHibrido h) throws CarroException,AtorException{
+        if(this.listaAtores.containsKey(h.getProprietario().getNif())){
+            if (!this.listaCarros.containsKey(h.getMatricula())){
+                this.listaCarros.put(h.getMatricula(),h.clone());
+            }else throw new CarroException("Já existe este carro registado! "+h.getMatricula());
+        }else throw new AtorException("Proprietario Inválido");
+
     }
 
     public void adicionaCarroHibrido(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{

@@ -43,8 +43,7 @@ public class CarregarBAK {
                     String email = campos[2];
                     String rua = campos[3];
                     LocalDateTime data = LocalDateTime.now();
-                    Proprietario novoProprietario = new Proprietario(email, nif, nome, password, rua, data, new Classificacao(), new ArrayList<>(), new ArrayList<>());
-                    servico.adicionaProprietario(novoProprietario);
+                    servico.adicionaProprietario(email,password,nif,nome,rua,data);
                 }
 
                 if (linha.contains("NovoCliente:")) {
@@ -56,54 +55,26 @@ public class CarregarBAK {
                     String rua = camposCli[3];
                     LocalDateTime data = LocalDateTime.now();
                     Point2D ponto = new Point2D.Double(Double.parseDouble(camposCli[4]), Double.parseDouble(camposCli[5]));
-                    Cliente novoCliente = new Cliente(email, nif, nome, password, rua, data, ponto, new Classificacao(), new ArrayList<>());
-                    servico.adicionaCliente(novoCliente);
+                    servico.adicionaCliente(email,password,nif,nome,rua,data);
                 }
 
                 if (linha.contains("NovoCarro:")){
                     String[] camposCar = aux[1].split(",");
+                    String marca = camposCar[1];
+                    String matricula = camposCar[2];
+                    int nif = Integer.valueOf(camposCar[3]);
+                    int velocidadeMedia = Integer.valueOf(camposCar[4]);
+                    double preco = Double.parseDouble(camposCar[5]);
+                    double consumo = Double.parseDouble(camposCar[6]);
+                    double autonomia = Double.parseDouble(camposCar[7]);
+                    Point2D ponto = new Point2D.Double(Double.parseDouble(camposCar[8]),Double.parseDouble(camposCar[9]));
 
                     if (camposCar[0].contains("Electrico")){
-                        String marca = camposCar[1];
-                        String matricula = camposCar[2];
-                        int nif = Integer.valueOf(camposCar[3]);
-                        int velocidadeMedia = Integer.valueOf(camposCar[4]);
-                        double preco = Double.parseDouble(camposCar[5]);
-                        double consumo = Double.parseDouble(camposCar[6]);
-                        double autonomia = Double.parseDouble(camposCar[7]);
-                        Proprietario p = servico.procuraProprietario(nif);
-                        Point2D ponto = new Point2D.Double(Double.parseDouble(camposCar[8]),Double.parseDouble(camposCar[9]));
-                        CarroEletrico novoCarro= new CarroEletrico(marca,matricula,p,velocidadeMedia,preco,new Classificacao(),ponto,new ArrayList<>(),consumo,autonomia);
-                        servico.adicionaCarroEletrico(novoCarro.clone());
-                    }
-
-                    if (camposCar[0].contains("Gasolina")){
-                        String marca = camposCar[1];
-                        String matricula = camposCar[2];
-                        int nif = Integer.valueOf(camposCar[3]);
-                        int velocidadeMedia = Integer.valueOf(camposCar[4]);
-                        double preco = Double.parseDouble(camposCar[5]);
-                        double consumo = Double.parseDouble(camposCar[6]);
-                        double autonomia = Double.parseDouble(camposCar[7]);
-                        Proprietario p = servico.procuraProprietario(nif);
-                        //pode não ter prop
-                        Point2D ponto = new Point2D.Double(Double.parseDouble(camposCar[8]),Double.parseDouble(camposCar[9]));
-                        CarroGasolina novoCarro= new CarroGasolina(marca,matricula,p,velocidadeMedia,preco,new Classificacao(),ponto,new ArrayList<>(),consumo,autonomia);
-                        servico.adicionaCarroGasolina(novoCarro.clone());
-                    }
-
-                    if (camposCar[0].contains("Hibrido")) {
-                        String marca = camposCar[1];
-                        String matricula = camposCar[2];
-                        int nif = Integer.valueOf(camposCar[3]);
-                        int velocidadeMedia = Integer.valueOf(camposCar[4]);
-                        double preco = Double.parseDouble(camposCar[5]);
-                        double consumo = Double.parseDouble(camposCar[6]);
-                        double autonomia = Double.parseDouble(camposCar[7]);
-                        Proprietario p = servico.procuraProprietario(nif);
-                        Point2D ponto = new Point2D.Double(Double.parseDouble(camposCar[8]), Double.parseDouble(camposCar[9]));
-                        CarroHibrido novoCarro = new CarroHibrido(marca, matricula, p, velocidadeMedia, preco, new Classificacao(), ponto, new ArrayList<>(), consumo, autonomia);
-                        servico.adicionaCarroHibrido(novoCarro.clone());
+                        servico.adicionaCarroEletrico(marca,matricula,nif,velocidadeMedia,preco,ponto,consumo,autonomia);
+                    } else if (camposCar[0].contains("Gasolina")){
+                        servico.adicionaCarroGasolina(marca,matricula,nif,velocidadeMedia,preco,ponto,consumo,autonomia);
+                    } else if (camposCar[0].contains("Hibrido")) {
+                        servico.adicionaCarroHibrido(marca,matricula,nif,velocidadeMedia,preco,ponto,consumo,autonomia);
                     }
                 }
 
