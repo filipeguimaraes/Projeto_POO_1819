@@ -2,6 +2,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Write a description of class Classificacao here.
@@ -22,11 +23,11 @@ public class Classificacao implements Serializable {
     }
 
     public List<Integer> getClassificacoes() {
-        return classificacoes;
+        return new ArrayList<>(classificacoes);
     }
 
     public void setClassificacoes(List<Integer> classificacoes) {
-        this.classificacoes = classificacoes;
+        this.classificacoes = new ArrayList<>(classificacoes);
     }
 
     public void adicionaClassificacao(int classificacao){

@@ -24,6 +24,11 @@ public class Meteorologia implements Serializable {
         this.precipitacao = precepitacao;
     }
 
+    public Meteorologia(Meteorologia umaMeteorologia){
+        this.velocidadeVento = umaMeteorologia.getVelocidadeVento();
+        this.temperatura = umaMeteorologia.getTemperatura();
+        this.precipitacao = umaMeteorologia.getPrecipitacao();
+    }
 
     public int getVelocidadeVento() {
         return velocidadeVento;
@@ -86,7 +91,5 @@ public class Meteorologia implements Serializable {
                 ", precepitacao=" + precipitacao +
                 '}';
     }
-
-
 
 }

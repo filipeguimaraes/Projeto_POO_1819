@@ -42,35 +42,41 @@ public class Servico implements Serializable {
 
 
     public Map<String, Carro> getListaCarros() {
-        return listaCarros;
+        return listaCarros.entrySet().stream()
+                .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
     public void setListaCarros(Map<String, Carro> listaCarros) {
-        this.listaCarros = listaCarros;
+        this.listaCarros = listaCarros.entrySet().stream()
+                .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
     public Map<Integer, Ator> getListaAtores() {
-        return listaAtores;
+        return listaAtores.entrySet().stream()
+                .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
     public void setListaAtores(Map<Integer, Ator> listaAtores) {
-        this.listaAtores = listaAtores;
+        this.listaAtores = listaAtores.entrySet().stream()
+                .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
     public Map<LocalDateTime, Aluguer> getListaAlugueres() {
-        return listaAlugueres;
+        return listaAlugueres.entrySet().stream()
+                .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
     public void setListaAlugueres(Map<LocalDateTime, Aluguer> listaAlugueres) {
-        this.listaAlugueres = listaAlugueres;
+        this.listaAlugueres = listaAlugueres.entrySet().stream()
+                .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
     public Meteorologia getMeteorologia() {
-        return meteorologia;
+        return new Meteorologia(meteorologia);
     }
 
     public void setMeteorologia(Meteorologia meteorologia) {
-        this.meteorologia = meteorologia;
+        this.meteorologia = new Meteorologia(meteorologia);
     }
 
 
@@ -155,7 +161,7 @@ public class Servico implements Serializable {
 
     public void adicionaProprietario(String email, String password, int nif, String nome, String morada, LocalDateTime data) throws AtorException{
         if(!listaAtores.containsKey(nif)){
-            Proprietario p = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(), new ArrayList<Aluguer>(),new ArrayList<Carro>());
+            Proprietario p = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(), new ArrayList<Aluguer>(),new HashMap<String, Carro>());
             this.listaAtores.put(nif,p);
         } else {
             throw new AtorException("Proprietário"+nif+" já existe!");

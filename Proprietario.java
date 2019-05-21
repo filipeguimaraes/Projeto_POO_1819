@@ -1,6 +1,8 @@
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -10,17 +12,18 @@ import java.util.stream.Collectors;
  * @version (a version number or a date)
  */
 public class Proprietario extends Ator {
-    private List<Carro> listaCarros;
+    private Map<String,Carro> listaCarros;
 
 
     public Proprietario() {
         super();
-        this.listaCarros = new ArrayList<>();
+        this.listaCarros = new HashMap<String,Carro>();
     }
 
-    public Proprietario(String email, int nif, String nome, String password, String morada, LocalDateTime data, Classificacao classificacao, List<Aluguer> historico, List<Carro> listaCarros) {
+    public Proprietario(String email, int nif, String nome, String password, String morada, LocalDateTime data, Classificacao classificacao, List<Aluguer> historico, Map<String,Carro> listaCarros) {
         super(email, nif, nome, password, morada, data,classificacao,historico);
-        this.listaCarros = listaCarros;
+        this.listaCarros = new HashMap<String,Carro>();
+        setListaCarros(listaCarros);
     }
 
     public Proprietario(Proprietario umProprietario) {
@@ -30,19 +33,19 @@ public class Proprietario extends Ator {
 
 
 
-    public List<Carro> getListaCarros() {
-        return this.listaCarros.stream().map(Carro::clone).collect(Collectors.toList());
+    public Map<String,Carro> getListaCarros() {
+        return this.listaCarros.entrySet().stream()
+                .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public void setListaCarros(List<Carro> listaCarros) {
-        this.listaCarros = new ArrayList<>(listaCarros.size());
-        for (Carro a : listaCarros)
-            this.listaCarros.add(a.clone());
+    public void setListaCarros(Map<String,Carro> listaCarros) {
+        this.listaCarros = listaCarros.entrySet().stream()
+                .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
 
     public void adicionaCarro(Carro car){
-        this.listaCarros.add(car.clone());
+        this.listaCarros.put(car.getMatricula(),car.clone());
     }
 
 
