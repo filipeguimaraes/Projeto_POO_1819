@@ -27,7 +27,7 @@ public class CarregarBAK {
         this.path = path;
     }
 
-    public void carregaAtoresCarros(Servico servico) throws IOException,AtorException,CarroException {
+    public void carregaAtoresCarros(Servico servico) throws IOException,AtorException,CarroException,AluguerException {
         BufferedReader inicio = new BufferedReader(new FileReader(this.path));
 
         while (inicio.ready()) {
@@ -98,10 +98,14 @@ public class CarregarBAK {
                     Point2D ponto = new Point2D.Double(Double.parseDouble(campos[1]), Double.parseDouble(campos[2]));
                     String tipoCombustivel = campos[3];
                     String preferencia = campos[4];
-                    System.out.println(nifCliente);
-                    System.out.println(ponto.toString());
-                    System.out.println(tipoCombustivel);
-                    System.out.println(preferencia);
+                    Carro carro = null;
+                    if(preferencia.contains("MaisBarato")){
+                        System.out.println("OLA darlling");
+                        carro = servico.carroMaisBarato(tipoCombustivel);
+                    }else if(preferencia.contains("MaisPerto")){
+                        carro = servico.carroMaisProximo(nifCliente, tipoCombustivel);
+                    }
+                    servico.pedidoAluguer(nifCliente,ponto,carro);
                 }
             }
         }

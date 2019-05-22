@@ -147,5 +147,19 @@ public class Aluguer{
         s.append(" Estado" + this.estado);
         return s.toString();
     }
+
+    /**
+     * Método que aceita um determinado aluguer
+     */
+    public void aceitaEstado(){
+        this.setEstado(Aluguer.ACEITE);
+    }
+
+    /**
+     * Método que regeita um determinado aluguer
+     */
+    public void rejeitaEstado(){
+        this.setEstado(Aluguer.REJEITADO);
+    }
    
 }

@@ -1,7 +1,9 @@
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Controller {
@@ -22,7 +24,7 @@ public class Controller {
     }
 
     private void run()throws IOException{
-        String[] opcoes={"Carregar ficheiro de inicio","Carregar estado anterior","Guardar estado","Entrar no programa","Sair"};
+        String[] opcoes={"Carregar ficheiro de inicio","Carregar estado anterior","Introduzir informações meteorológicas","Guardar estado","Entrar no programa","Sair"};
         int escolha=0;
         do {
             switch (escolha) {
@@ -36,13 +38,16 @@ public class Controller {
                         CarregarBAK backup = new CarregarBAK(BAK_PATH);
                         try {
                             backup.carregaAtoresCarros(this.servico);
-                        } catch (AtorException|CarroException a){
+                        } catch (AtorException|CarroException|AluguerException a){
                             System.out.println(a);
                             view.enterContinuar();
+                            escolha=0;
+                            continue;
                         }
                     } catch (IOException e){
                         view.erroFicheiro();
                         view.enterContinuar();
+                        escolha=0;
                         continue;
                     }
                     escolha=0;
@@ -65,8 +70,10 @@ public class Controller {
                         continue;
                     }
                     break;
-                // Gravar estado
                 case 3:
+                    break;
+                // Gravar estado
+                case 4:
                     try {
                         Carregamento.escreverFicheiroOjeto(this.servico,OBJ_PATH);
                         System.out.println("Guardado com sucesso");
@@ -76,7 +83,7 @@ public class Controller {
                     view.enterContinuar();
                     escolha=0;
                     break;
-                case 4:
+                case 5:
                     escolha=runEscolherAtor();
                     break;
                 default:
@@ -85,7 +92,7 @@ public class Controller {
                     escolha=0;
                     break;
             }
-        } while (escolha!=5);
+        } while (escolha!=6);
         view.fim();
 
     }
@@ -231,8 +238,13 @@ public class Controller {
                         System.out.println("feito: "+matricula);
                         break;
                     case 2:
-                        String[] lista={"teste","teste"};
-                        view.lista(lista);
+                        try {
+                            List<String> lista=servico.listaCarrosProprietario(nif);
+                            System.out.println(lista);
+                            view.lista(lista);
+                        }catch (AtorException e){
+                            System.out.println(e);
+                        }
                         int l=lerInt();
                         switch (l){
                             case 1:

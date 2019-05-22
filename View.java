@@ -1,4 +1,5 @@
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -122,6 +123,7 @@ public class View {
     }
 
     public void mainMenu(String[] opcoes){
+        clear(ECRA);
         ban();
         int number= ((ECRA - 18) - opcoes.length) / 2;
         int i=1;
@@ -193,7 +195,7 @@ public class View {
         System.out.print("Marca: ");
         registos[MARCA] = lerString();
         mudarLinha();
-        System.out.print("Matricula"+RED+" AA/AA/AA "+RESET+": ");
+        System.out.print("Matricula"+RED+" AA-AA-AA "+RESET+": ");
         registos[MATRICULA] = lerString();
         mudarLinha();
         System.out.print("Velocidade Média: ");
@@ -207,19 +209,21 @@ public class View {
         mudarLinha();
         System.out.print("Consumo: ");
         registos[CONSUMO] = lerString();
+        mudarLinha();
         System.out.print("Autonomia no momento"+RED+"(em km)"+RESET+": ");
         registos[AUTONOMIA] = lerString();
+        mudarLinha();
         return registos;
     }
 
 
-    public void lista(String[] elementos){
+    public void lista(List<String> elementos){
         clear(ECRA);
         ban();
         mudarLinha();
         int i=0;
-        for (String s : elementos){
-            printOpcao(i,elementos[i]);
+        for (String s : elementos) {
+            printOpcao(i, elementos.get(i));
             i++;
         }
         mudarLinha();
