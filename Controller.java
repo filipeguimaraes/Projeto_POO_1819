@@ -36,22 +36,7 @@ public class Controller {
                 case 1:
                     try {
                         CarregarBAK backup = new CarregarBAK(BAK_PATH);
-                        try {
-                            backup.carregaAtoresCarros(this.servico);
-                        } catch (AtorException|CarroException a){
-                            System.out.println(a);
-                            view.enterContinuar();
-                            escolha=0;
-                            continue;
-                        }
-                        try {
-                            backup.carregaAlugueres(this.servico);
-                        } catch (AtorException|CarroException|AluguerException a){
-                            System.out.println(a);
-                            view.enterContinuar();
-                            escolha=0;
-                            continue;
-                        }
+                        backup.carregaFicheiro(this.servico);
                     } catch (IOException e){
                         view.erroFicheiro();
                         view.enterContinuar();
@@ -193,6 +178,12 @@ public class Controller {
             do{
                 view.mainMenu(opcoes);
                 escolha = lerInt();
+                switch (escolha){
+                    case 1:
+                        break;
+                    default:
+                        break;
+                }
             }while (escolha!=0);
 
         }else System.out.println("Cliente Invalido");

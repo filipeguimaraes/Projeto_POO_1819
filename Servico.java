@@ -160,7 +160,7 @@ public class Servico implements Serializable {
         if(!listaAtores.containsKey(p.getNif())){
             this.listaAtores.put(p.getNif(),p.clone());
         } else {
-            throw new AtorException("Utilizador"+p.getNif()+" já existe!");
+            throw new AtorException("Utilizador "+p.getNif()+" já existe!");
         }
     }
 
@@ -169,7 +169,7 @@ public class Servico implements Serializable {
             Proprietario p = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(), new ArrayList<Aluguer>(),new HashMap<String, Carro>());
             this.listaAtores.put(nif,p);
         } else {
-            throw new AtorException("Proprietário"+nif+" já existe!");
+            throw new AtorException("Proprietário "+nif+" já existe!");
         }
     }
 
@@ -287,7 +287,7 @@ public class Servico implements Serializable {
      * @return carro mais proximo do determinado cliente
      * @throws AtorException Caso não exista cliente
      */
-    public Carro carroMaisProximo(int nifcli,String tipo) throws AtorException, CarroException{
+    public String carroMaisProximo(int nifcli,String tipo) throws AtorException, CarroException{
         Cliente cli= procuraCliente(nifcli);
         Point2D localizacaoCliente = cli.getCoordenada();
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
@@ -325,39 +325,39 @@ public class Servico implements Serializable {
 
         if (!listaCarros.isEmpty()) {
             if (tipo.contains("Gasolina")) {
-                Carro cG = listaCarros.values().stream()
+                String cG = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroGasolina"))
                         .sorted(c)
+                        .map(Carro::getMatricula)
                         .findFirst()
-                        .get()
-                        .clone();
+                        .orElse("N/A");
                 return cG;
             }
 
             if (tipo.contains("Electrico")) {
-                Carro cE = listaCarros.values().stream()
+                String cE = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroEletrico"))
                         .sorted(c)
+                        .map(Carro::getMatricula)
                         .findFirst()
-                        .get()
-                        .clone();
+                        .orElse("N/A");
                 return cE;
             }
 
             if (tipo.contains("Hibrido")) {
-                Carro cH = listaCarros.values().stream()
+                String cH = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroHibrido"))
                         .sorted(c)
+                        .map(Carro::getMatricula)
                         .findFirst()
-                        .get()
-                        .clone();
+                        .orElse("N/A");
                 return cH;
             }
 
         } else throw new CarroException("Não há carros no sistema!");
 
 
-        return null;
+        return "N/A";
     }
 
     /**
@@ -367,7 +367,7 @@ public class Servico implements Serializable {
      * @param tipo do carro
      * @return carro mais barato
      */
-    public Carro carroMaisBarato(String tipo) throws CarroException{
+    public String carroMaisBarato(String tipo) throws CarroException{
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
             if(c1.getPreco()<c2.getPreco()) return -1;
             if(c1.getPreco()>c2.getPreco()) return 1;
@@ -404,37 +404,38 @@ public class Servico implements Serializable {
 */
         if (!listaCarros.isEmpty()) {
             if (tipo.contains("Gasolina")) {
-                Carro cG = listaCarros.values().stream()
+                String cG = listaCarros.values().stream()
                             .filter(car -> car.getClass().getSimpleName().equals("CarroGasolina"))
                             .sorted(c)
-                            .findFirst()
-                            .get()
-                            .clone();
+                        .map(Carro::getMatricula)
+                        .findFirst()
+                        .orElse("N/A");
                     return cG;
             }
 
             if (tipo.contains("Electrico")) {
-                Carro cE = listaCarros.values().stream()
+                String cE = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroEletrico"))
                         .sorted(c)
+                        .map(Carro::getMatricula)
                         .findFirst()
-                        .get()
-                        .clone();
+                        .orElse("N/A");
                 return cE;
             }
 
             if (tipo.contains("Hibrido")) {
-                Carro cH = listaCarros.values().stream()
+                String cH = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroHibrido"))
                         .sorted(c)
+                        .map(Carro::getMatricula)
                         .findFirst()
-                        .get()
-                        .clone();
+                        .orElse("N/A");
                 return cH;
             }
 
         } else throw new CarroException("Não há carros no sistema!");
-        return null;
+
+        return "N/A";
     }
 
     //distancia maxima
@@ -523,7 +524,7 @@ public class Servico implements Serializable {
         return custo;
     }
 
-/*
+
     public double pedidoAluguer(int nifCliente,Point2D destino, Carro car) throws AtorException,CarroException,AluguerException{
         double custo=0;
         Carro carro = procuraCarro(car.getMatricula());
@@ -545,7 +546,13 @@ public class Servico implements Serializable {
         return custo;
     }
 
- */
+
+    public List<Aluguer> alugueresPendentes(int nifProp){
+        return this.listaAlugueres.stream()
+                .filter(l -> l.getEstado()==Aluguer.PENDENTE && l.getP().getNif()==nifProp)
+                .collect(Collectors.toList());
+    }
+
 
 
     public void atribuiAluguer(Aluguer aluguer, Cliente c, Proprietario p, Carro car) throws AluguerException{
@@ -573,11 +580,18 @@ public class Servico implements Serializable {
                 throw new AutenticacaoException("Password inválida");
             }
         }else{
-            throw new AutenticacaoException("Não existe email na base de dados");
+            throw new AutenticacaoException("Não existe email na base de dados "+email);
         }
         return nif;
     }
 
+
+    public double precoViagem(String matricula, LocalDateTime inicio, LocalDateTime fim){
+        return this.listaAlugueres.stream()
+                                  .filter(l->l.getCar().getMatricula().equals(matricula) && l.getDataFim().isAfter(inicio) && l.getDataInicio().isBefore(fim))
+                                  .mapToDouble(Aluguer :: precoAluguer)
+                                  .sum();
+    }
 
     public List<String> listaCarrosProprietario(int nif) throws AtorException{
         return procuraProprietario(nif).getListaCarros()

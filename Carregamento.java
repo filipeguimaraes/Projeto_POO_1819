@@ -21,7 +21,6 @@ public class Carregamento {
         objOutput.close();
     }
 
-    // desserialização: recuperando os objetos gravados no arquivo binário "nomeArq"
     public static Servico lerFicheiroObjeto(String path) throws IOException, ClassNotFoundException {
         Servico servico = new Servico();
         File arq = new File(path);

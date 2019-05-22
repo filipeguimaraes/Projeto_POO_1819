@@ -161,5 +161,14 @@ public class Aluguer{
     public void rejeitaEstado(){
         this.setEstado(Aluguer.REJEITADO);
     }
+
+    /**
+     * Metodo que calcula o preço do aluguer
+     * @return preço do aluguer
+     */
+    public double precoAluguer(){
+        double distancia=Point2D.distance(pontoInicial.getX(),pontoInicial.getY(),destino.getX(),destino.getY());
+        return this.car.getPreco()*distancia;
+    }
    
 }
