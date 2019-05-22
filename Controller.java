@@ -38,6 +38,14 @@ public class Controller {
                         CarregarBAK backup = new CarregarBAK(BAK_PATH);
                         try {
                             backup.carregaAtoresCarros(this.servico);
+                        } catch (AtorException|CarroException a){
+                            System.out.println(a);
+                            view.enterContinuar();
+                            escolha=0;
+                            continue;
+                        }
+                        try {
+                            backup.carregaAlugueres(this.servico);
                         } catch (AtorException|CarroException|AluguerException a){
                             System.out.println(a);
                             view.enterContinuar();

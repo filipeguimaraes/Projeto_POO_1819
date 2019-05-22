@@ -137,9 +137,9 @@ public class Aluguer{
 
     public String toString(){
         StringBuilder s= new StringBuilder("Aluguer\n");
-        s.append(" Carro" + this.car);
-        s.append(" Cliente" + this.cli);
-        s.append(" Proprietario" + this.p);
+        s.append(" Carro" + this.car.getMatricula());
+        s.append(" Cliente" + this.cli.getNif());
+        s.append(" Proprietario" + this.p.getNif());
         s.append(" Ponto Inicial" + this.pontoInicial);
         s.append(" Destino" + this.destino);
         s.append(" Data inicial" + this.dataInicio);

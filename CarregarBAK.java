@@ -27,7 +27,7 @@ public class CarregarBAK {
         this.path = path;
     }
 
-    public void carregaAtoresCarros(Servico servico) throws IOException,AtorException,CarroException,AluguerException {
+    public void carregaAtoresCarros(Servico servico) throws IOException,AtorException,CarroException {
         BufferedReader inicio = new BufferedReader(new FileReader(this.path));
 
         while (inicio.ready()) {
@@ -91,25 +91,35 @@ public class CarregarBAK {
                         servico.classificarAtores(nif,classificacao);
                     }
                 }
+            }
+        }
+        inicio.close();
+    }
 
-                if(linha.contains("Aluguer:")){
+    public void carregaAlugueres(Servico servico) throws IOException,AtorException,CarroException,AluguerException {
+        BufferedReader inicio = new BufferedReader(new FileReader(this.path));
+
+        while (inicio.ready()) {
+            String linha = inicio.readLine();
+            if (!linha.contains("--")) {
+                String[] aux = linha.split(":");
+                if (linha.contains("Aluguer:")) {
                     String[] campos = aux[1].split(",");
                     int nifCliente = Integer.valueOf(campos[0]);
                     Point2D ponto = new Point2D.Double(Double.parseDouble(campos[1]), Double.parseDouble(campos[2]));
                     String tipoCombustivel = campos[3];
                     String preferencia = campos[4];
                     Carro carro = null;
-                    if(preferencia.contains("MaisBarato")){
-                        System.out.println("OLA darlling");
+                    if (preferencia.contains("MaisBarato")) {
                         carro = servico.carroMaisBarato(tipoCombustivel);
-                    }else if(preferencia.contains("MaisPerto")){
+                    }
+                    if (preferencia.contains("MaisPerto")) {
                         carro = servico.carroMaisProximo(nifCliente, tipoCombustivel);
                     }
-                    servico.pedidoAluguer(nifCliente,ponto,carro);
+                    servico.AluguerProf(nifCliente, ponto, carro);
                 }
             }
         }
         inicio.close();
     }
-
 }
