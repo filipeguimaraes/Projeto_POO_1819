@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Ator implements Serializable {
+public abstract class Ator implements Serializable {
     private String nome;
     private int nif;
     private String email;
@@ -146,9 +146,7 @@ public class Ator implements Serializable {
     }
 
 
-    public Ator clone(){
-        return new Ator(this);
-    }
+    public abstract Ator clone();
 
     public String toString(){
         StringBuilder s= new StringBuilder();

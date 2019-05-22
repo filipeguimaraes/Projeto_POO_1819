@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * @author (seu nome) 
  * @version (número de versão ou data)
  */
-public class Carro implements Serializable {
+public abstract class Carro implements Serializable {
     private String marca;
     private String matricula;
     private Proprietario proprietario;
@@ -136,9 +136,7 @@ public class Carro implements Serializable {
         return (this.coordenada.distance(fim)/this.velocidade);
     }
 
-    public Carro clone(){
-       return new Carro(this);
-    }
+    public abstract Carro clone();
 
     public boolean equals(Object o){
         if(this==o) return true;
@@ -164,6 +162,10 @@ public class Carro implements Serializable {
         s.append(", Proprietario: "+ this.proprietario.getNome()+'}');
         return s.toString();
     }
+
+    public abstract double getAutonomia();
+
+    public abstract double getConsumo();
 
 }
 
