@@ -19,7 +19,7 @@ public class Aluguer{
     
    
     public Aluguer(){
-        this.car = new Carro();
+        this.car = new CarroGasolina();
         this.cli = new Cliente();
         this.p = new Proprietario();
         this.pontoInicial = new Point2D.Double();
