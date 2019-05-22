@@ -47,13 +47,26 @@ public class CarroGasolina extends Carro{
     public void setConsumo(double c){
         this.consumo=c;
     }
-    /*
-    public double AutonomiaGasolina(){
-        return gasolina*consumo;
+
+    public double getPercentagemAutonomia(){
+        return autonomia/(double)autonomiaTotal;
     }
-*/
+
+    public double getKilometrosAutonomia(){
+        return autonomia/consumo;
+    }
+
+    public void percorreDistancia(double kilometros){
+        this.autonomia -= kilometros*this.consumo;
+    }
+
+    public double abasteceCarro(double acrescenta){
+        this.autonomia += acrescenta;
+        return this.getAutonomia();
+    }
+
     public String toString(){
-        StringBuilder s= new StringBuilder("Carro ->");
+        StringBuilder s= new StringBuilder("CarroGasolina ->");
         s.append(super.toString());
         s.append("Específico{ Tipo: Gasolina, Consumo: " + this.consumo);
         s.append(", Autonomia: "+ this.autonomia+'}');

@@ -46,9 +46,25 @@ public class CarroHibrido extends Carro{
         this.autonomia = autonomia;
     }
 
+    public double getPercentagemAutonomia(){
+        return autonomia/(double)autonomiaTotal;
+    }
+
+    public double getKilometrosAutonomia(){
+        return autonomia/consumo;
+    }
+
+    public void percorreDistancia(double kilometros){
+        this.autonomia -= kilometros*this.consumo;
+    }
+
+    public double abasteceCarro(double acrescenta){
+        this.autonomia += acrescenta;
+        return this.getAutonomia();
+    }
 
     public String toString(){
-        StringBuilder s= new StringBuilder("Carro ->");
+        StringBuilder s= new StringBuilder("CarroHibrido ->");
         s.append(super.toString());
         s.append("Específico{ ");
         s.append(" Tipo: Hibrido, Consumo: "+ this.consumo);

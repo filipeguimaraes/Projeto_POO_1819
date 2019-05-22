@@ -44,18 +44,29 @@ public class CarroEletrico extends Carro{
         return autonomia;
     }
 
+    public double getPercentagemAutonomia(){
+        return autonomia/(double)autonomiaTotal;
+    }
+
     public void setAutonomia(double autonomia) {
         this.autonomia = autonomia;
     }
 
-    /*
-    public double AutonomiaEletrico(){
-        return consumo*bateria;
+    public double getKilometrosAutonomia(){
+        return autonomia/consumo;
     }
-    */
+
+    public void percorreDistancia(double kilometros){
+        this.autonomia -= kilometros*this.consumo;
+    }
+
+    public double abasteceCarro(double acrescenta){
+        this.autonomia += acrescenta;
+        return this.getAutonomia();
+    }
 
     public String toString(){
-        StringBuilder s= new StringBuilder("Carro ->");
+        StringBuilder s= new StringBuilder("CarroEletrico ->");
         s.append(super.toString());
         s.append("Específico{ Tipo: Eletrico, Consumo: " + this.consumo);
         s.append(", Autonomia: "+ this.autonomia+'}');

@@ -165,8 +165,17 @@ public abstract class Carro implements Serializable {
 
     public abstract double getAutonomia();
 
+    public abstract double getPercentagemAutonomia();
+
     public abstract double getConsumo();
 
+    public abstract double getKilometrosAutonomia();
+
+    //metodo que gastas os kilometros de input, atualizando a Autonomia do carro
+    public abstract void percorreDistancia(double kilometros);
+
+    //metodo que abastece o veiculo segundo a autonomia de input e retorna a nova Autonomia do Carro
+    public abstract double abasteceCarro(double acrescenta);
 }
 
 
