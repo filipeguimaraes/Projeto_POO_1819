@@ -185,7 +185,7 @@ public class Controller {
     }
 
     private int runProprietario(){
-        String[] opcoes = {"Registar carro","Terminar sessão"};
+        String[] opcoes = {"Registar carro","Lista de carros registados","Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
         if(nif!=0){
@@ -195,8 +195,9 @@ public class Controller {
                 switch (escolha){
                     case 1:
                         String[] registo = view.registarCarroMenu();
+                        String tipo = registo[View.TIPOCARRO];
                         String marca = registo[View.MARCA];
-                        String Matricula = registo[View.MATRICULA];
+                        String matricula = registo[View.MATRICULA];
                         int velocidade = Integer.valueOf(registo[View.VELOCIDADE]);
                         double preco = Double.parseDouble(registo[View.PRECO]);
                         String[] locs = registo[View.LOCALIZACAO].split(",");
@@ -205,8 +206,44 @@ public class Controller {
                         Point2D localizacao = new Point2D.Double(x,y);
                         double consumo = Double.parseDouble(registo[View.CONSUMO]);
                         double autonomia = Double.parseDouble(registo[View.AUTONOMIA]);
+                        if(tipo.contains("Electrico")){
+                            try {
+                                servico.adicionaCarroEletrico(marca,matricula,nif,velocidade,preco,localizacao,consumo,autonomia);
+                            } catch (CarroException|AtorException e){
+                                System.out.println(e);
+                                view.enterContinuar();
+                            }
+                        } else if(tipo.contains("Gasolina")){
+                            try {
+                                servico.adicionaCarroGasolina(marca,matricula,nif,velocidade,preco,localizacao,consumo,autonomia);
+                            } catch (CarroException|AtorException e){
+                                System.out.println(e);
+                                view.enterContinuar();
+                            }
+                        } else if(tipo.contains("Hibrido")){
+                            try {
+                                servico.adicionaCarroHibrido(marca,matricula,nif,velocidade,preco,localizacao,consumo,autonomia);
+                            } catch (CarroException|AtorException e){
+                                System.out.println(e);
+                                view.enterContinuar();
+                            }
+                        }
+                        System.out.println("feito: "+matricula);
                         break;
-
+                    case 2:
+                        String[] lista={"teste","teste"};
+                        view.lista(lista);
+                        int l=lerInt();
+                        switch (l){
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                            default:
+                                break;
+                        }
+                        escolha=1;
+                        break;
                     default:
                         break;
                 }

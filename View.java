@@ -1,6 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+
 /**
  * Write a description of class View here.
  *
@@ -17,7 +18,7 @@ public class View {
     public static String RESET = "\033[0m";  // Text Reset
     public static String RED = "\033[0;31m";     // RED
     public static String CYAN_BOLD = "\033[1;36m";   // Cyan Bold
-
+    public static String CYAN = "\033[0;36m";
     public static int CLIENTE = 1;
     public static int PROPRIETARIO = 2;
 
@@ -35,6 +36,7 @@ public class View {
     public final static int LOCALIZACAO=4;
     public final static int CONSUMO=5;
     public final static int AUTONOMIA=6;
+    public final static int TIPOCARRO=7;
 
 
 
@@ -182,9 +184,12 @@ public class View {
     }
 
     public String[] registarCarroMenu(){
-        String[] registos = new String[7];
+        String[] registos = new String[8];
         clear(ECRA);
         ban();
+        System.out.print("Tipo"+CYAN +"(Electrico|Gasolina|Hibrido)"+RESET+": ");
+        registos[TIPOCARRO] = lerString();
+        mudarLinha();
         System.out.print("Marca: ");
         registos[MARCA] = lerString();
         mudarLinha();
