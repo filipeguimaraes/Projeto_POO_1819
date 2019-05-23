@@ -154,13 +154,11 @@ public class CarregarBAK {
         Point2D ponto = new Point2D.Double(Double.parseDouble(campos[1]), Double.parseDouble(campos[2]));
         String tipoCombustivel = campos[3];
         String preferencia = campos[4];
-        Carro carro;
         if (preferencia.contains("MaisBarato")) {
-            carro = servico.procuraCarro(servico.carroMaisBarato(tipoCombustivel));
+            servico.AluguerProf(nifCliente, ponto, servico.procuraCarro(servico.carroMaisBarato(tipoCombustivel)));
         }else{
-            carro = servico.procuraCarro(servico.carroMaisProximo(nifCliente, tipoCombustivel));
+            servico.AluguerProf(nifCliente, ponto, servico.procuraCarro(servico.carroMaisProximo(nifCliente, tipoCombustivel)));
         }
-        servico.AluguerProf(nifCliente, ponto, carro);
     }
 
 }

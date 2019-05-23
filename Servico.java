@@ -511,7 +511,7 @@ public class Servico implements Serializable {
         Point2D localizacaoCarro = carro.getCoordenada();
         if(temAutonomia(carro,destino)){
             custo = custo(carro,destino);
-        } else throw new AluguerException("O carro não tem autonomia suficiente para efetuar a viagem.");
+        } else throw new AluguerException("O carro "+carro.getMatricula()+" não tem autonomia suficiente para efetuar a viagem.");
 
         LocalDateTime dataInicio = LocalDateTime.now();
         LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,car,destino));
@@ -533,7 +533,7 @@ public class Servico implements Serializable {
         Point2D localizacaoCarro = car.getCoordenada();
         if(temAutonomia(carro,destino)){
             custo = custo(carro,destino);
-        } else throw new AluguerException("O carro não tem autonomia suficiente para efetuar a viagem.");
+        } else throw new AluguerException("O carro "+carro.getMatricula()+" não tem autonomia suficiente para efetuar a viagem.");
 
         LocalDateTime dataInicio = LocalDateTime.now();
         LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,car,destino));

@@ -186,7 +186,7 @@ public class View {
     }
 
     public String[] registarCarroMenu(){
-        String[] registos = new String[8];
+        String[] registos;
         clear(ECRA);
         ban();
         System.out.print("Tipo"+CYAN +"(Electrico|Gasolina|Hibrido)"+RESET+": ");
@@ -216,12 +216,39 @@ public class View {
         return registos;
     }
 
+    public String[] pedirAluguer(){
+        String aluguer= new String[];
+        clear(ECRA);
+        ban();
 
-    public void lista(List<String> elementos){
+    }
+
+
+    public void printExcecoes(List<String> ex){
+        clear(ECRA);
+        cyan();
+        line(1);
+        System.out.println("                        Logs do carregamento do ficheiro");
+        line(1);
+        resetColor();
+        mudarLinha();
+        int i=1;
+        for (String s : ex) {
+            printOpcao(i, s);
+            i++;
+        }
+        mudarLinha();
+        cyan();
+        line(1);
+        resetColor();
+        enterContinuar();
+    }
+
+    public void listaCarros(List<String> elementos){
         clear(ECRA);
         ban();
         mudarLinha();
-        int i=0;
+        int i=1;
         for (String s : elementos) {
             printOpcao(i, elementos.get(i));
             i++;
@@ -230,7 +257,7 @@ public class View {
         cyan();
         line(1);
         resetColor();
-        System.out.println("     Escolha: ");
+        System.out.println("     Introduza a matricula: ");
 
     }
 

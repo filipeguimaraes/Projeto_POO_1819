@@ -37,6 +37,7 @@ public class Controller {
                     try {
                         CarregarBAK backup = new CarregarBAK(BAK_PATH);
                         backup.carregaFicheiro(this.servico);
+                        view.printExcecoes(backup.getExcecoes());
                     } catch (IOException e){
                         view.erroFicheiro();
                         view.enterContinuar();
@@ -240,7 +241,7 @@ public class Controller {
                         try {
                             List<String> lista=servico.listaCarrosProprietario(nif);
                             System.out.println(lista);
-                            view.lista(lista);
+                            view.listaCarros(lista);
                         }catch (AtorException e){
                             System.out.println(e);
                         }
