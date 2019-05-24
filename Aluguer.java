@@ -1,9 +1,10 @@
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 
-public class Aluguer{
+public class Aluguer implements Serializable {
     private Carro car;
     private Cliente cli;
     private Proprietario p;
@@ -169,6 +170,10 @@ public class Aluguer{
     public double precoAluguer(){
         double distancia=Point2D.distance(pontoInicial.getX(),pontoInicial.getY(),destino.getX(),destino.getY());
         return this.car.getPreco()*distancia;
+    }
+
+    public double kmsPercorridos(){
+       return Point2D.distance(pontoInicial.getX(),pontoInicial.getY(),destino.getX(),destino.getY());
     }
    
 }

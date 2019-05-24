@@ -24,7 +24,13 @@ public class Controller {
     }
 
     private void run()throws IOException{
-        String[] opcoes={"Carregar ficheiro de inicio","Carregar estado anterior","Introduzir informações meteorológicas","Guardar estado","Entrar no programa","Sair"};
+        String[] opcoes={"Carregar ficheiro de inicio",
+                "Carregar estado anterior",
+                "Introduzir informações meteorológicas",
+                "Guardar estado",
+                "Entrar no programa",
+                "Extras",
+                "Sair"};
         int escolha=0;
         do {
             switch (escolha) {
@@ -50,7 +56,6 @@ public class Controller {
                 case 2:
                     try {
                         this.servico = Carregamento.lerFicheiroObjeto(OBJ_PATH);
-                        System.out.println(this.servico.toString());
                         view.mainMenu(opcoes);
                         escolha=0;
                     } catch (IOException e){
@@ -80,13 +85,16 @@ public class Controller {
                 case 5:
                     escolha=runEscolherAtor();
                     break;
+                case 6:
+                    escolha=runExtras();
+                    break;
                 default:
                     System.out.println("Ocorreu um erro.");
                     view.enterContinuar();
                     escolha=0;
                     break;
             }
-        } while (escolha!=6);
+        } while (escolha!=7);
         view.fim();
 
     }
@@ -139,12 +147,8 @@ public class Controller {
                     int nifi = Integer.valueOf(registo[View.NIF]);
                     String nome = registo[View.NOME];
                     String morada = registo[View.MORADA];
+                    LocalDateTime data = stringParaData(registo[View.DATA]);
 
-                    String[] dataf = registo[View.DATA].split("/");
-                    int dia = Integer.valueOf(dataf[0]);
-                    int mes = Integer.valueOf(dataf[1]);
-                    int ano = Integer.valueOf(dataf[2]);
-                    LocalDateTime data = LocalDateTime.of(ano,mes,dia,0,0);
                     if(view.getAtor()==View.CLIENTE){
                         try{
                             servico.adicionaCliente(email,pass,nif,nome,morada,data);
@@ -172,7 +176,7 @@ public class Controller {
     }
 
     private int runCliente(){
-        String[] opcoes = {"Realizar aluguer","Terminar sessão"};
+        String[] opcoes = {"Realizar aluguer","Lista dos Alugueres efetuados entre datas","Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
         if(nif!=0){
@@ -181,6 +185,16 @@ public class Controller {
                 escolha = lerInt();
                 switch (escolha){
                     case 1:
+                        escolha=runAluguer(nif);
+                        break;
+                    case 2:
+                        String[] datas = view.datasAlugueres();
+                        LocalDateTime inicio = stringParaData(datas[View.DATAINICIO]);
+                        LocalDateTime fim = stringParaData(datas[View.DATAFIM]);
+                        view.listaAlugueres(servico.alugueresEntreDatasCliente(nif,inicio,fim));
+                        break;
+                    case 3:
+                        escolha=0;
                         break;
                     default:
                         break;
@@ -191,8 +205,100 @@ public class Controller {
         return -1;
     }
 
+    private int runAluguer(int nif){
+        String[] opcoes = {"Carro Específico",
+                "Carro mais barato",
+                "Carro mais proximo",
+                "Carro mais barato dentro de uma determinada distância",
+                "Carro com uma autonomia desejada",
+                "Terminar sessão"};
+        int escolha=0;
+            do{
+                view.mainMenu(opcoes);
+                escolha = lerInt();
+                switch (escolha){
+                    case 1:
+                        String[] campos1 = view.aluguerCarroEspecifico();
+                        Point2D destino1 = stringParaPonto(campos1[View.DESTINO]);
+                        String matricula = campos1[View.CARRO];
+                        try {
+                            view.imprimeCusto(servico.pedidoAluguer(nif,destino1,matricula));
+                            view.enterContinuar();
+                            escolha=0;
+                        }catch (AtorException|AluguerException|CarroException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                            escolha=1;
+                        }
+                        break;
+                    case 2:
+                        String[] campos2 = view.aluguerDestino();
+                        Point2D destino2 = stringParaPonto(campos2[View.DESTINO]);
+                        try{
+                            view.imprimeCarro(servico.carroMaisBarato());
+                            view.imprimeCusto(servico.pedidoAluguer(nif,destino2,servico.carroMaisBarato()));
+                            view.enterContinuar();
+                            escolha=0;
+                        }catch (CarroException|AluguerException|AtorException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                        }
+                        break;
+                    case 3:
+                        String[] campos3 = view.aluguerDestino();
+                        Point2D destino3 = stringParaPonto(campos3[View.DESTINO]);
+                        try{
+                            view.imprimeCarro(servico.carroMaisProximo(nif));
+                            view.imprimeCusto(servico.pedidoAluguer(nif,destino3,servico.carroMaisProximo(nif)));
+                            view.enterContinuar();
+                            escolha=0;
+                        }catch (CarroException|AluguerException|AtorException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                        }
+                        break;
+                    case 4:
+                        String[] campos4 = view.aluguerDistancia();
+                        Point2D destino4 = stringParaPonto(campos4[View.DESTINO]);
+                        double distancia = Double.parseDouble(campos4[View.DISTANCIA]);
+                        try{
+                            view.imprimeCarro(servico.carroProximoMaisBarato(nif,distancia));
+                            view.imprimeCusto(servico.pedidoAluguer(nif,destino4,servico.carroProximoMaisBarato(nif,distancia)));
+                            view.enterContinuar();
+                            escolha=0;
+                        }catch (CarroException|AluguerException|AtorException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                        }
+                        break;
+                    case 5:
+                        String[] campos5 = view.aluguerAutonomia();
+                        Point2D destino5 = stringParaPonto(campos5[View.DESTINO]);
+                        double autonomia = Double.parseDouble(campos5[View.AUTONOMIADESEJADA]);
+                        String matricula5 = view.listaCarroAutonomia(servico.carroAutonomiaDesejada(autonomia));
+                        try {
+                            view.imprimeCusto(servico.pedidoAluguer(nif,destino5,matricula5));
+                            view.enterContinuar();
+                            escolha=0;
+                        }catch (AtorException|AluguerException|CarroException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                            escolha=1;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }while (escolha!=0);
+        return -1;
+    }
+
     private int runProprietario(){
-        String[] opcoes = {"Registar carro","Lista de carros registados","Terminar sessão"};
+        String[] opcoes = {"Registar carro",
+                "Lista de carros registados",
+                "Lista de alugueres efetuados entre datas",
+                "Alterar o preço por Km de um carro registado",
+                "Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
         if(nif!=0){
@@ -207,10 +313,7 @@ public class Controller {
                         String matricula = registo[View.MATRICULA];
                         int velocidade = Integer.valueOf(registo[View.VELOCIDADE]);
                         double preco = Double.parseDouble(registo[View.PRECO]);
-                        String[] locs = registo[View.LOCALIZACAO].split(",");
-                        double x = Double.parseDouble(locs[0]);
-                        double y = Double.parseDouble(locs[1]);
-                        Point2D localizacao = new Point2D.Double(x,y);
+                        Point2D localizacao = stringParaPonto(registo[View.LOCALIZACAO]);
                         double consumo = Double.parseDouble(registo[View.CONSUMO]);
                         double autonomia = Double.parseDouble(registo[View.AUTONOMIA]);
                         if(tipo.contains("Electrico")){
@@ -244,17 +347,30 @@ public class Controller {
                             view.listaCarros(lista);
                         }catch (AtorException e){
                             System.out.println(e);
+                            view.enterContinuar();
                         }
-                        int l=lerInt();
-                        switch (l){
-                            case 1:
-                                break;
-                            case 2:
-                                break;
-                            default:
-                                break;
+                        break;
+                    case 3:
+                            String[] datas = view.datasAlugueres();
+                            LocalDateTime inicio = stringParaData(datas[View.DATAINICIO]);
+                            LocalDateTime fim = stringParaData(datas[View.DATAFIM]);
+                            view.listaAlugueres(servico.alugueresEntreDatasProprietario(nif,inicio,fim));
+                            break;
+                    case 4:
+                        String[] campos4 = view.alteraPreco();
+                        String matricula4 = campos4[View.MATRICULA];
+                        double preco4  = Double.parseDouble(campos4[View.PRECO]);
+                        try {
+                            servico.procuraProprietario(nif).alteraPreco(preco4,matricula4);
+                            view.precoAlterado();
+                        } catch (AtorException|CarroException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                            continue;
                         }
-                        escolha=1;
+                        break;
+                    case 5:
+                        escolha=0;
                         break;
                     default:
                         break;
@@ -265,7 +381,63 @@ public class Controller {
         return -1;
     }
 
+    public int runExtras(){
+        String[] opcoes = {"Total faturado por uma viatura num determinado período",
+                "Top 10 clientes que mais utilizam o sistema em número de vezes",
+                "Top 10 clientes que mais utilizam o sistema em Kms percorridos",
+                "Menu principal"};
+        int escolha=0;
+        do{
 
+            view.mainMenu(opcoes);
+            escolha = lerInt();
+            switch (escolha){
+                case 1:
+                    String[] campos3 = view.totalFaturado();
+                    String matricula3 = campos3[View.MATRICULA];
+                    LocalDateTime datainicio = stringParaData(campos3[View.DATAINICIO]);
+                    LocalDateTime datafim = stringParaData(campos3[View.DATAFIM]);
+                    try {
+                        view.imprimeTotalFaturado(matricula3,servico.totalFaturadoPeriodo(matricula3,datainicio,datafim));
+                        view.enterContinuar();
+                    }catch (CarroException e){
+                        System.out.println(e);
+                        view.enterContinuar();
+                        escolha=1;
+                        view.enterContinuar();
+                        continue;
+                    }
+                    break;
+                case 2:
+                    view.imprimeTop10(servico.dezClientesNVezes());
+                    break;
+                case 3:
+                    view.imprimeTop10(servico.dezClientesKms());
+                    break;
+                case 4:
+                    escolha=0;
+                    break;
+                default:
+                    break;
+            }
+        }while(escolha!=0);
+        return 0;
+    }
+
+    public LocalDateTime stringParaData(String dma){
+        String[] dataf = dma.split("/");
+        int dia = Integer.valueOf(dataf[0]);
+        int mes = Integer.valueOf(dataf[1]);
+        int ano = Integer.valueOf(dataf[2]);
+        return LocalDateTime.of(ano,mes,dia,0,0);
+    }
+
+    public Point2D stringParaPonto(String xy){
+        String[] locs = xy.split(",");
+        double x = Double.parseDouble(locs[0]);
+        double y = Double.parseDouble(locs[1]);
+        return new Point2D.Double(x,y);
+    }
 
     public int lerInt() {
         Scanner input = new Scanner(System.in);

@@ -25,10 +25,11 @@ public class Servico implements Serializable {
     }
 
 
-    public Servico(Map<String, Carro> listaCarros, Map<Integer, Ator> listaAtores, List<Aluguer> listaAlugueres, Meteorologia meteorologia) {
-        this.listaCarros = listaCarros;
-        this.listaAtores = listaAtores;
-        this.listaAlugueres = listaAlugueres;
+    public Servico(Map<String, Carro> lsCarros, Map<Integer, Ator> lsAtores, List<Aluguer> lsAlugueres,
+                   Meteorologia meteorologia) {
+        this.listaCarros = lsCarros;
+        this.listaAtores = lsAtores;
+        this.listaAlugueres = lsAlugueres;
         this.meteorologia = meteorologia;
     }
 
@@ -91,16 +92,18 @@ public class Servico implements Serializable {
             if (!this.listaCarros.containsKey(e.getMatricula())){
                 Proprietario p = procuraProprietario(e.getProprietario().getNif());
                 this.listaCarros.put(e.getMatricula(),e.clone());
-                p.adicionaCarro(e);
+                p.adicionaCarro(listaCarros.get(e.getMatricula()));
             }else throw new CarroException("Já existe este carro registado! "+e.getMatricula());
     }
 
-    public void adicionaCarroEletrico(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{
+    public void adicionaCarroEletrico(String marca, String matricula, int nif, int velocidade, double preco,
+                                      Point2D loc, double consumo, double autonomia) throws CarroException,AtorException{
         if(!listaCarros.containsKey(matricula)){
             Proprietario p = procuraProprietario(nif);
-            CarroEletrico car = new CarroEletrico(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
+            CarroEletrico car = new CarroEletrico(marca,matricula,p,velocidade,preco,new Classificacao(),
+                    loc,new ArrayList<Aluguer>(),consumo,autonomia);
             listaCarros.put(matricula,car);
-            p.adicionaCarro(car);
+            p.adicionaCarro(listaCarros.get(matricula));
         }else throw new CarroException("Erro ao adicionar o carro "+matricula);
     }
 
@@ -108,7 +111,7 @@ public class Servico implements Serializable {
             if (!this.listaCarros.containsKey(g.getMatricula())){
                 Proprietario p = procuraProprietario(g.getProprietario().getNif());
                 this.listaCarros.put(g.getMatricula(),g.clone());
-                p.adicionaCarro(g);
+                p.adicionaCarro(listaCarros.get(g.getMatricula()));
             }else throw new CarroException("Já existe este carro registado! "+g.getMatricula());
     }
 
@@ -117,7 +120,7 @@ public class Servico implements Serializable {
             Proprietario p = procuraProprietario(nif);
             CarroGasolina car = new CarroGasolina(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
             listaCarros.put(matricula,car);
-            p.adicionaCarro(car);
+            p.adicionaCarro(listaCarros.get(matricula));
         }else throw new CarroException("Erro ao adicionar o carro "+matricula);
     }
 
@@ -125,7 +128,7 @@ public class Servico implements Serializable {
         if (!this.listaCarros.containsKey(h.getMatricula())){
             Proprietario p = procuraProprietario(h.getProprietario().getNif());
             this.listaCarros.put(h.getMatricula(),h.clone());
-            p.adicionaCarro(h);
+            p.adicionaCarro(listaCarros.get(h.getMatricula()));
         }else throw new CarroException("Já existe este carro registado! "+h.getMatricula());
 
     }
@@ -135,7 +138,7 @@ public class Servico implements Serializable {
             Proprietario p = procuraProprietario(nif);
             CarroHibrido car = new CarroHibrido(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
             listaCarros.put(matricula,car);
-            p.adicionaCarro(car);
+            p.adicionaCarro(listaCarros.get(matricula));
         }else throw new CarroException("Erro ao adicionar o carro "+matricula);
     }
 
@@ -287,6 +290,7 @@ public class Servico implements Serializable {
      * @return carro mais proximo do determinado cliente
      * @throws AtorException Caso não exista cliente
      */
+    @SuppressWarnings("Duplicates")
     public String carroMaisProximo(int nifcli,String tipo) throws AtorException, CarroException{
         Cliente cli= procuraCliente(nifcli);
         Point2D localizacaoCliente = cli.getCoordenada();
@@ -360,6 +364,24 @@ public class Servico implements Serializable {
         return "N/A";
     }
 
+    public String carroMaisProximo(int nifcli) throws AtorException, CarroException{
+        Cliente cli= procuraCliente(nifcli);
+        Point2D localizacaoCliente = cli.getCoordenada();
+        Comparator<Carro> c = (Carro c1, Carro c2) -> {
+            if(distanciaAoPonto(cli,c1.getCoordenada())<distanciaAoPonto(cli,c2.getCoordenada())) return -1;
+            if(distanciaAoPonto(cli,c1.getCoordenada())>distanciaAoPonto(cli,c2.getCoordenada())) return 1;
+            else return 0;
+        };
+        if (!listaCarros.isEmpty()) {
+                String car = listaCarros.values().stream()
+                        .sorted(c)
+                        .map(Carro::getMatricula)
+                        .findFirst()
+                        .orElse("N/A");
+                return car;
+        } else throw new CarroException("Não há carros no sistema!");
+    }
+
     /**
      *
      * Método que determina o carro mais barato de um certo tipo
@@ -367,6 +389,7 @@ public class Servico implements Serializable {
      * @param tipo do carro
      * @return carro mais barato
      */
+    @SuppressWarnings("Duplicates")
     public String carroMaisBarato(String tipo) throws CarroException{
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
             if(c1.getPreco()<c2.getPreco()) return -1;
@@ -438,23 +461,54 @@ public class Servico implements Serializable {
         return "N/A";
     }
 
-    //distancia maxima
-    //lista pode estar vazia
-    public Carro carroProximoMaisBarato(Cliente cli, Double distancia){
+    public String carroMaisBarato() throws CarroException{
         Comparator<Carro> c = (Carro c1, Carro c2) -> {
             if(c1.getPreco()<c2.getPreco()) return -1;
             if(c1.getPreco()>c2.getPreco()) return 1;
             else return 0;
         };
 
-        Carro car = this.listaCarros.values().stream()
-                                      .filter(carro-> distanciaAoCarro(cli,carro)<=distancia)
-                                      .sorted(c)
-                                      .findFirst()
-                                      .get()
-                                      .clone();
+        if (!listaCarros.isEmpty()) {
+                String car = listaCarros.values().stream()
+                        .sorted(c)
+                        .map(Carro::getMatricula)
+                        .findFirst()
+                        .orElse("N/A");
+                return car;
+        } else throw new CarroException("Não há carros no sistema!");
+    }
+
+    /**
+     * Metodo que retorna a matricula do carro mais barato mais proximo do cliente
+     * @param nifCli nif do cliente
+     * @param distancia distancia que o cliente está disposto a percorrer a pé
+     * @return matricula
+     */
+    public String carroProximoMaisBarato(int nifCli, double distancia) throws AtorException{
+        Comparator<Carro> c = (Carro c1, Carro c2) -> {
+            if(c1.getPreco()<c2.getPreco()) return -1;
+            if(c1.getPreco()>c2.getPreco()) return 1;
+            else return 0;
+        };
+
+        Cliente cli = procuraCliente(nifCli);
+
+        String car = this.listaCarros.values().stream()
+                                              .filter(carro-> distanciaAoCarro(cli,carro)<=distancia)
+                                              .sorted(c)
+                                              .map(Carro::getMatricula)
+                                              .findFirst()
+                                              .orElse("N/A");
         return car;
     }
+
+    public List<String> carroAutonomiaDesejada(double autonomia){
+        return this.listaCarros.values().stream()
+                                        .filter(l -> l.getAutonomia()>=autonomia)
+                                        .map(Carro :: getMatricula)
+                                        .collect(Collectors.toList());
+    }
+
 
     /**
      * Método que atribui classificações aos carros
@@ -466,6 +520,21 @@ public class Servico implements Serializable {
         if (listaCarros.containsKey(matricula)){
             this.listaCarros.get(matricula).adicionaClassificacao(classificacao);
         } else throw new CarroException("Carro "+matricula+" inválido!");
+    }
+
+    /**
+     * Método que calcula o total faturado por uma viatura num determinado período
+     * @param matricula matricula do carro
+     * @param inicio Data inicial
+     * @param fim Data final
+     * @return Total faturado por uma viatura num determinado período
+     * @throws CarroException Se o carro não existir
+     */
+    public double totalFaturadoPeriodo(String matricula, LocalDateTime inicio, LocalDateTime fim) throws CarroException{
+        return procuraCarro(matricula).getHistorico().stream()
+                                                     .filter(l -> l.getDataInicio().isAfter(inicio) && l.getDataFim().isBefore(fim))
+                                                     .mapToDouble(Aluguer::precoAluguer)
+                                                     .sum();
     }
 
     /**
@@ -503,6 +572,7 @@ public class Servico implements Serializable {
         return Math.round(this.meteorologia.medicaoMinutos()+tempoCliente(cli,car)+car.tempoViagem(destino));
     }
 
+    @SuppressWarnings("Duplicates")
     public double AluguerProf(int nifCliente,Point2D destino, Carro car) throws AtorException,CarroException,AluguerException{
         double custo=0;
         Carro carro = procuraCarro(car.getMatricula());
@@ -514,7 +584,7 @@ public class Servico implements Serializable {
         } else throw new AluguerException("O carro "+carro.getMatricula()+" não tem autonomia suficiente para efetuar a viagem.");
 
         LocalDateTime dataInicio = LocalDateTime.now();
-        LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,car,destino));
+        LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,carro,destino));
         int estado=Aluguer.ACEITE;
         Aluguer aluguer= new Aluguer(carro,c,p,localizacaoCarro,destino,dataInicio,dataFimPrevista,estado);
         carro.setCoordenada(destino);
@@ -524,19 +594,19 @@ public class Servico implements Serializable {
         return custo;
     }
 
-
-    public double pedidoAluguer(int nifCliente,Point2D destino, Carro car) throws AtorException,CarroException,AluguerException{
+    @SuppressWarnings("Duplicates")
+    public double pedidoAluguer(int nifCliente,Point2D destino, String matricula) throws AtorException,CarroException,AluguerException{
         double custo=0;
-        Carro carro = procuraCarro(car.getMatricula());
+        Carro carro = procuraCarro(matricula);
         Cliente c = procuraCliente(nifCliente);
-        Proprietario p = procuraProprietario(car.getProprietario().getNif());
-        Point2D localizacaoCarro = car.getCoordenada();
+        Proprietario p = procuraProprietario(carro.getProprietario().getNif());
+        Point2D localizacaoCarro = carro.getCoordenada();
         if(temAutonomia(carro,destino)){
             custo = custo(carro,destino);
         } else throw new AluguerException("O carro "+carro.getMatricula()+" não tem autonomia suficiente para efetuar a viagem.");
 
         LocalDateTime dataInicio = LocalDateTime.now();
-        LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,car,destino));
+        LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,carro,destino));
         int estado=Aluguer.PENDENTE;
 
         Aluguer aluguer= new Aluguer(carro,c,p,localizacaoCarro,destino,dataInicio,dataFimPrevista,estado);
@@ -588,7 +658,7 @@ public class Servico implements Serializable {
 
     public double precoViagem(String matricula, LocalDateTime inicio, LocalDateTime fim){
         return this.listaAlugueres.stream()
-                                  .filter(l->l.getCar().getMatricula().equals(matricula) && l.getDataFim().isAfter(inicio) && l.getDataInicio().isBefore(fim))
+                                  .filter(l->l.getCar().getMatricula().equals(matricula) && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
                                   .mapToDouble(Aluguer :: precoAluguer)
                                   .sum();
     }
@@ -600,5 +670,64 @@ public class Servico implements Serializable {
                 .map(Carro::toString)
                 .collect(Collectors.toList());
     }
+
+
+
+    public List<String> alugueresEntreDatasCliente(int nifCli, LocalDateTime inicio, LocalDateTime fim){
+        return this.listaAlugueres.stream()
+                .filter(l -> l.getCli().getNif()==nifCli && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
+                .map(Aluguer::toString)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> alugueresEntreDatasProprietario(int nifProp, LocalDateTime inicio, LocalDateTime fim){
+        return this.listaAlugueres.stream()
+                .filter(l -> l.getP().getNif()==nifProp && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
+                .map(Aluguer::toString)
+                .collect(Collectors.toList());
+    }
+
+    public List<Integer> dezClientesNVezes(){
+        Comparator<Cliente> c = (Cliente c1, Cliente c2) -> {
+            if(c1.getHistorico().size()>c2.getHistorico().size()) return -1;
+            if(c1.getHistorico().size()<c2.getHistorico().size()) return 1;
+            return 0;
+        };
+
+        return listaAtores.values().stream()
+                .filter(l->l instanceof Cliente)
+                .map(l->(Cliente)l)
+                .sorted(c)
+                .map(Cliente::getNif)
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    public List<Integer> dezClientesKms(){
+        Comparator<Cliente> c = (Cliente c1, Cliente c2) -> {
+            if(c1.kmsPercorridosTotal()>c2.kmsPercorridosTotal()) return -1;
+            if(c1.kmsPercorridosTotal()<c2.kmsPercorridosTotal()) return 1;
+            return 0;
+        };
+        return listaAtores.values().stream()
+                .filter(l->l instanceof Cliente)
+                .map(l->(Cliente)l)
+                .sorted(c)
+                .map(Cliente::getNif)
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    public void classificaCarro(String matricula, int classificacao) throws CarroException{
+        procuraCarro(matricula).adicionaClassificacao(classificacao);
+    }
+
+    public void classificaAtor(int nif, int classificacao) throws AtorException{
+        if(this.listaAtores.containsKey(nif)) {
+            this.listaCarros.get(nif).adicionaClassificacao(classificacao);
+        }
+        else throw new AtorException("O ator "+nif+" não existe!");
+    }
+
 
 }

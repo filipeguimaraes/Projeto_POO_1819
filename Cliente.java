@@ -50,6 +50,12 @@ public class Cliente extends Ator{
         return s.toString();
     }
 
+    public double kmsPercorridosTotal(){
+        return this.getHistorico().stream()
+                .mapToDouble(Aluguer::kmsPercorridos)
+                .sum();
+    }
+
     public Cliente clone(){
         return new Cliente(this);
     }

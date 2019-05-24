@@ -176,6 +176,8 @@ public abstract class Carro implements Serializable {
 
     //metodo que abastece o veiculo segundo a autonomia de input e retorna a nova Autonomia do Carro
     public abstract double abasteceCarro(double acrescenta);
+
+    public abstract double abasteceCarro();
 }
 
 

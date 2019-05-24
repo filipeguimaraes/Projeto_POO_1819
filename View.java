@@ -1,3 +1,7 @@
+import java.lang.invoke.StringConcatFactory;
+import java.sql.Ref;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -16,28 +20,37 @@ public class View {
 
     public static String LINE = "#################################################################################################";
 
-    public static String RESET = "\033[0m";  // Text Reset
-    public static String RED = "\033[0;31m";     // RED
-    public static String CYAN_BOLD = "\033[1;36m";   // Cyan Bold
-    public static String CYAN = "\033[0;36m";
-    public static int CLIENTE = 1;
-    public static int PROPRIETARIO = 2;
+    public static final String RESET = "\033[0m";  // Text Reset
+    public static final String RED = "\033[0;31m";     // RED
+    public static final String CYAN_BOLD = "\033[1;36m";   // Cyan Bold
+    public static final String CYAN = "\033[0;36m";
+    public static final int CLIENTE = 1;
+    public static final int PROPRIETARIO = 2;
 
-    public final static int EMAIL=0;
-    public final static int PASS=1;
-    public final static int NIF=2;
-    public final static int NOME=3;
-    public final static int MORADA=4;
-    public final static int DATA=5;
+    public static final int EMAIL=0;
+    public static final int PASS=1;
+    public static final int NIF=2;
+    public static final int NOME=3;
+    public static final int MORADA=4;
+    public static final int DATA=5;
 
-    public final static int MARCA=0;
-    public final static int MATRICULA=1;
-    public final static int VELOCIDADE=2;
-    public final static int PRECO=3;
-    public final static int LOCALIZACAO=4;
-    public final static int CONSUMO=5;
-    public final static int AUTONOMIA=6;
-    public final static int TIPOCARRO=7;
+    public static final int MARCA=0;
+    public static final int MATRICULA=1;
+    public static final int VELOCIDADE=2;
+    public static final int PRECO=3;
+    public static final int LOCALIZACAO=4;
+    public static final int CONSUMO=5;
+    public static final int AUTONOMIA=6;
+    public static final int TIPOCARRO=7;
+
+    public static final int DESTINO=0;
+    public static final int CARRO=1;
+    public static final int DISTANCIA=2;
+    public static final int AUTONOMIADESEJADA=3;
+
+    public static final int DATAINICIO=0;
+    public static final int DATAFIM=2;
+
 
 
 
@@ -122,6 +135,21 @@ public class View {
         resetColor();
     }
 
+    public void top10() {
+        cyan();
+        line(2);
+        System.out.println("             $$$$$$$$\\  $$$$$$\\  $$$$$$$\\          $$\\   $$$$$$\\  ");
+        System.out.println("             \\__$$  __|$$  __$$\\ $$  __$$\\       $$$$ | $$$ __$$\\ ");
+        System.out.println("                $$ |   $$ /  $$ |$$ |  $$ |      \\_$$ | $$$$\\ $$ |");
+        System.out.println("                $$ |   $$ |  $$ |$$$$$$$  |        $$ | $$\\$$\\$$ |");
+        System.out.println("                $$ |   $$ |  $$ |$$  ____/         $$ | $$ \\$$$$ |");
+        System.out.println("                $$ |   $$ |  $$ |$$ |              $$ | $$ |\\$$$ |");
+        System.out.println("                $$ |    $$$$$$  |$$ |            $$$$$$\\\\$$$$$$  /");
+        System.out.println("                \\__|    \\______/ \\__|            \\______|\\______/");
+        line(2);
+        resetColor();
+    }
+
     public void mainMenu(String[] opcoes){
         clear(ECRA);
         ban();
@@ -138,15 +166,6 @@ public class View {
         resetColor();
         System.out.println("     Opção pretendida: ");
     }
-
-
-
-    public void continuarSair(){
-        System.out.print("Continuar(0) ou sair(5): ");
-
-    }
-
-
 
     public String[] loginMenu(){
         String[] emailPassword = new String[2];
@@ -186,7 +205,7 @@ public class View {
     }
 
     public String[] registarCarroMenu(){
-        String[] registos;
+        String[] registos= new String[8];
         clear(ECRA);
         ban();
         System.out.print("Tipo"+CYAN +"(Electrico|Gasolina|Hibrido)"+RESET+": ");
@@ -216,14 +235,89 @@ public class View {
         return registos;
     }
 
-    public String[] pedirAluguer(){
-        String aluguer= new String[];
+    public String[] aluguerCarroEspecifico(){
+        String[] aluguer = new String[2];
         clear(ECRA);
         ban();
+        mudarLinha();
+        System.out.print("Introduza o destino da viagem x,y :");
+        aluguer[DESTINO] = lerString();
+        mudarLinha();
+        System.out.print("Introduza o Carro que deseja (AA-AA-AA):");
+        aluguer[CARRO] = lerString();
+        return aluguer;
+    }
 
+    public String[] aluguerDestino(){
+        String[] aluguer = new String[1];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza o destino da viagem x,y :");
+        aluguer[DESTINO] = lerString();
+        mudarLinha();
+        return aluguer;
+    }
+
+    public String[] aluguerDistancia(){
+        String[] aluguer = new String[3];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza o destino da viagem x,y :");
+        aluguer[DESTINO] = lerString();
+        mudarLinha();
+        System.out.print("Introduza a distância que está disposto a percorrer a pé (em km):");
+        aluguer[DISTANCIA] = lerString();
+        return aluguer;
+    }
+
+    public String[] aluguerAutonomia(){
+        String[] aluguer = new String[4];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza o destino da viagem x,y :");
+        aluguer[DESTINO] = lerString();
+        mudarLinha();
+        System.out.print("Introduza a autonomia desejada (em km):");
+        aluguer[AUTONOMIADESEJADA] = lerString();
+        return aluguer;
+    }
+
+    public String listaCarroAutonomia(List<String> carros){
+        clear(ECRA);
+        cyan();
+        line(1);
+        System.out.println("                                  Carros com a autonomia desejada");
+        line(1);
+        resetColor();
+        mudarLinha();
+        int i=1;
+        for (String c : carros){
+            printOpcao(i,c);
+            i++;
+        }
+        cyan();
+        line(1);
+        resetColor();
+        System.out.print("Introduza a matrícula: ");
+        return lerString();
+    }
+
+    public void imprimeCusto(double custo){
+        DecimalFormat df = new DecimalFormat("#.##");
+        System.out.println("Este aluguer vai ter um custo de "+df.format(custo)+"€");
+        System.out.println(RED+"Espere pela confimação do proprietario."+RESET);
+        System.out.println(CYAN+"Obrigado por preferir a UMCarroJá!"+RESET);
     }
 
 
+    public void imprimeCarro(String matricula){
+        System.out.println("O Carro que satisfaz o seu pedido é "+CYAN_BOLD+matricula+RESET);
+    }
+
+    @SuppressWarnings("Duplicates")
     public void printExcecoes(List<String> ex){
         clear(ECRA);
         cyan();
@@ -244,21 +338,79 @@ public class View {
         enterContinuar();
     }
 
+    @SuppressWarnings("Duplicates")
     public void listaCarros(List<String> elementos){
         clear(ECRA);
         ban();
         mudarLinha();
         int i=1;
         for (String s : elementos) {
-            printOpcao(i, elementos.get(i));
+            printOpcao(i, s);
             i++;
         }
         mudarLinha();
         cyan();
         line(1);
         resetColor();
-        System.out.println("     Introduza a matricula: ");
+        enterContinuar();
+    }
 
+    @SuppressWarnings("Duplicates")
+    public String[] datasAlugueres(){
+        String[] aluguer = new String[3];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza a data inicial (DD/MM/AAAA) :");
+        aluguer[DATAINICIO] = lerString();
+        mudarLinha();
+        System.out.print("Introduza a data final (DD/MM/AAAA) :");
+        aluguer[DATAFIM] = lerString();
+        mudarLinha();
+        return aluguer;
+    }
+
+    @SuppressWarnings("Duplicates")
+    public void listaAlugueres(List<String> ls){
+        clear(ECRA);
+        cyan();
+        line(1);
+        System.out.println("                             Lista dos alugueres efetuados entre datas");
+        line(1);
+        resetColor();
+        mudarLinha();
+        int i=1;
+        for (String s : ls) {
+            printOpcao(i, s);
+            i++;
+        }
+        mudarLinha();
+        cyan();
+        line(1);
+        resetColor();
+        enterContinuar();
+    }
+
+    public String[] totalFaturado(){
+        String[] fatura = new String[3];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza a matrícula:");
+        fatura[MATRICULA] = lerString();
+        mudarLinha();
+        System.out.print("Introduza a data inicial (DD/MM/AAAA) :");
+        fatura[DATAINICIO] = lerString();
+        mudarLinha();
+        System.out.print("Introduza a data final (DD/MM/AAAA) :");
+        fatura[DATAFIM] = lerString();
+        mudarLinha();
+        return fatura;
+    }
+
+    public void imprimeTotalFaturado(String matricula, double faturado){
+        DecimalFormat df = new DecimalFormat("#.##");
+        System.out.println("O Carro "+matricula+" faturou, no período de tempo fornecido :"+df.format(faturado)+"€");
     }
 
 
@@ -273,6 +425,42 @@ public class View {
         Scanner s=new Scanner(System.in);
         System.out.print("Precione enter para continuar . . . ");
         s.nextLine();
+    }
+
+    public void imprimeTop10(List<Integer> nifs){
+        clear(ECRA);
+        top10();
+        int number= ((ECRA - 18) - nifs.size()) / 2;
+        clear(number);
+        int i = 1;
+        for(Integer nif : nifs){
+            printOpcao(i,String.valueOf(nif));
+            i++;
+        }
+        clear(number);
+        cyan();
+        line(1);
+        resetColor();
+        enterContinuar();
+    }
+
+    public String[] alteraPreco(){
+        String[] preco = new String[4];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza a matrícula:");
+        preco[MATRICULA] = lerString();
+        mudarLinha();
+        System.out.print("Introduza o novo preço (em €/km) :");
+        preco[PRECO] = lerString();
+        mudarLinha();
+        return preco;
+    }
+
+    public void precoAlterado(){
+        System.out.println(RED+"Preço alterado!"+RESET);
+        enterContinuar();
     }
 
     public String lerString() {

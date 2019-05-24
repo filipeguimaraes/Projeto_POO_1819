@@ -45,9 +45,24 @@ public class Proprietario extends Ator {
 
 
     public void adicionaCarro(Carro car){
-        this.listaCarros.put(car.getMatricula(),car.clone());
+        this.listaCarros.put(car.getMatricula(),car);
     }
 
+    public void alteraPreco(double preco, String matricula) throws CarroException{
+        if(listaCarros.containsKey(matricula)){
+            this.listaCarros.get(matricula).setPreco(preco);
+        } else throw new CarroException("O Carro "+matricula+" não lhe pertence ou não está registado no sistema!");
+    }
+
+    public void abasteceCarro(String tipoCombustivel, String matricula) throws CarroException{
+        if (this.listaCarros.containsKey(matricula)){
+            if(this.listaCarros.get(matricula).getClass().getSimpleName().equals("CarroGasolina")){
+                if(tipoCombustivel.equals("Gasolina")){
+                    
+                }
+            }
+        } else throw new CarroException("O carro "+matricula+" não existe");
+    }
 
     public boolean equals(Object o){
         if(this == o) return true;

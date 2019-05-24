@@ -148,6 +148,7 @@ public abstract class Ator implements Serializable {
 
     public abstract Ator clone();
 
+
     public String toString(){
         StringBuilder s= new StringBuilder();
         s.append("Geral{");

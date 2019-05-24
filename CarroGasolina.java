@@ -65,6 +65,11 @@ public class CarroGasolina extends Carro{
         return this.getAutonomia();
     }
 
+    public double abasteceCarro(){
+        this.autonomia =autonomiaTotal;
+        return this.getAutonomia();
+    }
+
     public String toString(){
         StringBuilder s= new StringBuilder("CarroGasolina ->");
         s.append(super.toString());
