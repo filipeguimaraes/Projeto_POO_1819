@@ -298,6 +298,7 @@ public class Controller {
                 "Lista de carros registados",
                 "Lista de alugueres efetuados entre datas",
                 "Alterar o preço por Km de um carro registado",
+                "Abastecer veículo",
                 "Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
@@ -370,6 +371,18 @@ public class Controller {
                         }
                         break;
                     case 5:
+                        String[] campos5 = view.abasteceCarro();
+                        String matricula5 = campos5[View.MATRICULA];
+                        String tipoCombustivel = campos5[View.COMBUSTIVEL];
+                        try{
+                            view.carroAbastecido(servico.procuraCarro(matricula5).abasteceCarro(tipoCombustivel));
+                        }catch (CarroException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                            continue;
+                        }
+                        break;
+                    case 6:
                         escolha=0;
                         break;
                     default:

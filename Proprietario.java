@@ -56,12 +56,8 @@ public class Proprietario extends Ator {
 
     public void abasteceCarro(String tipoCombustivel, String matricula) throws CarroException{
         if (this.listaCarros.containsKey(matricula)){
-            if(this.listaCarros.get(matricula).getClass().getSimpleName().equals("CarroGasolina")){
-                if(tipoCombustivel.equals("Gasolina")){
-                    
-                }
-            }
-        } else throw new CarroException("O carro "+matricula+" não existe");
+            this.listaCarros.get(matricula).abasteceCarro(tipoCombustivel);
+        }else throw new CarroException("O carro "+matricula+" não existe");
     }
 
     public boolean equals(Object o){

@@ -63,10 +63,16 @@ public class CarroHibrido extends Carro{
         return this.getAutonomia();
     }
 
-    public double abasteceCarro(){
-        this.autonomia =autonomiaTotal;
+
+    public double abasteceCarro(String tipo) throws CarroException{
+        if(tipo.equals("Eletricidade")){
+            this.autonomia =autonomiaTotal/3;
+        }else if(tipo.equals("Gasolina")){
+            this.autonomia =(2*autonomiaTotal)/3;
+        }else throw new CarroException("O carro não pode ser abastecido com "+tipo);
         return this.getAutonomia();
     }
+
 
     public String toString(){
         StringBuilder s= new StringBuilder("CarroHibrido ->");

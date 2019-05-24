@@ -1,7 +1,4 @@
-import java.lang.invoke.StringConcatFactory;
-import java.sql.Ref;
 import java.text.DecimalFormat;
-import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -50,6 +47,8 @@ public class View {
 
     public static final int DATAINICIO=0;
     public static final int DATAFIM=2;
+
+    public static final int COMBUSTIVEL=0;
 
 
 
@@ -342,12 +341,15 @@ public class View {
     public void listaCarros(List<String> elementos){
         clear(ECRA);
         ban();
+        int number= ((ECRA - 25) - elementos.size()) / 2;
+        clear(number);
         mudarLinha();
         int i=1;
         for (String s : elementos) {
             printOpcao(i, s);
             i++;
         }
+        clear(number);
         mudarLinha();
         cyan();
         line(1);
@@ -445,7 +447,7 @@ public class View {
     }
 
     public String[] alteraPreco(){
-        String[] preco = new String[4];
+        String[] preco = new String[2];
         clear(ECRA);
         ban();
         mudarLinha();
@@ -460,6 +462,28 @@ public class View {
 
     public void precoAlterado(){
         System.out.println(RED+"Preço alterado!"+RESET);
+        enterContinuar();
+    }
+
+    public String[] abasteceCarro(){
+        String[] abastece = new String[4];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza a matrícula:");
+        abastece[MATRICULA] = lerString();
+        mudarLinha();
+        System.out.print("Introduza o tipo de combustível "+RED+"(Gasolina/Eletricidade)"+RESET+":");
+        abastece[COMBUSTIVEL] = lerString();
+        mudarLinha();
+        return abastece;
+    }
+
+    public void carroAbastecido(double autonomia){
+        line(1);
+        System.out.println("Carro abastecido!");
+        System.out.println("Autonomia atual "+autonomia);
+        line(1);
         enterContinuar();
     }
 

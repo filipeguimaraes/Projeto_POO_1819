@@ -158,7 +158,7 @@ public abstract class Carro implements Serializable {
         s.append(", Preço: " + this.preco);
         s.append(", Classificaçao: " + this.classificacao);
         s.append(", Coordenada: " + this.coordenada);
-        s.append(", Historico: " + this.historico.toString());
+        //s.append(", Historico: " + this.historico.toString());
         s.append(", Proprietario: "+ this.proprietario.getNome()+'}');
         return s.toString();
     }
@@ -177,7 +177,7 @@ public abstract class Carro implements Serializable {
     //metodo que abastece o veiculo segundo a autonomia de input e retorna a nova Autonomia do Carro
     public abstract double abasteceCarro(double acrescenta);
 
-    public abstract double abasteceCarro();
+    public abstract double abasteceCarro(String tipo) throws CarroException;
 }
 
 

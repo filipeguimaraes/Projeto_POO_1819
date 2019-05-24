@@ -729,5 +729,4 @@ public class Servico implements Serializable {
         else throw new AtorException("O ator "+nif+" não existe!");
     }
 
-
 }
