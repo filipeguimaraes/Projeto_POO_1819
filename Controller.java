@@ -63,7 +63,7 @@ public class Controller {
                         escolha=0;
                         continue;
                     } catch (ClassNotFoundException e){
-                        System.out.println("Erro: "+e);
+                        System.out.println("Erro: "+e.getMessage());
                         view.enterContinuar();
                         escolha = 0;
                         continue;
@@ -83,7 +83,7 @@ public class Controller {
                         Carregamento.escreverFicheiroOjeto(this.servico,OBJ_PATH);
                         System.out.println("Guardado com sucesso");
                     } catch (IOException e){
-                        System.out.println(View.RED+"Erro ao escrever ficheiro: "+View.RESET+e);
+                        System.out.println(View.RED+"Erro ao escrever ficheiro: "+View.RESET+e.getMessage());
                     }
                     view.enterContinuar();
                     escolha=0;
@@ -115,9 +115,11 @@ public class Controller {
                 case 1:
                     view.souCliente();
                     escolha = runCliente();
+                    break;
                 case 2 :
                     view.souProprietario();
                     escolha = runProprietario();
+                    break;
                 default:
                     break;
             }
@@ -141,7 +143,7 @@ public class Controller {
                         nif = servico.login(email1,pass1);
                         escolha = 0;
                     }catch (AutenticacaoException e){
-                        System.out.println(e);
+                        System.out.println(e.getMessage());
                         view.enterContinuar();
                         continue;
                     }
@@ -159,7 +161,7 @@ public class Controller {
                         try{
                             servico.adicionaCliente(email,pass,nif,nome,morada,data);
                         } catch (AtorException a){
-                            System.out.println(a);
+                            System.out.println(a.getMessage());
                             view.enterContinuar();
                         }
                     }
@@ -167,7 +169,7 @@ public class Controller {
                         try {
                             servico.adicionaProprietario(email,pass,nif,nome,morada,data);
                         }catch (AtorException a){
-                            System.out.println(a);
+                            System.out.println(a.getMessage());
                             view.enterContinuar();
                         }
                     }
@@ -275,7 +277,7 @@ public class Controller {
                             view.enterContinuar();
                             escolha=0;
                         }catch (AtorException|AluguerException|CarroException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                             escolha=1;
                         }
@@ -289,7 +291,7 @@ public class Controller {
                             view.enterContinuar();
                             escolha=0;
                         }catch (CarroException|AluguerException|AtorException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                         }
                         break;
@@ -302,7 +304,7 @@ public class Controller {
                             view.enterContinuar();
                             escolha=0;
                         }catch (CarroException|AluguerException|AtorException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                         }
                         break;
@@ -316,7 +318,7 @@ public class Controller {
                             view.enterContinuar();
                             escolha=0;
                         }catch (CarroException|AluguerException|AtorException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                         }
                         break;
@@ -330,7 +332,7 @@ public class Controller {
                             view.enterContinuar();
                             escolha=0;
                         }catch (AtorException|AluguerException|CarroException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                             escolha=1;
                         }
@@ -373,21 +375,21 @@ public class Controller {
                             try {
                                 servico.adicionaCarroEletrico(marca,matricula,nif,velocidade,preco,localizacao,consumo,autonomia);
                             } catch (CarroException|AtorException e){
-                                System.out.println(e);
+                                System.out.println(e.getMessage());
                                 view.enterContinuar();
                             }
                         } else if(tipo.contains("Gasolina")){
                             try {
                                 servico.adicionaCarroGasolina(marca,matricula,nif,velocidade,preco,localizacao,consumo,autonomia);
                             } catch (CarroException|AtorException e){
-                                System.out.println(e);
+                                System.out.println(e.getMessage());
                                 view.enterContinuar();
                             }
                         } else if(tipo.contains("Hibrido")){
                             try {
                                 servico.adicionaCarroHibrido(marca,matricula,nif,velocidade,preco,localizacao,consumo,autonomia);
                             } catch (CarroException|AtorException e){
-                                System.out.println(e);
+                                System.out.println(e.getMessage());
                                 view.enterContinuar();
                             }
                         }
@@ -399,7 +401,7 @@ public class Controller {
                             System.out.println(lista);
                             view.listaCarros(lista);
                         }catch (AtorException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                         }
                         break;
@@ -417,7 +419,7 @@ public class Controller {
                             servico.procuraProprietario(nif).alteraPreco(preco4,matricula4);
                             view.precoAlterado();
                         } catch (AtorException|CarroException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                             continue;
                         }
@@ -429,7 +431,7 @@ public class Controller {
                         try{
                             view.carroAbastecido(servico.procuraCarro(matricula5).abasteceCarro(tipoCombustivel));
                         }catch (CarroException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                             continue;
                         }
@@ -443,12 +445,12 @@ public class Controller {
                             try {
                                 servico.terminaAluguer(estado,nifCliente);
                             }catch(CarroException e){
-                                System.out.println(e);
+                                System.out.println(e.getMessage());
                                 view.enterContinuar();
                                 continue;
                             }
                         }catch (AtorException | AluguerException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                             continue;
                         }
@@ -459,7 +461,7 @@ public class Controller {
                                     servico.verMorada(nif),servico.verDataNascimente(nif),servico.verClassificacao(nif),
                                     servico.verNumeroAluguer(nif));
                         } catch (AtorException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                             continue;
                         }
@@ -508,7 +510,7 @@ public class Controller {
                         view.imprimeTotalFaturado(matricula3,servico.totalFaturadoPeriodo(matricula3,datainicio,datafim));
                         view.enterContinuar();
                     }catch (CarroException e){
-                        System.out.println(e);
+                        System.out.println(e.getMessage());
                         view.enterContinuar();
                         escolha=1;
                         view.enterContinuar();
