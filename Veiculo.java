@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * Escreva a descrição da classe Carro aqui.
+ * Escreva a descrição da classe Veiculo aqui.
  * 
  * @author (seu nome) 
  * @version (número de versão ou data)
  */
-public abstract class Carro implements Serializable {
+public abstract class Veiculo implements Serializable {
     private String marca;
     private String matricula;
     private Proprietario proprietario;
@@ -20,7 +20,7 @@ public abstract class Carro implements Serializable {
     private Point2D coordenada;
     private List<Aluguer> historico;
 
-    public Carro(){
+    public Veiculo(){
         this.marca= "";
         this.matricula= "00-00-00";
         this.proprietario=new Proprietario();
@@ -31,7 +31,7 @@ public abstract class Carro implements Serializable {
         this.historico=new ArrayList<>();
     }
 
-    public Carro(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, Classificacao classificacao, Point2D coordenada, List<Aluguer> historico) {
+    public Veiculo(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, Classificacao classificacao, Point2D coordenada, List<Aluguer> historico) {
         this.marca = marca;
         this.matricula = matricula;
         this.proprietario = proprietario;
@@ -43,7 +43,7 @@ public abstract class Carro implements Serializable {
     }
 
     
-    public Carro(Carro umCarro){
+    public Veiculo(Veiculo umCarro){
         this.marca=umCarro.getMarca();
         this.matricula=umCarro.getMatricula();
         this.proprietario=umCarro.getProprietario();
@@ -136,12 +136,12 @@ public abstract class Carro implements Serializable {
         return (this.coordenada.distance(fim)/this.velocidade);
     }
 
-    public abstract Carro clone();
+    public abstract Veiculo clone();
 
     public boolean equals(Object o){
         if(this==o) return true;
         if(o==null || o.getClass()!=this.getClass()) return false;
-        Carro c = (Carro) o;
+        Veiculo c = (Veiculo) o;
         return c.getVelocidade()==this.velocidade
             && c.getPreco()==this.preco
             && c.getClassificacao()==this.classificacao
@@ -174,7 +174,7 @@ public abstract class Carro implements Serializable {
     //metodo que gastas os kilometros de input, atualizando a Autonomia do carro
     public abstract void percorreDistancia(double kilometros);
 
-    //metodo que abastece o veiculo segundo a autonomia de input e retorna a nova Autonomia do Carro
+    //metodo que abastece o veiculo segundo a autonomia de input e retorna a nova Autonomia do Veiculo
     public abstract double abasteceCarro(double acrescenta);
 
     public abstract double abasteceCarro(String tipo) throws CarroException;

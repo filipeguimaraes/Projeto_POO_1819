@@ -6,7 +6,7 @@ import java.util.List;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class CarroGasolina extends Carro{
+public class CarroGasolina extends Veiculo {
     private double consumo;
     private double autonomia;
 

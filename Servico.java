@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @version (a version number or a date)
  */
 public class Servico implements Serializable {
-    private Map<String,Carro> listaCarros;
+    private Map<String, Veiculo> listaCarros;
     private Map<Integer,Ator> listaAtores;
     private List<Aluguer> listaAlugueres;
     private Meteorologia meteorologia;
@@ -25,7 +25,7 @@ public class Servico implements Serializable {
     }
 
 
-    public Servico(Map<String, Carro> lsCarros, Map<Integer, Ator> lsAtores, List<Aluguer> lsAlugueres,
+    public Servico(Map<String, Veiculo> lsCarros, Map<Integer, Ator> lsAtores, List<Aluguer> lsAlugueres,
                    Meteorologia meteorologia) {
         this.listaCarros = lsCarros;
         this.listaAtores = lsAtores;
@@ -42,12 +42,12 @@ public class Servico implements Serializable {
 
 
 
-    public Map<String, Carro> getListaCarros() {
+    public Map<String, Veiculo> getListaCarros() {
         return listaCarros.entrySet().stream()
                 .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public void setListaCarros(Map<String, Carro> listaCarros) {
+    public void setListaCarros(Map<String, Veiculo> listaCarros) {
         this.listaCarros = listaCarros.entrySet().stream()
                 .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
@@ -173,7 +173,7 @@ public class Servico implements Serializable {
 
     public void adicionaProprietario(String email, String password, int nif, String nome, String morada, LocalDateTime data) throws AtorException{
         if(!listaAtores.containsKey(nif)){
-            Proprietario p = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(), new ArrayList<Aluguer>(),new HashMap<String, Carro>());
+            Proprietario p = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(), new ArrayList<Aluguer>(),new HashMap<String, Veiculo>());
             this.listaAtores.put(nif,p);
         } else {
             throw new AtorException("Proprietário "+nif+" já existe!");
@@ -196,7 +196,7 @@ public class Servico implements Serializable {
         else throw new AtorException("Não existe o Proprietario "+nif);
     }
 
-    public Carro procuraCarro(String matricula) throws CarroException{
+    public Veiculo procuraCarro(String matricula) throws CarroException{
         if (listaCarros.containsKey(matricula)) return listaCarros.get(matricula);
         else throw new CarroException("Não existe o carro "+matricula);
     }
@@ -240,7 +240,7 @@ public class Servico implements Serializable {
     }
 
 
-    public boolean temAutonomia(Carro c,Point2D f){
+    public boolean temAutonomia(Veiculo c, Point2D f){
         double autonomia;
         double distancia;
         double autonomiaFinal;
@@ -252,11 +252,11 @@ public class Servico implements Serializable {
         return(autonomiaFinal>10);
     }
 
-    public double  distanciaAoCarro(Cliente cli,Carro car){
+    public double  distanciaAoCarro(Cliente cli, Veiculo car){
         return Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2));
     }
 
-    public double custo(Carro c, Point2D f){
+    public double custo(Veiculo c, Point2D f){
         double distancia;
         Point2D i = c.getCoordenada();
         distancia=Math.sqrt(Math.pow(i.getX()-f.getX(), 2) +Math.pow(i.getY()-f.getY(), 2));
@@ -280,7 +280,7 @@ public class Servico implements Serializable {
     public String carroMaisProximo(int nifcli,String tipo) throws AtorException, CarroException{
         Cliente cli= procuraCliente(nifcli);
         Point2D localizacaoCliente = cli.getCoordenada();
-        Comparator<Carro> c = (Carro c1, Carro c2) -> {
+        Comparator<Veiculo> c = (Veiculo c1, Veiculo c2) -> {
             if(distanciaAoPonto(cli,c1.getCoordenada())<distanciaAoPonto(cli,c2.getCoordenada())) return -1;
             if(distanciaAoPonto(cli,c1.getCoordenada())>distanciaAoPonto(cli,c2.getCoordenada())) return 1;
             else return 0;
@@ -291,7 +291,7 @@ public class Servico implements Serializable {
                 String cG = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroGasolina"))
                         .sorted(c)
-                        .map(Carro::getMatricula)
+                        .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
                 return cG;
@@ -301,7 +301,7 @@ public class Servico implements Serializable {
                 String cE = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroEletrico"))
                         .sorted(c)
-                        .map(Carro::getMatricula)
+                        .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
                 return cE;
@@ -311,7 +311,7 @@ public class Servico implements Serializable {
                 String cH = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroHibrido"))
                         .sorted(c)
-                        .map(Carro::getMatricula)
+                        .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
                 return cH;
@@ -327,7 +327,7 @@ public class Servico implements Serializable {
     public String carroMaisProximo(int nifcli) throws AtorException, CarroException{
         Cliente cli= procuraCliente(nifcli);
         Point2D localizacaoCliente = cli.getCoordenada();
-        Comparator<Carro> c = (Carro c1, Carro c2) -> {
+        Comparator<Veiculo> c = (Veiculo c1, Veiculo c2) -> {
             if(distanciaAoPonto(cli,c1.getCoordenada())<distanciaAoPonto(cli,c2.getCoordenada())) return -1;
             if(distanciaAoPonto(cli,c1.getCoordenada())>distanciaAoPonto(cli,c2.getCoordenada())) return 1;
             else return 0;
@@ -335,7 +335,7 @@ public class Servico implements Serializable {
         if (!listaCarros.isEmpty()) {
                 String car = listaCarros.values().stream()
                         .sorted(c)
-                        .map(Carro::getMatricula)
+                        .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
                 return car;
@@ -357,7 +357,7 @@ public class Servico implements Serializable {
                 String cG = listaCarros.values().stream()
                             .filter(car -> car.getClass().getSimpleName().equals("CarroGasolina"))
                             .sorted(new ComparatorCarroPreco())
-                        .map(Carro::getMatricula)
+                        .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
                     return cG;
@@ -367,7 +367,7 @@ public class Servico implements Serializable {
                 String cE = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroEletrico"))
                         .sorted(new ComparatorCarroPreco())
-                        .map(Carro::getMatricula)
+                        .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
                 return cE;
@@ -377,7 +377,7 @@ public class Servico implements Serializable {
                 String cH = listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroHibrido"))
                         .sorted(new ComparatorCarroPreco())
-                        .map(Carro::getMatricula)
+                        .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
                 return cH;
@@ -393,7 +393,7 @@ public class Servico implements Serializable {
         if (!listaCarros.isEmpty()) {
                 String car = listaCarros.values().stream()
                         .sorted(new ComparatorCarroPreco())
-                        .map(Carro::getMatricula)
+                        .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
                 return car;
@@ -413,7 +413,7 @@ public class Servico implements Serializable {
         String car = this.listaCarros.values().stream()
                                               .filter(carro-> distanciaAoCarro(cli,carro)<=distancia)
                                               .sorted(new ComparatorCarroPreco())
-                                              .map(Carro::getMatricula)
+                                              .map(Veiculo::getMatricula)
                                               .findFirst()
                                               .orElse("N/A");
         return car;
@@ -422,7 +422,7 @@ public class Servico implements Serializable {
     public List<String> carroAutonomiaDesejada(double autonomia){
         return this.listaCarros.values().stream()
                                         .filter(l -> l.getAutonomia()>=autonomia)
-                                        .map(Carro :: getMatricula)
+                                        .map(Veiculo:: getMatricula)
                                         .collect(Collectors.toList());
     }
 
@@ -436,7 +436,7 @@ public class Servico implements Serializable {
     public void classificarCarro(String matricula, int classificacao) throws CarroException{
         if (listaCarros.containsKey(matricula)){
             this.listaCarros.get(matricula).adicionaClassificacao(classificacao);
-        } else throw new CarroException("Carro "+matricula+" inválido!");
+        } else throw new CarroException("Veiculo "+matricula+" inválido!");
     }
 
     /**
@@ -473,7 +473,7 @@ public class Servico implements Serializable {
      * @param car carro
      * @return tempo em minutos
      */
-    public double tempoCliente(Cliente cli, Carro car){
+    public double tempoCliente(Cliente cli, Veiculo car){
         return (distanciaAoCarro(cli,car)/4)*60;
     }
 
@@ -485,14 +485,14 @@ public class Servico implements Serializable {
      * @param destino destino da viagem
      * @return duração da viagem em minutos
      */
-    public long duracaoAluguer(Cliente cli,Carro car,Point2D destino){
+    public long duracaoAluguer(Cliente cli, Veiculo car, Point2D destino){
         return Math.round(this.meteorologia.medicaoMinutos()+tempoCliente(cli,car)+car.tempoViagem(destino));
     }
 
     @SuppressWarnings("Duplicates")
-    public double AluguerProf(int nifCliente,Point2D destino, Carro car) throws AtorException,CarroException,AluguerException{
+    public double AluguerProf(int nifCliente,Point2D destino, Veiculo car) throws AtorException,CarroException,AluguerException{
         double custo=0;
-        Carro carro = procuraCarro(car.getMatricula());
+        Veiculo carro = procuraCarro(car.getMatricula());
         Cliente c = procuraCliente(nifCliente);
         Proprietario p = procuraProprietario(carro.getProprietario().getNif());
         Point2D localizacaoCarro = carro.getCoordenada();
@@ -514,7 +514,7 @@ public class Servico implements Serializable {
     @SuppressWarnings("Duplicates")
     public double pedidoAluguer(int nifCliente,Point2D destino, String matricula) throws AtorException,CarroException,AluguerException{
         double custo=0;
-        Carro carro = procuraCarro(matricula);
+        Veiculo carro = procuraCarro(matricula);
         Cliente c = procuraCliente(nifCliente);
         Proprietario p = procuraProprietario(carro.getProprietario().getNif());
         Point2D localizacaoCarro = carro.getCoordenada();
@@ -561,7 +561,7 @@ public class Servico implements Serializable {
 
 
 
-    public void atribuiAluguer(Aluguer aluguer, Cliente c, Proprietario p, Carro car) throws AluguerException{
+    public void atribuiAluguer(Aluguer aluguer, Cliente c, Proprietario p, Veiculo car) throws AluguerException{
         c.adicionaAluguer(procuraAluguer(aluguer));
         p.adicionaAluguer(procuraAluguer(aluguer));
         car.adicionaAluguer(procuraAluguer(aluguer));
@@ -603,7 +603,7 @@ public class Servico implements Serializable {
         return procuraProprietario(nif).getListaCarros()
                 .values()
                 .stream()
-                .map(Carro::toString)
+                .map(Veiculo::toString)
                 .collect(Collectors.toList());
     }
 

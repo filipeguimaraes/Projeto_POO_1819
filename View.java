@@ -247,7 +247,7 @@ public class View {
         System.out.print("Introduza o destino da viagem x,y :");
         aluguer[DESTINO] = lerString();
         mudarLinha();
-        System.out.print("Introduza o Carro que deseja (AA-AA-AA):");
+        System.out.print("Introduza o Veiculo que deseja (AA-AA-AA):");
         aluguer[CARRO] = lerString();
         return aluguer;
     }
@@ -318,7 +318,7 @@ public class View {
 
 
     public void imprimeCarro(String matricula){
-        System.out.println("O Carro que satisfaz o seu pedido é "+CYAN_BOLD+matricula+RESET);
+        System.out.println("O Veiculo que satisfaz o seu pedido é "+CYAN_BOLD+matricula+RESET);
     }
 
     @SuppressWarnings("Duplicates")
@@ -417,7 +417,7 @@ public class View {
 
     public void imprimeTotalFaturado(String matricula, double faturado){
         DecimalFormat df = new DecimalFormat("#.##");
-        System.out.println("O Carro "+matricula+" faturou, no período de tempo fornecido :"+df.format(faturado)+"€");
+        System.out.println("O Veiculo "+matricula+" faturou, no período de tempo fornecido :"+df.format(faturado)+"€");
     }
 
 
@@ -488,7 +488,7 @@ public class View {
 
     public void carroAbastecido(double autonomia){
         line(1);
-        System.out.println("Carro abastecido!");
+        System.out.println("Veiculo abastecido!");
         System.out.println("Autonomia atual "+autonomia);
         line(1);
         enterContinuar();

@@ -1,7 +1,6 @@
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -12,17 +11,17 @@ import java.util.stream.Collectors;
  * @version (a version number or a date)
  */
 public class Proprietario extends Ator {
-    private Map<String,Carro> listaCarros;
+    private Map<String, Veiculo> listaCarros;
 
 
     public Proprietario() {
         super();
-        this.listaCarros = new HashMap<String,Carro>();
+        this.listaCarros = new HashMap<String, Veiculo>();
     }
 
-    public Proprietario(String email, int nif, String nome, String password, String morada, LocalDateTime data, Classificacao classificacao, List<Aluguer> historico, Map<String,Carro> listaCarros) {
+    public Proprietario(String email, int nif, String nome, String password, String morada, LocalDateTime data, Classificacao classificacao, List<Aluguer> historico, Map<String, Veiculo> listaCarros) {
         super(email, nif, nome, password, morada, data,classificacao,historico);
-        this.listaCarros = new HashMap<String,Carro>();
+        this.listaCarros = new HashMap<String, Veiculo>();
         setListaCarros(listaCarros);
     }
 
@@ -33,25 +32,25 @@ public class Proprietario extends Ator {
 
 
 
-    public Map<String,Carro> getListaCarros() {
+    public Map<String, Veiculo> getListaCarros() {
         return this.listaCarros.entrySet().stream()
                 .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-    public void setListaCarros(Map<String,Carro> listaCarros) {
+    public void setListaCarros(Map<String, Veiculo> listaCarros) {
         this.listaCarros = listaCarros.entrySet().stream()
                 .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
 
-    public void adicionaCarro(Carro car){
+    public void adicionaCarro(Veiculo car){
         this.listaCarros.put(car.getMatricula(),car);
     }
 
     public void alteraPreco(double preco, String matricula) throws CarroException{
         if(listaCarros.containsKey(matricula)){
             this.listaCarros.get(matricula).setPreco(preco);
-        } else throw new CarroException("O Carro "+matricula+" não lhe pertence ou não está registado no sistema!");
+        } else throw new CarroException("O Veiculo "+matricula+" não lhe pertence ou não está registado no sistema!");
     }
 
     public void abasteceCarro(String tipoCombustivel, String matricula) throws CarroException{

@@ -181,7 +181,7 @@ public class Controller {
                 "Lista dos Alugueres efetuados entre datas",
                 "Ver Perfil",
                 "Classificar Proprietario",
-                "Classificar Carro",
+                "Classificar Veiculo",
                 "Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
@@ -248,11 +248,11 @@ public class Controller {
 
     @SuppressWarnings("Duplicates")
     private int runAluguer(int nif){
-        String[] opcoes = {"Carro Específico",
-                "Carro mais barato",
-                "Carro mais proximo",
-                "Carro mais barato dentro de uma determinada distância",
-                "Carro com uma autonomia desejada",
+        String[] opcoes = {"Veiculo Específico",
+                "Veiculo mais barato",
+                "Veiculo mais proximo",
+                "Veiculo mais barato dentro de uma determinada distância",
+                "Veiculo com uma autonomia desejada",
                 "Ver Perfil",
                 "Terminar sessão"};
         int escolha=0;

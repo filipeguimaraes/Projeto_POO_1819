@@ -5,7 +5,7 @@ import java.util.Objects;
 
 
 public class Aluguer implements Serializable {
-    private Carro car;
+    private Veiculo car;
     private Cliente cli;
     private Proprietario p;
     private Point2D pontoInicial;
@@ -30,7 +30,7 @@ public class Aluguer implements Serializable {
         this.estado = PENDENTE;
     }
 
-    public Aluguer(Carro car, Cliente cli, Proprietario p, Point2D pontoInicial, Point2D destino, LocalDateTime dataInicio, LocalDateTime dataFim, int estado) {
+    public Aluguer(Veiculo car, Cliente cli, Proprietario p, Point2D pontoInicial, Point2D destino, LocalDateTime dataInicio, LocalDateTime dataFim, int estado) {
         this.car = car;
         this.cli = cli;
         this.p = p;
@@ -52,11 +52,11 @@ public class Aluguer implements Serializable {
         this.estado= umAluguer.getEstado();
     }
 
-    public Carro getCar() {
+    public Veiculo getCar() {
         return car;
     }
 
-    public void setCar(Carro car) {
+    public void setCar(Veiculo car) {
         this.car = car;
     }
 
@@ -138,7 +138,7 @@ public class Aluguer implements Serializable {
 
     public String toString(){
         StringBuilder s= new StringBuilder("Aluguer\n");
-        s.append(" Carro" + this.car.getMatricula());
+        s.append(" Veiculo" + this.car.getMatricula());
         s.append(" Cliente" + this.cli.getNif());
         s.append(" Proprietario" + this.p.getNif());
         s.append(" Ponto Inicial" + this.pontoInicial);
