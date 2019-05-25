@@ -165,6 +165,7 @@ public class Controller {
                         try{
                             servico.adicionaCliente(email,pass,nifi,nome,morada,data);
                             nif=nifi;
+                            escolha=0;
                         } catch (AtorException a) {
                             System.out.println(a.getMessage());
                             view.enterContinuar();
@@ -174,6 +175,7 @@ public class Controller {
                         try {
                             servico.adicionaProprietario(email,pass,nifi,nome,morada,data);
                             nif=nifi;
+                            escolha=0;
                         }catch (AtorException a){
                             System.out.println(a.getMessage());
                             view.enterContinuar();
@@ -181,13 +183,14 @@ public class Controller {
                     }
                     break;
                 case 3:
+                    nif=-1;
                    break;
                 default:
                     System.out.println("Ocorreu um erro.");
                     view.enterContinuar();
                     break;
             }
-        }while (escolha!=3);
+        }while (escolha!=0 && escolha!=3);
         return nif;
     }
 
@@ -201,6 +204,7 @@ public class Controller {
                 "Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
+        if(nif==-1) return -1;
         if(nif!=0){
             do{
                 view.mainMenu(opcoes);
@@ -251,14 +255,13 @@ public class Controller {
                         }
                         break;
                     case 6:
-                        escolha=0;
                         break;
                     default:
                         System.out.println("Ocorreu um erro.");
                         view.enterContinuar();
                         break;
                 }
-            }while (escolha!=0);
+            }while (escolha!=6);
 
         }else System.out.println("Cliente Invalido");
         return -1;
@@ -378,14 +381,13 @@ public class Controller {
                         }
                         break;
                     case 6:
-                        escolha=0;
                         break;
                     default:
                         System.out.println("Ocorreu um erro.");
                         view.enterContinuar();
                         break;
                 }
-            }while (escolha!=0);
+            }while (escolha!=6);
         return -1;
     }
 
@@ -398,9 +400,11 @@ public class Controller {
                 "Aceitar/Rejeitar alugueres",
                 "Ver Perfil",
                 "Classificar Cliente",
+                "Veículos com autonomia inferior a 10",
                 "Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
+        if (nif==-1) return -1;
         if(nif!=0){
             do{
                 view.mainMenu(opcoes);
@@ -530,14 +534,23 @@ public class Controller {
                         }
                         break;
                     case 9:
-                        escolha=0;
+                        try{
+                            view.listaCarros(servico.listaCarrosAtonomiaDez(nif));
+                        }catch(AtorException e){
+                            System.out.println(e.getMessage());
+                            view.enterContinuar();
+                            continue;
+                        }
+                        break;
+
+                    case 10:
                         break;
                     default:
                         System.out.println("Ocorreu um erro.");
                         view.enterContinuar();
                         break;
                 }
-            }while (escolha!=0);
+            }while (escolha!=10);
 
         }else System.out.println("Cliente Invalido");
         return -1;
@@ -577,14 +590,13 @@ public class Controller {
                     view.imprimeTop10(servico.dezClientesKms());
                     break;
                 case 4:
-                    escolha=0;
                     break;
                 default:
                     System.out.println("Ocorreu um erro.");
                     view.enterContinuar();
                     break;
             }
-        }while(escolha!=0);
+        }while(escolha!=4);
         return 0;
     }
 

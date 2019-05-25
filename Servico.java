@@ -607,6 +607,16 @@ public class Servico implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    public List<String> listaCarrosAtonomiaDez(int nif) throws AtorException{
+        Proprietario prop=procuraProprietario(nif);
+        return procuraProprietario(nif).getListaCarros()
+                .values()
+                .stream()
+                .filter(v-> v.getAutonomia()<=10 && v.getProprietario().getNif()==prop.getNif())
+                .map(Veiculo::showCarro)
+                .collect(Collectors.toList());
+    }
+
 
 
     public List<String> alugueresEntreDatasCliente(int nifCli, LocalDateTime inicio, LocalDateTime fim){
