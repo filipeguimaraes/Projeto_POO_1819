@@ -448,7 +448,6 @@ public class Controller {
                             view.enterContinuar();
                             continue;
                         }
-                        System.out.println("feito: "+matricula);
                         break;
                     case 2:
                         try {
