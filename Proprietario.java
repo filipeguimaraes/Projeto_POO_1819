@@ -86,7 +86,7 @@ public class Proprietario extends Ator {
 
         List<String> ls = this.getHistorico().stream()
                 .filter(l->l.getEstado()==Aluguer.PENDENTE)
-                .map(Aluguer::toString)
+                .map(Aluguer::showAluguer)
                 .collect(Collectors.toList());
 
         if(ls.isEmpty()) throw new AluguerException("Não há alugueres pendentes!");
