@@ -189,6 +189,9 @@ public abstract class Veiculo implements Serializable {
         if(ls.isEmpty()) throw new AluguerException("Não há alugueres aceites!");
         else return ls;
     }
+
+    public abstract String showCarro();
+
 }
 
 

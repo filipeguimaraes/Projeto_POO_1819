@@ -93,5 +93,12 @@ public class Proprietario extends Ator {
         else return ls;
     }
 
+    public String showProprietario(){
+        return "Nome: "+getNome()+" | NIF: "+getNif()+
+                " | Data de nascimento: "+getData().toString()+
+                " | Classificação: "+getClassificacao().classificacaoMedia()+
+                " | Número de Alugueres: "+getHistorico().size()+
+                " | Numero de carros registados: "+getListaCarros().size();
 
+    }
 }

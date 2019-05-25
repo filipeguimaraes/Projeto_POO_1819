@@ -13,13 +13,13 @@ public class Aluguer implements Serializable {
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
     private int estado;
-    
+
     public static final int REJEITADO = 0;
     public static final int PENDENTE = 1;
     public static final int ACEITE = 2;
-    
-   
-    public Aluguer(){
+
+
+    public Aluguer() {
         this.car = new CarroGasolina();
         this.cli = new Cliente();
         this.p = new Proprietario();
@@ -41,15 +41,15 @@ public class Aluguer implements Serializable {
         this.estado = estado;
     }
 
-    public Aluguer(Aluguer umAluguer){
-        this.car= umAluguer.getCar();
+    public Aluguer(Aluguer umAluguer) {
+        this.car = umAluguer.getCar();
         this.cli = umAluguer.getCli();
-        this.p= umAluguer.getP();
+        this.p = umAluguer.getP();
         this.pontoInicial = umAluguer.getPontoInicial();
         this.destino = umAluguer.getDestino();
         this.dataInicio = umAluguer.getDataInicio();
         this.dataFim = umAluguer.getDataFim();
-        this.estado= umAluguer.getEstado();
+        this.estado = umAluguer.getEstado();
     }
 
     public Veiculo getCar() {
@@ -116,7 +116,7 @@ public class Aluguer implements Serializable {
         this.estado = estado;
     }
 
-    public Aluguer clone(){
+    public Aluguer clone() {
         return new Aluguer(this);
     }
 
@@ -136,8 +136,8 @@ public class Aluguer implements Serializable {
     }
 
 
-    public String toString(){
-        StringBuilder s= new StringBuilder("Aluguer\n");
+    public String toString() {
+        StringBuilder s = new StringBuilder("Aluguer\n");
         s.append(" Veiculo" + this.car.getMatricula());
         s.append(" Cliente" + this.cli.getNif());
         s.append(" Proprietario" + this.p.getNif());
@@ -152,28 +152,56 @@ public class Aluguer implements Serializable {
     /**
      * Método que aceita um determinado aluguer
      */
-    public void aceitaEstado(){
+    public void aceitaEstado() {
         this.estado = Aluguer.ACEITE;
     }
 
     /**
      * Método que regeita um determinado aluguer
      */
-    public void rejeitaEstado(){
+    public void rejeitaEstado() {
         this.estado = Aluguer.REJEITADO;
     }
 
     /**
      * Metodo que calcula o preço do aluguer
+     *
      * @return preço do aluguer
      */
-    public double precoAluguer(){
-        double distancia=Point2D.distance(pontoInicial.getX(),pontoInicial.getY(),destino.getX(),destino.getY());
-        return this.car.getPreco()*distancia;
+    public double precoAluguer() {
+        double distancia = Point2D.distance(pontoInicial.getX(), pontoInicial.getY(), destino.getX(), destino.getY());
+        return this.car.getPreco() * distancia;
     }
 
-    public double kmsPercorridos(){
-       return Point2D.distance(pontoInicial.getX(),pontoInicial.getY(),destino.getX(),destino.getY());
+    public double kmsPercorridos() {
+        return Point2D.distance(pontoInicial.getX(), pontoInicial.getY(), destino.getX(), destino.getY());
     }
-   
+
+    public double  distanciaAoCarro(){
+        return Point2D.distance(cli.getCoordenada().getX(),cli.getCoordenada().getY(),
+                car.getCoordenada().getX(),car.getCoordenada().getY());
+    }
+
+    /**
+     * Método que calcura o tempo que o cliente demorou a chegar ao carro
+     * @return tempo em minutos
+     */
+    public double tempoCliente(){
+        return (distanciaAoCarro()/4)*60;
+    }
+
+    public String showAluguer() {
+        String estado = "";
+        if (this.estado == Aluguer.ACEITE) {
+            estado = "Aceite";
+        } else if (this.estado == Aluguer.PENDENTE) {
+            estado = "Pendente";
+        } else if (this.estado == Aluguer.REJEITADO) {
+            estado = "Rejeitado";
+        }
+        return "Carro: " + getCar().getMatricula() + " | Cliente: NIF " + getCli().getNif() + " Nome " + getCli().getNome() +
+                " | Proprietario: NIF " + getP().getNif() + " Nome " + getP().getNome() + '\n' +
+                "Tempo que o cliente demora a chegar ao carro: "+tempoCliente()+" | Data início: "+getDataInicio()+'\n'+
+                "Distancia: " + this.kmsPercorridos() +" | Preço: " + this.precoAluguer() + "€ | Estado: " + estado;
+    }
 }

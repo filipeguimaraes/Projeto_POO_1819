@@ -55,6 +55,9 @@ public class View {
 
     public static final int CLASSIFICACAO=0;
 
+    public static final int PRECIPITACAO=0;
+    public static final int TEMPERATURA=1;
+    public static final int VELOCIDADEVENTO=2;
 
 
 
@@ -434,14 +437,15 @@ public class View {
         s.nextLine();
     }
 
-    public void imprimeTop10(List<Integer> nifs){
+    @SuppressWarnings("Duplicates")
+    public void imprimeTop10(List<String> nifs){
         clear(ECRA);
         top10();
         int number= ((ECRA - 18) - nifs.size()) / 2;
         clear(number);
         int i = 1;
-        for(Integer nif : nifs){
-            printOpcao(i,String.valueOf(nif));
+        for(String nif : nifs){
+            printOpcao(i,nif);
             i++;
         }
         clear(number);
@@ -571,6 +575,23 @@ public class View {
         mudarLinha();
         System.out.print("Introduza a classificação (0/100):");
         campos[CLASSIFICACAO] = lerString();
+        mudarLinha();
+        return campos;
+    }
+
+    public String[] introduzirMeteo(){
+        String[] campos = new String[3];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza a precipitação atual (em %):");
+        campos[PRECIPITACAO] = lerString();
+        mudarLinha();
+        System.out.print("Introduza a velocidade do vento (em km/h):");
+        campos[VELOCIDADE] = lerString();
+        mudarLinha();
+        System.out.print("Introduza a temperatura (em ºC):");
+        campos[TEMPERATURA] = lerString();
         mudarLinha();
         return campos;
     }

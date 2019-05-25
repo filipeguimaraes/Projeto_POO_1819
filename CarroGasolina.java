@@ -83,4 +83,10 @@ public class CarroGasolina extends Veiculo {
     public CarroGasolina clone(){
         return new CarroGasolina(this);
     }
+
+    public String showCarro(){
+        return "Eletrico | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "+getPreco()+
+                "€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+") | Consumo: "+
+                getConsumo()+" | Autonomia: "+getAutonomia();
+    }
 }

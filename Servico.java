@@ -94,7 +94,7 @@ public class Servico implements Serializable {
                 Proprietario p = procuraProprietario(e.getProprietario().getNif());
                 this.listaCarros.put(e.getMatricula(),e.clone());
                 p.adicionaCarro(listaCarros.get(e.getMatricula()));
-            }else throw new CarroException("Já existe este carro registado! "+e.getMatricula());
+            }else throw new CarroException("O carro "+e.getMatricula()+" já existe!");
     }
 
     @SuppressWarnings("Duplicates")
@@ -106,7 +106,7 @@ public class Servico implements Serializable {
                     loc,new ArrayList<Aluguer>(),consumo,autonomia);
             listaCarros.put(matricula,car);
             p.adicionaCarro(listaCarros.get(matricula));
-        }else throw new CarroException("Erro ao adicionar o carro "+matricula);
+        }else throw new CarroException("O carro "+matricula+" já existe!");
     }
 
     @SuppressWarnings("Duplicates")
@@ -115,7 +115,7 @@ public class Servico implements Serializable {
                 Proprietario p = procuraProprietario(g.getProprietario().getNif());
                 this.listaCarros.put(g.getMatricula(),g.clone());
                 p.adicionaCarro(listaCarros.get(g.getMatricula()));
-            }else throw new CarroException("Já existe este carro registado! "+g.getMatricula());
+            }else throw new CarroException("O carro "+g.getMatricula()+" já existe!");
     }
 
     public void adicionaCarroGasolina(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{
@@ -124,7 +124,7 @@ public class Servico implements Serializable {
             CarroGasolina car = new CarroGasolina(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
             listaCarros.put(matricula,car);
             p.adicionaCarro(listaCarros.get(matricula));
-        }else throw new CarroException("Erro ao adicionar o carro "+matricula);
+        }else throw new CarroException("O carro "+matricula+" já existe!");
     }
 
     @SuppressWarnings("Duplicates")
@@ -133,7 +133,7 @@ public class Servico implements Serializable {
             Proprietario p = procuraProprietario(h.getProprietario().getNif());
             this.listaCarros.put(h.getMatricula(),h.clone());
             p.adicionaCarro(listaCarros.get(h.getMatricula()));
-        }else throw new CarroException("Já existe este carro registado! "+h.getMatricula());
+        }else throw new CarroException("O carro "+h.getMatricula()+" já existe!");
 
     }
 
@@ -143,7 +143,7 @@ public class Servico implements Serializable {
             CarroHibrido car = new CarroHibrido(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
             listaCarros.put(matricula,car);
             p.adicionaCarro(listaCarros.get(matricula));
-        }else throw new CarroException("Erro ao adicionar o carro "+matricula);
+        }else throw new CarroException("O carro "+matricula+" já existe!");
     }
 
     public void adicionaCliente(Cliente c) throws AtorException{
@@ -422,7 +422,7 @@ public class Servico implements Serializable {
     public List<String> carroAutonomiaDesejada(double autonomia){
         return this.listaCarros.values().stream()
                                         .filter(l -> l.getAutonomia()>=autonomia)
-                                        .map(Veiculo:: getMatricula)
+                                        .map(Veiculo:: showCarro) //getmatricula
                                         .collect(Collectors.toList());
     }
 
@@ -500,7 +500,7 @@ public class Servico implements Serializable {
             custo = custo(carro,destino);
         } else throw new AluguerException("O carro "+carro.getMatricula()+" não tem autonomia suficiente para efetuar a viagem.");
 
-        LocalDateTime dataInicio = LocalDateTime.now();
+        LocalDateTime dataInicio = dataAleatoria();
         LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,carro,destino));
         int estado=Aluguer.ACEITE;
         Aluguer aluguer= new Aluguer(carro,c,p,localizacaoCarro,destino,dataInicio,dataFimPrevista,estado);
@@ -603,7 +603,7 @@ public class Servico implements Serializable {
         return procuraProprietario(nif).getListaCarros()
                 .values()
                 .stream()
-                .map(Veiculo::toString)
+                .map(Veiculo::showCarro)
                 .collect(Collectors.toList());
     }
 
@@ -612,18 +612,18 @@ public class Servico implements Serializable {
     public List<String> alugueresEntreDatasCliente(int nifCli, LocalDateTime inicio, LocalDateTime fim){
         return this.listaAlugueres.stream()
                 .filter(l -> l.getCli().getNif()==nifCli && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
-                .map(Aluguer::toString)
+                .map(Aluguer::showAluguer)
                 .collect(Collectors.toList());
     }
 
     public List<String> alugueresEntreDatasProprietario(int nifProp, LocalDateTime inicio, LocalDateTime fim){
         return this.listaAlugueres.stream()
                 .filter(l -> l.getP().getNif()==nifProp && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
-                .map(Aluguer::toString)
+                .map(Aluguer::showAluguer)
                 .collect(Collectors.toList());
     }
 
-    public List<Integer> dezClientesNVezes(){
+    public List<String> dezClientesNVezes(){
         Comparator<Cliente> c = (Cliente c1, Cliente c2) -> {
             if(c1.getHistorico().size()>c2.getHistorico().size()) return -1;
             if(c1.getHistorico().size()<c2.getHistorico().size()) return 1;
@@ -634,12 +634,12 @@ public class Servico implements Serializable {
                 .filter(l->l instanceof Cliente)
                 .map(l->(Cliente)l)
                 .sorted(c)
-                .map(Cliente::getNif)
+                .map(Cliente::showCliente)
                 .limit(10)
                 .collect(Collectors.toList());
     }
 
-    public List<Integer> dezClientesKms(){
+    public List<String> dezClientesKms(){
         Comparator<Cliente> c = (Cliente c1, Cliente c2) -> {
             if(c1.kmsPercorridosTotal()>c2.kmsPercorridosTotal()) return -1;
             if(c1.kmsPercorridosTotal()<c2.kmsPercorridosTotal()) return 1;
@@ -649,7 +649,7 @@ public class Servico implements Serializable {
                 .filter(l->l instanceof Cliente)
                 .map(l->(Cliente)l)
                 .sorted(c)
-                .map(Cliente::getNif)
+                .map(Cliente::showCliente)
                 .limit(10)
                 .collect(Collectors.toList());
     }
@@ -715,5 +715,24 @@ public class Servico implements Serializable {
         return this.procuraAtor(nif).getHistorico().size();
     }
 
+    public LocalDateTime nascimentoAleatorio(){
+        int dia = 1 + (int)(Math.random() * (28 - 1));
+        int mes =  1 + (int)(Math.random() * (12 - 1));
+        int ano =  1950 + (int)(Math.random() * (2000 - 1950));
+        return LocalDateTime.of(ano, mes, dia,0,0);
+    }
+
+    public LocalDateTime dataAleatoria(){
+        int dia = 1 + (int)(Math.random() * (28 - 1));
+        int mes =  1 + (int)(Math.random() * (5 - 1));
+        int ano =  2019;
+        return LocalDateTime.of(ano, mes, dia,0,0);
+    }
+
+    public void introduzMeteorologia(double precipitacao,double temperatura, double velocidadeVento){
+        this.meteorologia.setPrecipitacao(precipitacao);
+        this.meteorologia.setTemperatura(temperatura);
+        this.meteorologia.setVelocidadeVento(velocidadeVento);
+    }
 
 }

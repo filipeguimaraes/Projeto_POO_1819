@@ -91,6 +91,7 @@ public class CarregarBAK {
     }
 
 
+    @SuppressWarnings("Duplicates")
     public void prop(String[] aux, Servico servico) throws AtorException{
         String[] campos = aux[1].split(",");
         String nome = campos[0];
@@ -98,10 +99,11 @@ public class CarregarBAK {
         String password = campos[1];
         String email = campos[2];
         String rua = campos[3];
-        LocalDateTime data = LocalDateTime.now();
+        LocalDateTime data = servico.nascimentoAleatorio();
         servico.adicionaProprietario(email,password,nif,nome,rua,data);
     }
 
+    @SuppressWarnings("Duplicates")
     public void cli(String[] aux, Servico servico) throws AtorException{
         String[] camposCli = aux[1].split(",");
         String nome = camposCli[0];
@@ -109,7 +111,7 @@ public class CarregarBAK {
         String password = camposCli[1];
         String email = camposCli[2];
         String rua = camposCli[3];
-        LocalDateTime data = LocalDateTime.now();
+        LocalDateTime data = servico.nascimentoAleatorio();
         Point2D ponto = new Point2D.Double(Double.parseDouble(camposCli[4]), Double.parseDouble(camposCli[5]));
         servico.adicionaCliente(email,password,nif,nome,rua,data);
     }

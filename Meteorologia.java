@@ -7,9 +7,9 @@ import java.io.Serializable;
  * @version (a version number or a date)
  */
 public class Meteorologia implements Serializable {
-    private int velocidadeVento; //km/h
-    private int temperatura; //graus
-    private int precipitacao; //0-100
+    private double velocidadeVento; //km/h
+    private double temperatura; //graus
+    private double precipitacao; //0-100
 
 
     public Meteorologia(){
@@ -30,28 +30,28 @@ public class Meteorologia implements Serializable {
         this.precipitacao = umaMeteorologia.getPrecipitacao();
     }
 
-    public int getVelocidadeVento() {
+    public double getVelocidadeVento() {
         return velocidadeVento;
     }
 
-    public void setVelocidadeVento(int velocidadeVento) {
+    public void setVelocidadeVento(double velocidadeVento) {
         this.velocidadeVento = velocidadeVento;
     }
 
-    public int getTemperatura() {
+    public double getTemperatura() {
         return temperatura;
     }
 
-    public void setTemperatura(int temperatura) {
+    public void setTemperatura(double temperatura) {
         this.temperatura = temperatura;
     }
 
-    public int getPrecipitacao() {
+    public double getPrecipitacao() {
         return precipitacao;
     }
 
-    public void setPrecepitacao(int precepitacao) {
-        this.precipitacao = precepitacao;
+    public void setPrecipitacao(double precipitacao) {
+        this.precipitacao = precipitacao;
     }
 
     /* Vento fraco  < 15 km/h ->+1, Vento moderado  15 a 35 km/h->+2, Vento forte 36 a 55 km/h->+3, vento muito forte >56

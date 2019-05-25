@@ -60,6 +60,11 @@ public class Cliente extends Ator{
         return new Cliente(this);
     }
 
+    public String showCliente(){
+        return "Nome: "+getNome()+" | NIF: "+getNif()+" | Data de nascimento: "+getData().toString()+
+                " | Classificação: "+getClassificacao().classificacaoMedia()+
+                " | Número de Alugueres: "+getHistorico().size();
 
+    }
 
 }

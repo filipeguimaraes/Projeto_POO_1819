@@ -77,15 +77,15 @@ title __PROJETO's Class Diagram__\n
   
 
   package  {
-    class Carro {
+    class Veiculo {
         - velocidade : int
         - preco : double
         - classificacao : int
         - coordenada : Point
         - historico : List<Aluguer>
-        + Carro()
-        + Carro()
-        + Carro()
+        + Veiculo()
+        + Veiculo()
+        + Veiculo()
         + getVelocidade()
         + getPreco()
         + getClassificacao()
@@ -201,7 +201,7 @@ title __PROJETO's Class Diagram__\n
     class Proprietario {
         - classificacao : int
         - historico : List<Aluguer>
-        - listaCarros : List<Carro>
+        - listaCarros : List<Veiculo>
         + Proprietario()
         + Proprietario()
         + Proprietario()
@@ -253,14 +253,14 @@ title __PROJETO's Class Diagram__\n
   }
   
 
-  Aluguer o-- Carro : car
+  Aluguer o-- Veiculo : car
   Aluguer o-- Cliente : cli
   Aluguer o-- Proprietario : p
   Aluguer o-- Meteorologia : meteorologia
-  Carro o-- Proprietario : p
-  CarroEletrico -up-|> Carro
-  CarroGasolina -up-|> Carro
-  CarroHibrido -up-|> Carro
+  Veiculo o-- Proprietario : p
+  CarroEletrico -up-|> Veiculo
+  CarroGasolina -up-|> Veiculo
+  CarroHibrido -up-|> Veiculo
   Cliente -up-|> Ator
   Proprietario -up-|> Ator
 

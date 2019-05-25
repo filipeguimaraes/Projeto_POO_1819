@@ -70,6 +70,12 @@ public class Controller {
                     }
                     break;
                 case 3:
+                    String[] campos3 = view.introduzirMeteo();
+                    double temperatura = Double.valueOf(campos3[View.TEMPERATURA]);
+                    double precipitacao = Double.valueOf(campos3[View.PRECIPITACAO]);
+                    double velocidadevento = Double.valueOf(campos3[View.VELOCIDADEVENTO]);
+                    servico.introduzMeteorologia(precipitacao,temperatura,velocidadevento);
+                    escolha = 0;
                     break;
                 // Gravar estado
                 case 4:

@@ -84,6 +84,11 @@ public class CarroEletrico extends Veiculo {
         return new CarroEletrico(this);
     }
 
+    public String showCarro(){
+        return "Eletrico | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "+getPreco()+
+                "€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+") | Consumo: "+
+                getConsumo()+" | Autonomia: "+getAutonomia();
+    }
 
 }
 
