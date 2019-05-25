@@ -6,10 +6,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Write a description of class Atores here.
+ * Classe base Ator
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public abstract class Ator implements Serializable {
     private String nome;
@@ -20,7 +21,7 @@ public abstract class Ator implements Serializable {
     private LocalDateTime data;
     private Classificacao classificacao;
     private List<Aluguer> historico;
-    
+
     public Ator(){
         this.email = "";
         this.nif = 0;
@@ -31,8 +32,9 @@ public abstract class Ator implements Serializable {
         this.classificacao= new Classificacao();
         this.historico = new ArrayList<>();
     }
-    
-    public Ator(String email,int nif, String nome, String password, String morada, LocalDateTime data,Classificacao classificacao,List<Aluguer> historico){
+
+    public Ator(String email,int nif, String nome, String password, String morada, LocalDateTime data,
+                Classificacao classificacao,List<Aluguer> historico){
         this.email = email;
         this.nome = nome;
         this.nif=nif;
@@ -42,7 +44,7 @@ public abstract class Ator implements Serializable {
         this.classificacao=classificacao;
         this.historico = historico;
     }
-    
+
     public Ator(Ator c){
         this.email = c.getEmail();
         this.nome = c.getNome();
@@ -53,43 +55,43 @@ public abstract class Ator implements Serializable {
         this.classificacao = c.getClassificacao();
         this.historico = c.getHistorico();
     }
-    
+
     public String getEmail(){
         return this.email;
     }
-    
+
     public String getNome(){
         return this.nome;
     }
-    
+
     public String getPassword(){
         return this.password;
     }
-    
+
     public String getMorada(){
         return this.morada;
     }
-    
+
     public LocalDateTime getData(){
         return this.data;
     }
-        
+
     public void setEmail(String email){
         this.email = email;
     }
-    
+
     public void setNome(String nome){
         this.nome = nome;
     }
-    
+
     public void setPassword(String password){
         this.password = password;
     }
-    
+
     public void setMorada(String morada){
         this.morada = morada;
     }
-    
+
     public void setData(LocalDateTime data){
         this.data = data;
     }
@@ -124,12 +126,36 @@ public abstract class Ator implements Serializable {
             this.historico.add(a.clone());
     }
 
+    /**
+     * Adiciona aluguer à lista de Alugueres
+     * @param aluguer Aluguer
+     */
     public void adicionaAluguer(Aluguer aluguer){
         this.historico.add(aluguer);
     }
 
+    /**
+     * Determinar a classificação média do ator
+     * @return Classificação média
+     */
     public double classificacaoMedia(){
         return this.classificacao.classificacaoMedia();
+    }
+
+    /**
+     * Determina a lista de alugueres que já foram aceitados
+     * @return Lista de alugueres que foram aceites
+     * @throws AluguerException Caso não haja alugueres aceites
+     */
+    public List<Aluguer> listaAlugueresAceites() throws AluguerException{
+
+        List<Aluguer> ls = this.getHistorico().stream()
+                .filter(l->l.getEstado()==Aluguer.ACEITE)
+                .map(Aluguer::clone)
+                .collect(Collectors.toList());
+
+        if(ls.isEmpty()) throw new AluguerException("Não há alugueres aceites!");
+        else return ls;
     }
 
     public boolean equals(Object o) {
@@ -161,15 +187,5 @@ public abstract class Ator implements Serializable {
         s.append(", Historico: " + this.historico.toString() +'}');
         return s.toString();
     }
-
-    public List<Aluguer> listaAlugueresAceites() throws AluguerException{
-
-        List<Aluguer> ls = this.getHistorico().stream()
-                .filter(l->l.getEstado()==Aluguer.ACEITE)
-                .map(Aluguer::clone)
-                .collect(Collectors.toList());
-
-        if(ls.isEmpty()) throw new AluguerException("Não há alugueres aceites!");
-        else return ls;
-    }
 }
+

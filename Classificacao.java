@@ -2,13 +2,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
 /**
- * Write a description of class Classificacao here.
+ * Classificação, com lista de classificações
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class Classificacao implements Serializable {
 
@@ -30,10 +29,18 @@ public class Classificacao implements Serializable {
         this.classificacoes = new ArrayList<>(classificacoes);
     }
 
+    /**
+     * Adicionar classificação à lista
+     * @param classificacao Classificação
+     */
     public void adicionaClassificacao(int classificacao){
         this.classificacoes.add(classificacao);
     }
 
+    /**
+     * Determina a classificação média da lista de classificações
+     * @return Classificação média
+     */
     public double classificacaoMedia(){
        return this.classificacoes.stream().mapToDouble(Integer::doubleValue).average().orElse(0.0);
 

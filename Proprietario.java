@@ -3,12 +3,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 /**
- * Casse mais especifica que o ator que contem as variaveis para um proprietario e os metodos correspendentes
+ * Proprietário, com um map de Carros que lhe pertence
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class Proprietario extends Ator {
     private Map<String, Veiculo> listaCarros;
@@ -19,7 +19,8 @@ public class Proprietario extends Ator {
         this.listaCarros = new HashMap<String, Veiculo>();
     }
 
-    public Proprietario(String email, int nif, String nome, String password, String morada, LocalDateTime data, Classificacao classificacao, List<Aluguer> historico, Map<String, Veiculo> listaCarros) {
+    public Proprietario(String email, int nif, String nome, String password, String morada, LocalDateTime data,
+                        Classificacao classificacao, List<Aluguer> historico, Map<String, Veiculo> listaCarros) {
         super(email, nif, nome, password, morada, data,classificacao,historico);
         this.listaCarros = new HashMap<String, Veiculo>();
         setListaCarros(listaCarros);
@@ -42,17 +43,32 @@ public class Proprietario extends Ator {
                 .collect(Collectors.toMap(e->e.getKey(),e->e.getValue().clone()));
     }
 
-
+    /**
+     * Adiciona um carro à lista de carros
+     * @param car Carro que quer adicionar
+     */
     public void adicionaCarro(Veiculo car){
         this.listaCarros.put(car.getMatricula(),car);
     }
 
+    /**
+     *Altera o preço de um carro específico
+     * @param preco Novo preço
+     * @param matricula Matricula do carro
+     * @throws CarroException Se o carro não lhe pertencer ou não tiver registado no sistema
+     */
     public void alteraPreco(double preco, String matricula) throws CarroException{
         if(listaCarros.containsKey(matricula)){
             this.listaCarros.get(matricula).setPreco(preco);
         } else throw new CarroException("O Veiculo "+matricula+" não lhe pertence ou não está registado no sistema!");
     }
 
+    /**
+     * Abastece um carro com um tipo de combustivel
+     * @param tipoCombustivel Tipo de combustivel
+     * @param matricula Matricula do carro
+     * @throws CarroException Caso o carro não exista
+     */
     public void abasteceCarro(String tipoCombustivel, String matricula) throws CarroException{
         if (this.listaCarros.containsKey(matricula)){
             this.listaCarros.get(matricula).abasteceCarro(tipoCombustivel);
@@ -69,19 +85,12 @@ public class Proprietario extends Ator {
             && this.getMorada().equals(c.getMorada())
             && this.getData().equals(c.getData());
     }
-    
-    public String toString(){
-        StringBuilder s= new StringBuilder("Proprietario ->");
-        s.append(super.toString());
-        s.append("Específico{");
-        s.append(" Carros: " + this.listaCarros.toString()+'}');
-        return s.toString();
-    }
-    
-    public Proprietario clone(){
-        return new Proprietario(this);
-    }
 
+    /**
+     * Procura na lista de alugueres aqueles que estão pendentes
+     * @return Lista de alugueres pendentes
+     * @throws AluguerException Caso não existam alugueres pendentes
+     */
     public List<String> listaAlugueresPendentes() throws AluguerException{
 
         List<String> ls = this.getHistorico().stream()
@@ -93,6 +102,10 @@ public class Proprietario extends Ator {
         else return ls;
     }
 
+    /**
+     * Cria string com informações relevantes do proprietario
+     * @return String com informações do proprietário
+     */
     public String showProprietario(){
         return "Nome: "+getNome()+" | NIF: "+getNif()+
                 " | Data de nascimento: "+getData().toString()+
@@ -100,5 +113,17 @@ public class Proprietario extends Ator {
                 " | Número de Alugueres: "+getHistorico().size()+
                 " | Numero de carros registados: "+getListaCarros().size();
 
+    }
+
+    public String toString(){
+        StringBuilder s= new StringBuilder("Proprietario ->");
+        s.append(super.toString());
+        s.append("Específico{");
+        s.append(" Carros: " + this.listaCarros.toString()+'}');
+        return s.toString();
+    }
+
+    public Proprietario clone(){
+        return new Proprietario(this);
     }
 }

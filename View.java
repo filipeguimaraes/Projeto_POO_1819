@@ -16,7 +16,8 @@ public class View {
 
     public static int ECRA=42; //Tamanho do Ecra
 
-    public static String LINE = "#################################################################################################";
+    public static String LINE =
+            "#################################################################################################";
 
     public static final String RESET = "\033[0m";  // Text Reset
     public static final String RED = "\033[0;31m";     // RED

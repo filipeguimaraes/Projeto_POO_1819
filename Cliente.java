@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 /**
- * Write a description of class Cliente here.
+ * Cliente, com o ponto que indica a sua localização
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class Cliente extends Ator{
     private Point2D coordenada;
@@ -17,7 +18,8 @@ public class Cliente extends Ator{
         this.coordenada = new Point2D.Double();
     }
 
-    public Cliente(String email, int nif, String nome, String password, String morada, LocalDateTime data, Point2D coordenada, Classificacao classificacao, List<Aluguer> historico) {
+    public Cliente(String email, int nif, String nome, String password, String morada, LocalDateTime data,
+                   Point2D coordenada, Classificacao classificacao, List<Aluguer> historico) {
         super(email, nif, nome, password, morada, data,classificacao,historico);
         this.coordenada = coordenada;
     }
@@ -35,14 +37,35 @@ public class Cliente extends Ator{
         this.coordenada = coordenada;
     }
 
+    /**
+     * Determina a distância que já percorreu com carros alugados
+     * @return Distância que já percorreu com carros alugados
+     */
+    public double kmsPercorridosTotal(){
+        return this.getHistorico().stream()
+                .mapToDouble(Aluguer::kmsPercorridos)
+                .sum();
+    }
+
+    /**
+     * Cria string com informações relevantes do cliente
+     * @return String com informações do cliente
+     */
+    public String showCliente(){
+        return "Nome: "+getNome()+" | NIF: "+getNif()+" | Data de nascimento: "+getData().toString()+
+                " | Classificação: "+getClassificacao().classificacaoMedia()+
+                " | Número de Alugueres: "+getHistorico().size();
+
+    }
+
     public boolean equals(Object o){
         if(this == o) return true;
         if(o == null || o.getClass() != this.getClass()) return false;
         Cliente c = (Cliente) o;
-        return super.equals(c) 
-            && this.coordenada.equals(c.getCoordenada());
+        return super.equals(c)
+                && this.coordenada.equals(c.getCoordenada());
     }
-    
+
     public String toString(){
         StringBuilder s= new StringBuilder("Cliente");
         s.append(super.toString());
@@ -50,21 +73,8 @@ public class Cliente extends Ator{
         return s.toString();
     }
 
-    public double kmsPercorridosTotal(){
-        return this.getHistorico().stream()
-                .mapToDouble(Aluguer::kmsPercorridos)
-                .sum();
-    }
-
     public Cliente clone(){
         return new Cliente(this);
-    }
-
-    public String showCliente(){
-        return "Nome: "+getNome()+" | NIF: "+getNif()+" | Data de nascimento: "+getData().toString()+
-                " | Classificação: "+getClassificacao().classificacaoMedia()+
-                " | Número de Alugueres: "+getHistorico().size();
-
     }
 
 }

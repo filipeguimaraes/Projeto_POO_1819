@@ -56,20 +56,45 @@ public class CarroEletrico extends Veiculo {
         return autonomia/consumo;
     }
 
+    /**
+     * Faz o carro percorrer a distância fornecida
+     * @param kilometros Distância
+     */
     public void percorreDistancia(double kilometros){
         this.autonomia -= kilometros*this.consumo;
     }
 
+    /**
+     * Abastece a quantidade fornecida
+     * @param acrescenta Quantidade a acrescentar
+     * @return Autonomia resultante
+     */
     public double abasteceCarro(double acrescenta){
         this.autonomia += acrescenta;
         return this.getAutonomia();
     }
 
+    /**
+     * Abastece na totalidade o carro com o combustivel fornecido
+     * @param tipo Tipo de combustivel
+     * @return Autonomia resultante
+     * @throws CarroException Caso o carro não possa ser abastecido com esse tipo de combustivel
+     */
     public double abasteceCarro(String tipo) throws CarroException{
         if(tipo.contains("Eletricidade")){
             this.autonomia =autonomiaTotal;
         }else throw new CarroException("O carro não pode ser abastecido com "+tipo);
         return this.getAutonomia();
+    }
+
+    /**
+     * Cria string com informações relevantes do carro elétrico
+     * @return String com informações do carro elétrico
+     */
+    public String showCarro(){
+        return "Eletrico | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()
+                +"km | Preço: "+getPreco()+"€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+
+                ") | Consumo: "+ getConsumo()+" | Autonomia: "+getAutonomia();
     }
 
     public String toString(){
@@ -84,10 +109,13 @@ public class CarroEletrico extends Veiculo {
         return new CarroEletrico(this);
     }
 
-    public String showCarro(){
-        return "Eletrico | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "+getPreco()+
-                "€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+") | Consumo: "+
-                getConsumo()+" | Autonomia: "+getAutonomia();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        CarroEletrico that = (CarroEletrico) o;
+        return that.consumo==consumo &&
+                that.autonomia==autonomia;
     }
 
 }

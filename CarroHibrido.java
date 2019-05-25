@@ -1,10 +1,13 @@
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.util.Objects;
+
 /**
- * Write a description of class CarroGasolina here.
+ * Carro Híbrido, com o seu consumo e autonomia
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class CarroHibrido extends Veiculo {
     private double consumo;
@@ -18,7 +21,9 @@ public class CarroHibrido extends Veiculo {
         this.autonomia = 0.0;
     }
 
-    public CarroHibrido(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, Classificacao classificacao, Point2D coordenada, List<Aluguer> historico, double consumo, double autonomia) {
+    public CarroHibrido(String marca, String matricula, Proprietario proprietario, int velocidade,
+                        double preco, Classificacao classificacao, Point2D coordenada,
+                        List<Aluguer> historico, double consumo, double autonomia) {
         super(marca, matricula, proprietario, velocidade, preco, classificacao, coordenada, historico);
         this.consumo = consumo;
         this.autonomia = autonomia;
@@ -54,16 +59,30 @@ public class CarroHibrido extends Veiculo {
         return autonomia/consumo;
     }
 
+    /**
+     * Faz o carro percorrer a distância fornecida
+     * @param kilometros Distância
+     */
     public void percorreDistancia(double kilometros){
         this.autonomia -= kilometros*this.consumo;
     }
 
+    /**
+     * Abastece a quantidade fornecida
+     * @param acrescenta Quantidade a acrescentar
+     * @return Autonomia resultante
+     */
     public double abasteceCarro(double acrescenta){
         this.autonomia += acrescenta;
         return this.getAutonomia();
     }
 
-
+    /**
+     * Abastece na totalidade o carro com o combustivel fornecido
+     * @param tipo Tipo de combustivel
+     * @return Autonomia resultante
+     * @throws CarroException Caso o carro não possa ser abastecido com esse tipo de combustivel
+     */
     public double abasteceCarro(String tipo) throws CarroException{
         if(tipo.contains("Eletricidade")){
             this.autonomia =autonomiaTotal/3;
@@ -73,6 +92,15 @@ public class CarroHibrido extends Veiculo {
         return this.getAutonomia();
     }
 
+    /**
+     * Cria string com informações relevantes do carro hibrido
+     * @return String com informações do carro hibrido
+     */
+    public String showCarro(){
+        return "Hibrido | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "
+                +getPreco()+"€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+") | Consumo: "+
+                getConsumo()+" | Autonomia: "+getAutonomia();
+    }
 
     public String toString(){
         StringBuilder s= new StringBuilder("CarroHibrido ->");
@@ -83,14 +111,18 @@ public class CarroHibrido extends Veiculo {
         return s.toString();
     }
 
-    public CarroHibrido clone(){
-        return new CarroHibrido(this);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        CarroHibrido that = (CarroHibrido) o;
+        return that.consumo==consumo &&
+                that.autonomia==autonomia;
     }
 
-    public String showCarro(){
-        return "Hibrido | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "+getPreco()+
-                "€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+") | Consumo: "+
-                getConsumo()+" | Autonomia: "+getAutonomia();
+
+    public CarroHibrido clone(){
+        return new CarroHibrido(this);
     }
 }
 
