@@ -452,7 +452,6 @@ public class Controller {
                     case 2:
                         try {
                             List<String> lista=servico.listaCarrosProprietario(nif);
-                            System.out.println(lista);
                             view.listaCarros(lista);
                         }catch (AtorException e){
                             System.out.println(e.getMessage());

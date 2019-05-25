@@ -66,7 +66,7 @@ public class CarroGasolina extends Veiculo {
     }
 
     public double abasteceCarro(String tipo) throws CarroException{
-        if(tipo.equals("Gasolina")){
+        if(tipo.contains("Gasolina")){
             this.autonomia =autonomiaTotal;
         }else throw new CarroException("O carro não pode ser abastecido com "+tipo);
         return this.getAutonomia();
@@ -85,7 +85,7 @@ public class CarroGasolina extends Veiculo {
     }
 
     public String showCarro(){
-        return "Eletrico | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "+getPreco()+
+        return "Gasolina | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "+getPreco()+
                 "€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+") | Consumo: "+
                 getConsumo()+" | Autonomia: "+getAutonomia();
     }

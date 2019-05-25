@@ -66,7 +66,7 @@ public class CarroEletrico extends Veiculo {
     }
 
     public double abasteceCarro(String tipo) throws CarroException{
-        if(tipo.equals("Eletricidade")){
+        if(tipo.contains("Eletricidade")){
             this.autonomia =autonomiaTotal;
         }else throw new CarroException("O carro não pode ser abastecido com "+tipo);
         return this.getAutonomia();
