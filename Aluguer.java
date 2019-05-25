@@ -126,13 +126,13 @@ public class Aluguer implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Aluguer aluguer = (Aluguer) o;
         return estado == aluguer.estado &&
-                Objects.equals(car, aluguer.car) &&
-                Objects.equals(cli, aluguer.cli) &&
-                Objects.equals(p, aluguer.p) &&
-                Objects.equals(pontoInicial, aluguer.pontoInicial) &&
-                Objects.equals(destino, aluguer.destino) &&
-                Objects.equals(dataInicio, aluguer.dataInicio) &&
-                Objects.equals(dataFim, aluguer.dataFim);
+                car.equals(aluguer.car) &&
+                cli.equals(aluguer.cli) &&
+                p.equals(aluguer.p) &&
+                pontoInicial.equals(aluguer.pontoInicial) &&
+                destino.equals(aluguer.destino) &&
+                dataInicio.equals(aluguer.dataInicio) &&
+                dataFim.equals(aluguer.dataFim);
     }
 
 

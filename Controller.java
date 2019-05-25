@@ -121,6 +121,8 @@ public class Controller {
                     escolha = runProprietario();
                     break;
                 default:
+                    System.out.println("Ocorreu um erro.");
+                    view.enterContinuar();
                     break;
             }
         } while (escolha!=3);
@@ -178,6 +180,10 @@ public class Controller {
                 case 3:
                     escolha=0;
                    break;
+                default:
+                    System.out.println("Ocorreu um erro.");
+                    view.enterContinuar();
+                    break;
             }
         }while (escolha!=0);
         return nif;
@@ -246,6 +252,8 @@ public class Controller {
                         escolha=0;
                         break;
                     default:
+                        System.out.println("Ocorreu um erro.");
+                        view.enterContinuar();
                         break;
                 }
             }while (escolha!=0);
@@ -270,74 +278,107 @@ public class Controller {
                 switch (escolha){
                     case 1:
                         String[] campos1 = view.aluguerCarroEspecifico();
-                        Point2D destino1 = stringParaPonto(campos1[View.DESTINO]);
-                        String matricula = campos1[View.CARRO];
                         try {
-                            view.imprimeCusto(servico.pedidoAluguer(nif,destino1,matricula));
+                            Point2D destino1 = stringParaPonto(campos1[View.DESTINO]);
+                            String matricula = campos1[View.CARRO];
+                            try {
+                                view.imprimeCusto(servico.pedidoAluguer(nif, destino1, matricula));
+                                view.enterContinuar();
+                                escolha = 0;
+                            } catch (AtorException | AluguerException | CarroException e) {
+                                System.out.println(e.getMessage());
+                                view.enterContinuar();
+                                escolha = 1;
+                            }
+                        }catch (ArrayIndexOutOfBoundsException e){
+                            System.out.println("Formato errado:"+e.getMessage());
                             view.enterContinuar();
-                            escolha=0;
-                        }catch (AtorException|AluguerException|CarroException e){
-                            System.out.println(e.getMessage());
-                            view.enterContinuar();
-                            escolha=1;
+                            continue;
                         }
                         break;
                     case 2:
                         String[] campos2 = view.aluguerDestino();
-                        Point2D destino2 = stringParaPonto(campos2[View.DESTINO]);
-                        try{
-                            view.imprimeCarro(servico.carroMaisBarato());
-                            view.imprimeCusto(servico.pedidoAluguer(nif,destino2,servico.carroMaisBarato()));
-                            view.enterContinuar();
-                            escolha=0;
-                        }catch (CarroException|AluguerException|AtorException e){
-                            System.out.println(e.getMessage());
-                            view.enterContinuar();
+                        try {
+                            Point2D destino2 = stringParaPonto(campos2[View.DESTINO]);
+                            try {
+                                view.imprimeCarro(servico.carroMaisBarato());
+                                view.imprimeCusto(servico.pedidoAluguer(nif, destino2, servico.carroMaisBarato()));
+                                view.enterContinuar();
+                                escolha = 0;
+                            } catch (CarroException | AluguerException | AtorException e) {
+                                System.out.println(e.getMessage());
+                                view.enterContinuar();
+                            }
+                        }catch (ArrayIndexOutOfBoundsException e){
+                                System.out.println("Formato errado:"+e.getMessage());
+                                view.enterContinuar();
+                                continue;
                         }
                         break;
                     case 3:
                         String[] campos3 = view.aluguerDestino();
-                        Point2D destino3 = stringParaPonto(campos3[View.DESTINO]);
-                        try{
-                            view.imprimeCarro(servico.carroMaisProximo(nif));
-                            view.imprimeCusto(servico.pedidoAluguer(nif,destino3,servico.carroMaisProximo(nif)));
+
+                        try {
+                            Point2D destino3 = stringParaPonto(campos3[View.DESTINO]);
+                            try {
+                                view.imprimeCarro(servico.carroMaisProximo(nif));
+                                view.imprimeCusto(servico.pedidoAluguer(nif, destino3, servico.carroMaisProximo(nif)));
+                                view.enterContinuar();
+                                escolha = 0;
+                            } catch (CarroException | AluguerException | AtorException e) {
+                                System.out.println(e.getMessage());
+                                view.enterContinuar();
+                            }
+                        }catch (ArrayIndexOutOfBoundsException e) {
+                            System.out.println("Formato errado:" + e.getMessage());
                             view.enterContinuar();
-                            escolha=0;
-                        }catch (CarroException|AluguerException|AtorException e){
-                            System.out.println(e.getMessage());
-                            view.enterContinuar();
+                            continue;
                         }
                         break;
                     case 4:
                         String[] campos4 = view.aluguerDistancia();
-                        Point2D destino4 = stringParaPonto(campos4[View.DESTINO]);
-                        double distancia = Double.parseDouble(campos4[View.DISTANCIA]);
-                        try{
-                            view.imprimeCarro(servico.carroProximoMaisBarato(nif,distancia));
-                            view.imprimeCusto(servico.pedidoAluguer(nif,destino4,servico.carroProximoMaisBarato(nif,distancia)));
+                        try {
+                            Point2D destino4 = stringParaPonto(campos4[View.DESTINO]);
+                            double distancia = Double.parseDouble(campos4[View.DISTANCIA]);
+                            try {
+                                view.imprimeCarro(servico.carroProximoMaisBarato(nif, distancia));
+                                view.imprimeCusto(servico.pedidoAluguer(nif, destino4, servico.carroProximoMaisBarato(nif, distancia)));
+                                view.enterContinuar();
+                                escolha = 0;
+                            } catch (CarroException | AluguerException | AtorException e) {
+                                System.out.println(e.getMessage());
+                                view.enterContinuar();
+                            }
+                        }catch (ArrayIndexOutOfBoundsException e) {
+                            System.out.println("Formato errado:" + e.getMessage());
                             view.enterContinuar();
-                            escolha=0;
-                        }catch (CarroException|AluguerException|AtorException e){
-                            System.out.println(e.getMessage());
-                            view.enterContinuar();
+                            continue;
                         }
                         break;
                     case 5:
                         String[] campos5 = view.aluguerAutonomia();
-                        Point2D destino5 = stringParaPonto(campos5[View.DESTINO]);
-                        double autonomia = Double.parseDouble(campos5[View.AUTONOMIADESEJADA]);
-                        String matricula5 = view.listaCarroAutonomia(servico.carroAutonomiaDesejada(autonomia));
                         try {
-                            view.imprimeCusto(servico.pedidoAluguer(nif,destino5,matricula5));
+                            Point2D destino5 = stringParaPonto(campos5[View.DESTINO]);
+                            double autonomia = Double.parseDouble(campos5[View.AUTONOMIADESEJADA]);
+                            String matricula5 = view.listaCarroAutonomia(servico.carroAutonomiaDesejada(autonomia));
+                            try {
+                                view.imprimeCusto(servico.pedidoAluguer(nif, destino5, matricula5));
+                                view.enterContinuar();
+                                escolha = 0;
+                            } catch (AtorException | AluguerException | CarroException e) {
+                                System.out.println(e.getMessage());
+                                view.enterContinuar();
+                                escolha = 1;
+                            }
+                        }catch (ArrayIndexOutOfBoundsException e) {
+                            System.out.println("Formato errado:" + e.getMessage());
                             view.enterContinuar();
-                            escolha=0;
-                        }catch (AtorException|AluguerException|CarroException e){
-                            System.out.println(e.getMessage());
-                            view.enterContinuar();
-                            escolha=1;
+                            continue;
                         }
                         break;
                     default:
+                        System.out.println("Ocorreu um erro.");
+                        view.enterContinuar();
                         break;
                 }
             }while (escolha!=0);
@@ -368,30 +409,36 @@ public class Controller {
                         String matricula = registo[View.MATRICULA];
                         int velocidade = Integer.valueOf(registo[View.VELOCIDADE]);
                         double preco = Double.parseDouble(registo[View.PRECO]);
-                        Point2D localizacao = stringParaPonto(registo[View.LOCALIZACAO]);
-                        double consumo = Double.parseDouble(registo[View.CONSUMO]);
-                        double autonomia = Double.parseDouble(registo[View.AUTONOMIA]);
-                        if(tipo.contains("Electrico")){
-                            try {
-                                servico.adicionaCarroEletrico(marca,matricula,nif,velocidade,preco,localizacao,consumo,autonomia);
-                            } catch (CarroException|AtorException e){
-                                System.out.println(e.getMessage());
-                                view.enterContinuar();
+                        try {
+                            Point2D localizacao = stringParaPonto(registo[View.LOCALIZACAO]);
+                            double consumo = Double.parseDouble(registo[View.CONSUMO]);
+                            double autonomia = Double.parseDouble(registo[View.AUTONOMIA]);
+                            if (tipo.contains("Electrico")) {
+                                try {
+                                    servico.adicionaCarroEletrico(marca, matricula, nif, velocidade, preco, localizacao, consumo, autonomia);
+                                } catch (CarroException | AtorException e) {
+                                    System.out.println(e.getMessage());
+                                    view.enterContinuar();
+                                }
+                            } else if (tipo.contains("Gasolina")) {
+                                try {
+                                    servico.adicionaCarroGasolina(marca, matricula, nif, velocidade, preco, localizacao, consumo, autonomia);
+                                } catch (CarroException | AtorException e) {
+                                    System.out.println(e.getMessage());
+                                    view.enterContinuar();
+                                }
+                            } else if (tipo.contains("Hibrido")) {
+                                try {
+                                    servico.adicionaCarroHibrido(marca, matricula, nif, velocidade, preco, localizacao, consumo, autonomia);
+                                } catch (CarroException | AtorException e) {
+                                    System.out.println(e.getMessage());
+                                    view.enterContinuar();
+                                }
                             }
-                        } else if(tipo.contains("Gasolina")){
-                            try {
-                                servico.adicionaCarroGasolina(marca,matricula,nif,velocidade,preco,localizacao,consumo,autonomia);
-                            } catch (CarroException|AtorException e){
-                                System.out.println(e.getMessage());
-                                view.enterContinuar();
-                            }
-                        } else if(tipo.contains("Hibrido")){
-                            try {
-                                servico.adicionaCarroHibrido(marca,matricula,nif,velocidade,preco,localizacao,consumo,autonomia);
-                            } catch (CarroException|AtorException e){
-                                System.out.println(e.getMessage());
-                                view.enterContinuar();
-                            }
+                        }catch (ArrayIndexOutOfBoundsException e) {
+                            System.out.println("Formato errado:" + e.getMessage());
+                            view.enterContinuar();
+                            continue;
                         }
                         System.out.println("feito: "+matricula);
                         break;
@@ -482,6 +529,8 @@ public class Controller {
                         escolha=0;
                         break;
                     default:
+                        System.out.println("Ocorreu um erro.");
+                        view.enterContinuar();
                         break;
                 }
             }while (escolha!=0);
@@ -527,6 +576,8 @@ public class Controller {
                     escolha=0;
                     break;
                 default:
+                    System.out.println("Ocorreu um erro.");
+                    view.enterContinuar();
                     break;
             }
         }while(escolha!=0);
@@ -541,7 +592,7 @@ public class Controller {
         return LocalDateTime.of(ano,mes,dia,0,0);
     }
 
-    public Point2D stringParaPonto(String xy){
+    public Point2D stringParaPonto(String xy)throws ArrayIndexOutOfBoundsException{
         String[] locs = xy.split(",");
         double x = Double.parseDouble(locs[0]);
         double y = Double.parseDouble(locs[1]);
