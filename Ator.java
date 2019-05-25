@@ -161,4 +161,15 @@ public abstract class Ator implements Serializable {
         s.append(", Historico: " + this.historico.toString() +'}');
         return s.toString();
     }
+
+    public List<Aluguer> listaAlugueresAceites() throws AluguerException{
+
+        List<Aluguer> ls = this.getHistorico().stream()
+                .filter(l->l.getEstado()==Aluguer.ACEITE)
+                .map(Aluguer::clone)
+                .collect(Collectors.toList());
+
+        if(ls.isEmpty()) throw new AluguerException("Não há alugueres aceites!");
+        else return ls;
+    }
 }

@@ -180,6 +180,8 @@ public class Controller {
         String[] opcoes = {"Realizar aluguer",
                 "Lista dos Alugueres efetuados entre datas",
                 "Ver Perfil",
+                "Classificar Proprietario",
+                "Classificar Carro",
                 "Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
@@ -203,12 +205,36 @@ public class Controller {
                                     servico.verMorada(nif),servico.verDataNascimente(nif),servico.verClassificacao(nif),
                                     servico.verNumeroAluguer(nif));
                         } catch (AtorException e){
-                            System.out.println(e);
+                            System.out.println(e.getMessage());
                             view.enterContinuar();
                             continue;
                         }
                         break;
                     case 4:
+                        String[] campos4 = view.classificarAtor();
+                        int nif4 = Integer.valueOf(campos4[View.NIF]);
+                        int classificacao4 = Integer.valueOf(campos4[View.CLASSIFICACAO]);
+                        try {
+                            servico.classificaProprietario(nif,nif4,classificacao4);
+                        } catch (AtorException|AluguerException e){
+                            System.out.println(e.getMessage());
+                            view.enterContinuar();
+                            continue;
+                        }
+                        break;
+                    case 5:
+                        String[] campos5 = view.classificarCarro();
+                        String matricula5 = campos5[View.MATRICULA];
+                        int classificacao5 = Integer.valueOf(campos5[View.CLASSIFICACAO]);
+                        try {
+                            servico.classificaCarro(nif,matricula5,classificacao5);
+                        } catch (CarroException|AluguerException e){
+                            System.out.println(e.getMessage());
+                            view.enterContinuar();
+                            continue;
+                        }
+                        break;
+                    case 6:
                         escolha=0;
                         break;
                     default:
@@ -318,6 +344,7 @@ public class Controller {
                 "Abastecer veículo",
                 "Aceitar/Rejeitar alugueres",
                 "Ver Perfil",
+                "Classificar Cliente",
                 "Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
@@ -432,6 +459,18 @@ public class Controller {
                         }
                         break;
                     case 8:
+                        String[] campos8 = view.classificarAtor();
+                        int nif8 = Integer.valueOf(campos8[View.NIF]);
+                        int classificacao8 = Integer.valueOf(campos8[View.CLASSIFICACAO]);
+                        try {
+                            servico.classificaCliente(nif,nif8,classificacao8);
+                        } catch (AtorException|AluguerException e){
+                            System.out.println(e.getMessage());
+                            view.enterContinuar();
+                            continue;
+                        }
+                        break;
+                    case 9:
                         escolha=0;
                         break;
                     default:

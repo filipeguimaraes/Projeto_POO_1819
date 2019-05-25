@@ -178,6 +178,17 @@ public abstract class Carro implements Serializable {
     public abstract double abasteceCarro(double acrescenta);
 
     public abstract double abasteceCarro(String tipo) throws CarroException;
+
+    public List<Aluguer> listaAlugueresAceites() throws AluguerException{
+
+        List<Aluguer> ls = this.getHistorico().stream()
+                .filter(l->l.getEstado()==Aluguer.ACEITE)
+                .map(Aluguer::clone)
+                .collect(Collectors.toList());
+
+        if(ls.isEmpty()) throw new AluguerException("Não há alugueres aceites!");
+        else return ls;
+    }
 }
 
 

@@ -53,6 +53,8 @@ public class View {
 
     public static final int ACEITARREJEITAR=0;
 
+    public static final int CLASSIFICACAO=0;
+
 
 
 
@@ -542,6 +544,35 @@ public class View {
         line(1);
         resetColor();
         enterContinuar();
+    }
+
+    @SuppressWarnings("Duplicates")
+    public String[] classificarCarro(){
+        String[] campos = new String[2];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza a matrícula:");
+        campos[MATRICULA] = lerString();
+        mudarLinha();
+        System.out.print("Introduza a classificação (0/100):");
+        campos[CLASSIFICACAO] = lerString();
+        mudarLinha();
+        return campos;
+    }
+
+    public String[] classificarAtor(){
+        String[] campos = new String[3];
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza o nif:");
+        campos[NIF] = lerString();
+        mudarLinha();
+        System.out.print("Introduza a classificação (0/100):");
+        campos[CLASSIFICACAO] = lerString();
+        mudarLinha();
+        return campos;
     }
 
     public String lerString() {
