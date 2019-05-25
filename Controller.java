@@ -120,6 +120,8 @@ public class Controller {
                     view.souProprietario();
                     escolha = runProprietario();
                     break;
+                case 3:
+                    break;
                 default:
                     System.out.println("Ocorreu um erro.");
                     view.enterContinuar();
@@ -177,17 +179,15 @@ public class Controller {
                             view.enterContinuar();
                         }
                     }
-
-
+                    break;
                 case 3:
-                    escolha=0;
                    break;
                 default:
                     System.out.println("Ocorreu um erro.");
                     view.enterContinuar();
                     break;
             }
-        }while (escolha!=0);
+        }while (escolha!=3);
         return nif;
     }
 
