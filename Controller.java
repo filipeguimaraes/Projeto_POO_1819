@@ -161,15 +161,17 @@ public class Controller {
 
                     if(view.getAtor()==View.CLIENTE){
                         try{
-                            servico.adicionaCliente(email,pass,nif,nome,morada,data);
-                        } catch (AtorException a){
+                            servico.adicionaCliente(email,pass,nifi,nome,morada,data);
+                            nif=nifi;
+                        } catch (AtorException a) {
                             System.out.println(a.getMessage());
                             view.enterContinuar();
                         }
                     }
                     if (view.getAtor()==View.PROPRIETARIO){
                         try {
-                            servico.adicionaProprietario(email,pass,nif,nome,morada,data);
+                            servico.adicionaProprietario(email,pass,nifi,nome,morada,data);
+                            nif=nifi;
                         }catch (AtorException a){
                             System.out.println(a.getMessage());
                             view.enterContinuar();
