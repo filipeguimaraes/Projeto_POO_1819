@@ -88,6 +88,7 @@ public class Servico implements Serializable {
      * @param e carro elétrico
      * @throws CarroException caso o carro já exista
      */
+    @SuppressWarnings("Duplicates")
     public void adicionaCarroEletrico(CarroEletrico e) throws CarroException,AtorException{
             if (!this.listaCarros.containsKey(e.getMatricula())){
                 Proprietario p = procuraProprietario(e.getProprietario().getNif());
@@ -96,6 +97,7 @@ public class Servico implements Serializable {
             }else throw new CarroException("Já existe este carro registado! "+e.getMatricula());
     }
 
+    @SuppressWarnings("Duplicates")
     public void adicionaCarroEletrico(String marca, String matricula, int nif, int velocidade, double preco,
                                       Point2D loc, double consumo, double autonomia) throws CarroException,AtorException{
         if(!listaCarros.containsKey(matricula)){
@@ -107,6 +109,7 @@ public class Servico implements Serializable {
         }else throw new CarroException("Erro ao adicionar o carro "+matricula);
     }
 
+    @SuppressWarnings("Duplicates")
     public void adicionaCarroGasolina(CarroGasolina g) throws CarroException,AtorException{
             if (!this.listaCarros.containsKey(g.getMatricula())){
                 Proprietario p = procuraProprietario(g.getProprietario().getNif());
@@ -124,6 +127,7 @@ public class Servico implements Serializable {
         }else throw new CarroException("Erro ao adicionar o carro "+matricula);
     }
 
+    @SuppressWarnings("Duplicates")
     public void adicionaCarroHibrido(CarroHibrido h) throws CarroException,AtorException{
         if (!this.listaCarros.containsKey(h.getMatricula())){
             Proprietario p = procuraProprietario(h.getProprietario().getNif());
@@ -180,6 +184,11 @@ public class Servico implements Serializable {
         if(listaAlugueres.contains(a)){
             throw new AluguerException("Esse aluguer já existe!");
         }else this.listaAlugueres.add(a.clone());
+    }
+
+    public Ator procuraAtor(int nif) throws AtorException{
+        if (listaAtores.containsKey(nif)) return this.listaAtores.get(nif);
+        else throw new AtorException("Não existe este Ator "+nif);
     }
 
     public Proprietario procuraProprietario(int nif) throws AtorException{
@@ -617,6 +626,25 @@ public class Servico implements Serializable {
     }
 
 
+    public void terminaAluguer(String estado, int nifCliente) throws CarroException{
+        List<Aluguer> la = new ArrayList<>();
+        for (Aluguer a : this.listaAlugueres){
+            if(a.getEstado()==Aluguer.PENDENTE && a.getCli().getNif()==nifCliente){
+                la.add(a);
+            }
+        }
+
+        Aluguer alug = la.get(0);
+
+        if(estado.equals("Aceitar")){
+            alug.aceitaEstado();
+            this.procuraCarro(alug.getCar().getMatricula()).percorreDistancia(alug.kmsPercorridos());
+        } else{
+            alug.rejeitaEstado();
+            alug.setDataFim(LocalDateTime.now());
+        }
+    }
+
     public List<Aluguer> alugueresPendentes(int nifProp){
         return this.listaAlugueres.stream()
                 .filter(l -> l.getEstado()==Aluguer.PENDENTE && l.getP().getNif()==nifProp)
@@ -728,5 +756,39 @@ public class Servico implements Serializable {
         }
         else throw new AtorException("O ator "+nif+" não existe!");
     }
+
+
+    
+
+
+
+    public String verNome(int nif)throws AtorException{
+        return this.procuraAtor(nif).getNome();
+    }
+
+    public String verEmail(int nif) throws AtorException{
+        return this.procuraAtor(nif).getEmail();
+    }
+
+    public int verNif(int nif) throws AtorException{
+        return this.procuraAtor(nif).getNif();
+    }
+
+    public String verMorada(int nif) throws AtorException{
+        return this.procuraAtor(nif).getMorada();
+    }
+
+    public LocalDateTime verDataNascimente(int nif) throws AtorException{
+        return this.procuraAtor(nif).getData();
+    }
+
+    public double verClassificacao(int nif) throws AtorException{
+        return this.procuraAtor(nif).getClassificacao().classificacaoMedia();
+    }
+
+    public int verNumeroAluguer(int nif) throws AtorException{
+        return this.procuraAtor(nif).getHistorico().size();
+    }
+
 
 }

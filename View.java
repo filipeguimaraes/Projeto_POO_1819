@@ -1,4 +1,5 @@
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -49,6 +50,8 @@ public class View {
     public static final int DATAFIM=2;
 
     public static final int COMBUSTIVEL=0;
+
+    public static final int ACEITARREJEITAR=0;
 
 
 
@@ -425,7 +428,7 @@ public class View {
 
     void enterContinuar() {
         Scanner s=new Scanner(System.in);
-        System.out.print("Precione enter para continuar . . . ");
+        System.out.print("Pressione enter para continuar . . . ");
         s.nextLine();
     }
 
@@ -446,8 +449,9 @@ public class View {
         enterContinuar();
     }
 
+    @SuppressWarnings("Duplicates")
     public String[] alteraPreco(){
-        String[] preco = new String[2];
+        String[] preco = new String[4];
         clear(ECRA);
         ban();
         mudarLinha();
@@ -465,6 +469,7 @@ public class View {
         enterContinuar();
     }
 
+    @SuppressWarnings("Duplicates")
     public String[] abasteceCarro(){
         String[] abastece = new String[4];
         clear(ECRA);
@@ -484,6 +489,58 @@ public class View {
         System.out.println("Carro abastecido!");
         System.out.println("Autonomia atual "+autonomia);
         line(1);
+        enterContinuar();
+    }
+
+    @SuppressWarnings("Duplicates")
+    public String[] tratarAlugueres(List<String> ls){
+        String[] campos = new String[3];
+        clear(ECRA);
+        cyan();
+        line(1);
+        System.out.println("                                Lista dos alugueres pendentes");
+        line(1);
+        resetColor();
+        mudarLinha();
+        int i=1;
+        for (String s : ls) {
+            printOpcao(i, s);
+            i++;
+        }
+        mudarLinha();
+        cyan();
+        line(1);
+        resetColor();
+        System.out.print("Introduza o nif do cliente referente ao aluguer a tratar:");
+        campos[NIF] = lerString();
+        mudarLinha();
+        System.out.print("Introduza (Aceitar/Rejeitar):");
+        campos[ACEITARREJEITAR] = lerString();
+        mudarLinha();
+        return campos;
+    }
+
+    public void verInformacoes(String nome, String email, int nif, String morada, LocalDateTime dataNascimento, double classificacao, int numeroAlugueres){
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print(CYAN_BOLD+"Nome :    "+RESET+nome);
+        mudarLinha();
+        System.out.print(CYAN_BOLD+"Email :    "+RESET+email);
+        mudarLinha();
+        System.out.print(CYAN_BOLD+"Nif :    "+RESET+nif);
+        mudarLinha();
+        System.out.print(CYAN_BOLD+"Morada :    "+RESET+morada);
+        mudarLinha();
+        System.out.print(CYAN_BOLD+"Data de nascimento :    "+RESET+dataNascimento.toString());
+        mudarLinha();
+        System.out.print(CYAN_BOLD+"Classificação :    "+RESET+classificacao);
+        mudarLinha();
+        System.out.print(CYAN_BOLD+"Numero de alugueres efetuados :    "+RESET+numeroAlugueres);
+        mudarLinha();
+        cyan();
+        line(1);
+        resetColor();
         enterContinuar();
     }
 

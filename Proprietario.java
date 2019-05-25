@@ -82,4 +82,15 @@ public class Proprietario extends Ator {
     public Proprietario clone(){
         return new Proprietario(this);
     }
+
+    public List<String> listaAlugueresPendentes() throws AluguerException{
+
+        List<String> ls = this.getHistorico().stream()
+                            .filter(l->l.getEstado()==Aluguer.PENDENTE)
+                            .map(Aluguer::toString)
+                            .collect(Collectors.toList());
+
+        if(ls.isEmpty()) throw new AluguerException("Não há alugueres pendentes!");
+        else return ls;
+    }
 }

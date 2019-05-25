@@ -175,8 +175,12 @@ public class Controller {
         return nif;
     }
 
+    @SuppressWarnings("Duplicates")
     private int runCliente(){
-        String[] opcoes = {"Realizar aluguer","Lista dos Alugueres efetuados entre datas","Terminar sessão"};
+        String[] opcoes = {"Realizar aluguer",
+                "Lista dos Alugueres efetuados entre datas",
+                "Ver Perfil",
+                "Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
         if(nif!=0){
@@ -194,6 +198,17 @@ public class Controller {
                         view.listaAlugueres(servico.alugueresEntreDatasCliente(nif,inicio,fim));
                         break;
                     case 3:
+                        try {
+                            view.verInformacoes(servico.verNome(nif),servico.verEmail(nif),servico.verNif(nif),
+                                    servico.verMorada(nif),servico.verDataNascimente(nif),servico.verClassificacao(nif),
+                                    servico.verNumeroAluguer(nif));
+                        } catch (AtorException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                            continue;
+                        }
+                        break;
+                    case 4:
                         escolha=0;
                         break;
                     default:
@@ -205,12 +220,14 @@ public class Controller {
         return -1;
     }
 
+    @SuppressWarnings("Duplicates")
     private int runAluguer(int nif){
         String[] opcoes = {"Carro Específico",
                 "Carro mais barato",
                 "Carro mais proximo",
                 "Carro mais barato dentro de uma determinada distância",
                 "Carro com uma autonomia desejada",
+                "Ver Perfil",
                 "Terminar sessão"};
         int escolha=0;
             do{
@@ -299,6 +316,8 @@ public class Controller {
                 "Lista de alugueres efetuados entre datas",
                 "Alterar o preço por Km de um carro registado",
                 "Abastecer veículo",
+                "Aceitar/Rejeitar alugueres",
+                "Ver Perfil",
                 "Terminar sessão"};
         int nif=runLogin();
         int escolha=0;
@@ -383,6 +402,36 @@ public class Controller {
                         }
                         break;
                     case 6:
+                        try {
+                            List<String> la = servico.procuraProprietario(nif).listaAlugueresPendentes();
+                            String[] campos6 = view.tratarAlugueres(la);
+                            int nifCliente = Integer.valueOf(campos6[View.NIF]);
+                            String estado = campos6[View.ACEITARREJEITAR];
+                            try {
+                                servico.terminaAluguer(estado,nifCliente);
+                            }catch(CarroException e){
+                                System.out.println(e);
+                                view.enterContinuar();
+                                continue;
+                            }
+                        }catch (AtorException | AluguerException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                            continue;
+                        }
+                        break;
+                    case 7:
+                        try {
+                            view.verInformacoes(servico.verNome(nif),servico.verEmail(nif),servico.verNif(nif),
+                                    servico.verMorada(nif),servico.verDataNascimente(nif),servico.verClassificacao(nif),
+                                    servico.verNumeroAluguer(nif));
+                        } catch (AtorException e){
+                            System.out.println(e);
+                            view.enterContinuar();
+                            continue;
+                        }
+                        break;
+                    case 8:
                         escolha=0;
                         break;
                     default:
