@@ -85,7 +85,7 @@ public class CarroGasolina extends Veiculo {
     }
 
     public String showCarro(){
-        return "Eletrico | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "+getPreco()+
+        return "Eletrico | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "+getPreco()+
                 "€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+") | Consumo: "+
                 getConsumo()+" | Autonomia: "+getAutonomia();
     }

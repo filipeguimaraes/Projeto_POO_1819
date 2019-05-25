@@ -271,7 +271,6 @@ public class Controller {
                 "Veiculo mais proximo",
                 "Veiculo mais barato dentro de uma determinada distância",
                 "Veiculo com uma autonomia desejada",
-                "Ver Perfil",
                 "Terminar sessão"};
         int escolha=0;
             do{
@@ -377,6 +376,9 @@ public class Controller {
                             view.enterContinuar();
                             continue;
                         }
+                        break;
+                    case 6:
+                        escolha=0;
                         break;
                     default:
                         System.out.println("Ocorreu um erro.");
