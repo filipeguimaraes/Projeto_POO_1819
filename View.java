@@ -526,7 +526,8 @@ public class View {
         return campos;
     }
 
-    public void verInformacoes(String nome, String email, int nif, String morada, LocalDateTime dataNascimento, double classificacao, int numeroAlugueres){
+    public void verInformacoes(String nome, String email, int nif, String morada, LocalDateTime dataNascimento,
+                               double classificacao, int numeroAlugueres){
         clear(ECRA);
         ban();
         mudarLinha();
@@ -609,6 +610,10 @@ public class View {
         return loc;
    }
 
+    /**
+     * Método para ler strings
+     * @return String lida
+     */
     public String lerString() {
         Scanner input = new Scanner(System.in);
         boolean flag = false;

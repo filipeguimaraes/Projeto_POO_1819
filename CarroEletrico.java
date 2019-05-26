@@ -2,10 +2,11 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
- * Escreva a descrição da classe CarroEletrico aqui.
- * 
- * @author (seu nome) 
- * @version (número de versão ou data)
+ * Carro Elétrico, com o seu consumo e autonomia
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class CarroEletrico extends Veiculo {
     private double consumo;
@@ -19,7 +20,9 @@ public class CarroEletrico extends Veiculo {
         this.autonomia=0.0;
     }
 
-    public CarroEletrico(String marca, String matricula, Proprietario proprietario, int velocidade, double preco, Classificacao classificacao, Point2D coordenada, List<Aluguer> historico, double consumo, double autonomia) {
+    public CarroEletrico(String marca, String matricula, Proprietario proprietario, int velocidade,
+                         double preco, Classificacao classificacao, Point2D coordenada, List<Aluguer> historico,
+                         double consumo, double autonomia) {
         super(marca, matricula, proprietario, velocidade, preco, classificacao, coordenada, historico);
         this.consumo = consumo;
         this.autonomia = autonomia;

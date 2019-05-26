@@ -588,7 +588,8 @@ public class Servico implements Serializable {
      */
     public double totalFaturadoPeriodo(String matricula, LocalDateTime inicio, LocalDateTime fim) throws CarroException{
         return procuraCarro(matricula).getHistorico().stream()
-                                                     .filter(l -> l.getDataInicio().isAfter(inicio) && l.getDataFim().isBefore(fim))
+                                                     .filter(l -> l.getDataInicio().isAfter(inicio)
+                                                             && l.getDataFim().isBefore(fim))
                                                      .mapToDouble(Aluguer::precoAluguer)
                                                      .sum();
     }
@@ -637,7 +638,8 @@ public class Servico implements Serializable {
      * @throws AluguerException Caso o veículo não tenha autonomia suficiente
      */
     @SuppressWarnings("Duplicates")
-    public double AluguerProf(int nifCliente,Point2D destino, Veiculo car) throws AtorException,CarroException,AluguerException{
+    public double AluguerProf(int nifCliente,Point2D destino, Veiculo car)
+            throws AtorException,CarroException,AluguerException{
         double custo=0;
         Veiculo carro = procuraCarro(car.getMatricula());
         Cliente c = procuraCliente(nifCliente);
@@ -669,7 +671,8 @@ public class Servico implements Serializable {
      * @throws AluguerException Caso o veículo não tenha autonomia suficiente
      */
     @SuppressWarnings("Duplicates")
-    public double pedidoAluguer(int nifCliente,Point2D destino, String matricula) throws AtorException,CarroException,AluguerException{
+    public double pedidoAluguer(int nifCliente,Point2D destino, String matricula)
+            throws AtorException,CarroException,AluguerException{
         double custo=0;
         Veiculo carro = procuraCarro(matricula);
         Cliente c = procuraCliente(nifCliente);
@@ -677,7 +680,8 @@ public class Servico implements Serializable {
         Point2D localizacaoCarro = carro.getCoordenada();
         if(temAutonomia(carro,destino)){
             custo = custo(carro,destino);
-        } else throw new AluguerException("O carro "+carro.getMatricula()+" não tem autonomia suficiente para efetuar a viagem.");
+        } else throw new AluguerException("O carro "+carro.getMatricula()+
+                " não tem autonomia suficiente para efetuar a viagem.");
 
         LocalDateTime dataInicio = LocalDateTime.now();
         LocalDateTime dataFimPrevista = dataInicio.plusMinutes(duracaoAluguer(c,carro,destino));
@@ -882,10 +886,10 @@ public class Servico implements Serializable {
     /**
      * Metodo para classificar um determinado cliente
      * @param nifProp Proprietario que vai classificar
-     * @param nifCli Cli
-     * @param classificacao
-     * @throws AtorException
-     * @throws AluguerException
+     * @param nifCli Cliente
+     * @param classificacao Classificação
+     * @throws AtorException Caso o proprietario ou o cliente não existam
+     * @throws AluguerException Caso o proprietario não possa classificar o cliente
      */
     public void classificaCliente(int nifProp, int nifCli, int classificacao) throws AtorException,AluguerException{
         boolean flag = this.procuraProprietario(nifProp).listaAlugueresAceites().stream()
@@ -896,6 +900,14 @@ public class Servico implements Serializable {
         } else throw new AtorException("Não pode classificar o cliente "+nifCli);
     }
 
+    /**
+     * Metodo para classificar um determinado proprietario
+     * @param nifCli Cliente que vai classificar
+     * @param nifProp Proprietario
+     * @param classificacao Classificação
+     * @throws AtorException Caso o proprietario ou o cliente não existam
+     * @throws AluguerException Caso o cliente não possa classificar o proprietario
+     */
     public void classificaProprietario(int nifCli, int nifProp, int classificacao) throws AtorException,AluguerException{
         boolean flag = this.procuraCliente(nifCli).listaAlugueresAceites().stream()
                 .anyMatch(l -> l.getP().getNif()==nifProp && l.getEstado()==Aluguer.ACEITE);
@@ -905,34 +917,80 @@ public class Servico implements Serializable {
         } else throw new AtorException("Não pode classificar o proprietario "+nifProp);
     }
 
+    /**
+     * Retira o nome do utilizador
+     * @param nif Nif do ator
+     * @return Nome
+     * @throws AtorException Caso o utilizador não exista
+     */
     public String verNome(int nif)throws AtorException{
         return this.procuraAtor(nif).getNome();
     }
 
+    /**
+     * Retira o email do utilizador
+     * @param nif Nif do ator
+     * @return Email
+     * @throws AtorException Caso o utilizador não exista
+     */
     public String verEmail(int nif) throws AtorException{
         return this.procuraAtor(nif).getEmail();
     }
 
+    /**
+     * Rretira o nif do utilizador
+     * @param nif Nif do ator
+     * @return Nif
+     * @throws AtorException Caso o utilizador não exista
+     */
     public int verNif(int nif) throws AtorException{
         return this.procuraAtor(nif).getNif();
     }
 
+    /**
+     * Retira a Morada do utilizador
+     * @param nif Nif do ator
+     * @return Morada
+     * @throws AtorException Caso o utilizador não exista
+     */
     public String verMorada(int nif) throws AtorException{
         return this.procuraAtor(nif).getMorada();
     }
 
+    /**
+     * Retira a data de nascimento do utilizador
+     * @param nif Nif do ator
+     * @return Data de nascimento
+     * @throws AtorException Caso o utilizador não exista
+     */
     public LocalDateTime verDataNascimente(int nif) throws AtorException{
         return this.procuraAtor(nif).getData();
     }
 
+    /**
+     * Retira a classificação média do utilizador
+     * @param nif Nif do ator
+     * @return Classificação média
+     * @throws AtorException Caso o utilizador não exista
+     */
     public double verClassificacao(int nif) throws AtorException{
         return this.procuraAtor(nif).getClassificacao().classificacaoMedia();
     }
 
+    /**
+     * Retira o numero de alugueres que o utilizador realizou
+     * @param nif Nif do ator
+     * @return Numero de alugueres
+     * @throws AtorException Caso o utilizador não exista
+     */
     public int verNumeroAluguer(int nif) throws AtorException{
         return this.procuraAtor(nif).getHistorico().size();
     }
 
+    /**
+     * Produz uma data de nascimento aleatória ente 1950 e 2000
+     * @return Data de nascimento
+     */
     public LocalDateTime nascimentoAleatorio(){
         int dia = 1 + (int)(Math.random() * (28 - 1));
         int mes =  1 + (int)(Math.random() * (12 - 1));
@@ -940,6 +998,10 @@ public class Servico implements Serializable {
         return LocalDateTime.of(ano, mes, dia,0,0);
     }
 
+    /**
+     * Produz uma data aleatória no ano de 2019 até junho
+     * @return Data
+     */
     public LocalDateTime dataAleatoria(){
         int dia = 1 + (int)(Math.random() * (28 - 1));
         int mes =  1 + (int)(Math.random() * (5 - 1));
@@ -947,6 +1009,12 @@ public class Servico implements Serializable {
         return LocalDateTime.of(ano, mes, dia,0,0);
     }
 
+    /**
+     * Atualiza a localização atual do cliente
+     * @param nifCliente Nif do cliente
+     * @param ponto Ponto onde o cliente se encontra
+     * @throws AtorException Caso o cliente não esteja registado no sistema
+     */
     public void atualizaLocalizacaoCliente(int nifCliente, Point2D ponto) throws AtorException{
         this.procuraCliente(nifCliente).getCoordenada().setLocation(ponto);
     }
@@ -955,10 +1023,10 @@ public class Servico implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Servico servico = (Servico) o;
-        return Objects.equals(listaCarros, servico.listaCarros) &&
-                Objects.equals(listaAtores, servico.listaAtores) &&
-                Objects.equals(listaAlugueres, servico.listaAlugueres) &&
-                Objects.equals(meteorologia, servico.meteorologia);
+        return listaCarros.equals(servico.listaCarros) &&
+                listaAtores.equals(servico.listaAtores) &&
+                listaAlugueres.equals(servico.listaAlugueres) &&
+                meteorologia.equals(servico.meteorologia);
     }
 
     public Servico clone(){

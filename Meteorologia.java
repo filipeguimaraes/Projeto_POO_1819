@@ -1,15 +1,16 @@
 import java.io.Serializable;
 
 /**
- * Classe que contem as condições metereologicas e o tempo de atraso que as mesmas provocam
+ * Meteorologia, com o as condições metereologicas e o tempo de atraso que as mesmas provocam
  *
- *
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class Meteorologia implements Serializable {
     private double velocidadeVento; //km/h
     private double temperatura; //graus
-    private double precipitacao; //0-100
+    private double precipitacao; //%
 
 
     public Meteorologia(){
@@ -54,8 +55,10 @@ public class Meteorologia implements Serializable {
         this.precipitacao = precipitacao;
     }
 
-    /* Vento fraco  < 15 km/h ->+1, Vento moderado  15 a 35 km/h->+2, Vento forte 36 a 55 km/h->+3, vento muito forte >56
-    */
+    /**
+     * Calcula o atraso (segundo o IPMA)
+     * @return Atraso em minutos
+     */
     public int medicaoMinutos(){
         int m=0;
 
@@ -82,6 +85,10 @@ public class Meteorologia implements Serializable {
         return velocidadeVento == that.velocidadeVento &&
                 temperatura == that.temperatura &&
                 precipitacao == that.precipitacao;
+    }
+
+    public Meteorologia clone(){
+        return new Meteorologia(this);
     }
 
     public String toString() {

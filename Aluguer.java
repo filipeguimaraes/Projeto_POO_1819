@@ -3,7 +3,13 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-
+/**
+ * ALuguer, com as informações relativas a um aluguer
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
+ */
 public class Aluguer implements Serializable {
     private Veiculo car;
     private Cliente cli;
@@ -30,7 +36,8 @@ public class Aluguer implements Serializable {
         this.estado = PENDENTE;
     }
 
-    public Aluguer(Veiculo car, Cliente cli, Proprietario p, Point2D pontoInicial, Point2D destino, LocalDateTime dataInicio, LocalDateTime dataFim, int estado) {
+    public Aluguer(Veiculo car, Cliente cli, Proprietario p, Point2D pontoInicial, Point2D destino,
+                   LocalDateTime dataInicio, LocalDateTime dataFim, int estado) {
         this.car = car;
         this.cli = cli;
         this.p = p;
@@ -116,39 +123,6 @@ public class Aluguer implements Serializable {
         this.estado = estado;
     }
 
-    public Aluguer clone() {
-        return new Aluguer(this);
-    }
-
-
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Aluguer aluguer = (Aluguer) o;
-        return estado == aluguer.estado &&
-                car.equals(aluguer.car) &&
-                cli.equals(aluguer.cli) &&
-                p.equals(aluguer.p) &&
-                pontoInicial.equals(aluguer.pontoInicial) &&
-                destino.equals(aluguer.destino) &&
-                dataInicio.equals(aluguer.dataInicio) &&
-                dataFim.equals(aluguer.dataFim);
-    }
-
-
-    public String toString() {
-        StringBuilder s = new StringBuilder("Aluguer\n");
-        s.append(" Veiculo" + this.car.getMatricula());
-        s.append(" Cliente" + this.cli.getNif());
-        s.append(" Proprietario" + this.p.getNif());
-        s.append(" Ponto Inicial" + this.pontoInicial);
-        s.append(" Destino" + this.destino);
-        s.append(" Data inicial" + this.dataInicio);
-        s.append(" Data final" + this.dataFim);
-        s.append(" Estado" + this.estado);
-        return s.toString();
-    }
-
     /**
      * Método que aceita um determinado aluguer
      */
@@ -165,7 +139,6 @@ public class Aluguer implements Serializable {
 
     /**
      * Metodo que calcula o preço do aluguer
-     *
      * @return preço do aluguer
      */
     public double precoAluguer() {
@@ -173,18 +146,31 @@ public class Aluguer implements Serializable {
         return this.car.getPreco() * distancia;
     }
 
+    /**
+     * Distancia do aluguer desde o ponto inicial ao final
+     * @return DistÂncia do aluguer
+     */
     public double kmsPercorridos() {
         return Point2D.distance(pontoInicial.getX(), pontoInicial.getY(), destino.getX(), destino.getY());
     }
 
+    /**
+     * Distancia do cliente ao veícuçp
+     * @return Distancia ao veículo
+     */
     public double distanciaAoCarro(){
         return Point2D.distance(cli.getCoordenada().getX(),cli.getCoordenada().getY(),
                 car.getCoordenada().getX(),car.getCoordenada().getY());
     }
 
+    /**
+     * Calcula a duração real da viagem
+     * @return Suração do aluguer
+     */
     public long tempoReal(){
         return Duration.between(this.dataInicio, this.dataFim).toMinutes();
     }
+
     /**
      * Método que calcura o tempo que o cliente demorou a chegar ao carro
      * @return tempo em minutos
@@ -193,6 +179,10 @@ public class Aluguer implements Serializable {
         return (distanciaAoCarro()/4)*60;
     }
 
+    /**
+     * Cria string com informações relevantes do aluguer
+     * @return String com informações relevantes do aluguer
+     */
     public String showAluguer() {
         String estado = "";
         if (this.estado == Aluguer.ACEITE) {
@@ -202,10 +192,40 @@ public class Aluguer implements Serializable {
         } else if (this.estado == Aluguer.REJEITADO) {
             estado = "Rejeitado";
         }
-        return "Carro: " + getCar().getMatricula() + " | Cliente: NIF " + getCli().getNif() + " Nome " + getCli().getNome() +
-                " | Proprietario: NIF " + getP().getNif() + " Nome " + getP().getNome() + '\n' +
+        return "Carro: " + getCar().getMatricula() + " | Cliente: NIF " + getCli().getNif() + " Nome "
+                + getCli().getNome() + " | Proprietario: NIF " + getP().getNif() + " Nome " + getP().getNome() + '\n' +
                 "Tempo que o cliente demora a chegar ao carro: "+tempoCliente()+" | Data início: "+getDataInicio()+'\n'+
                 "Distancia: " + this.kmsPercorridos() +" | Preço: " + this.precoAluguer() + "€ | Estado: " + estado+
                 " | Tempo real da viagem (min): "+tempoReal();
+    }
+
+    public Aluguer clone() {
+        return new Aluguer(this);
+    }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Aluguer aluguer = (Aluguer) o;
+        return estado == aluguer.estado &&
+                car.equals(aluguer.car) &&
+                cli.equals(aluguer.cli) &&
+                p.equals(aluguer.p) &&
+                pontoInicial.equals(aluguer.pontoInicial) &&
+                destino.equals(aluguer.destino) &&
+                dataInicio.equals(aluguer.dataInicio) &&
+                dataFim.equals(aluguer.dataFim);
+    }
+
+    public String toString() {
+        StringBuilder s = new StringBuilder("Aluguer\n");
+        s.append(" Veiculo" + this.car.getMatricula());
+        s.append(" Cliente" + this.cli.getNif());
+        s.append(" Proprietario" + this.p.getNif());
+        s.append(" Ponto Inicial" + this.pontoInicial);
+        s.append(" Destino" + this.destino);
+        s.append(" Data inicial" + this.dataInicio);
+        s.append(" Data final" + this.dataFim);
+        s.append(" Estado" + this.estado);
+        return s.toString();
     }
 }

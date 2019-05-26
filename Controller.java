@@ -6,14 +6,26 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Controlador, controla o funcionamento do sistema
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
+ */
 public class Controller {
 
     private Servico servico;
     private View view;
 
-    private static String BAK_PATH = "logsPOO_carregamentoInicial.bak";
-    private static String OBJ_PATH = "estado.obj";
+    private static String BAK_PATH = "logsPOO_carregamentoInicial.bak"; //Caminho para o ficheiro de logs inicial
+    private static String OBJ_PATH = "estado.obj"; //caminho para o ficheiro de estado
 
+    /**
+     * Metodo main que cria a aplicação e chama o run()
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         new Controller().run();
     }
@@ -23,7 +35,10 @@ public class Controller {
         this.view = new View();
     }
 
-    private void run()throws IOException{
+    /**
+     * Metodo que trata do menu inicial
+     */
+    private void run(){
         String[] opcoes={"Carregar ficheiro de inicio",
                 "Carregar estado anterior",
                 "Introduzir informações meteorológicas",
@@ -105,6 +120,10 @@ public class Controller {
 
     }
 
+    /**
+     * Metodo para escolher se sou Cliente ou Proprietário
+     * @return Retorna -1 para voltar ao menu anterior
+     */
     private int runEscolherAtor(){
         String[] opcoes = {"Cliente","Proprietario","Menu Inicial"};
         int escolha=0;
@@ -131,6 +150,10 @@ public class Controller {
         return 0;
     }
 
+    /**
+     * Método para escolher entre fazer login ou registar
+     * @return Restorna -1 caso queira regressar ao menu anterior ou o nif do utilizador
+     */
     private int runLogin(){
         String[] opcoes = {"Login","Registar","Menu Principal"};
         int escolha=0;
@@ -194,6 +217,10 @@ public class Controller {
         return nif;
     }
 
+    /**
+     * Método que trata do menu de cliente
+     * @return Retorna -1 para regrassar ao menu anterior
+     */
     @SuppressWarnings("Duplicates")
     private int runCliente(){
         String[] opcoes = {"Realizar aluguer",
@@ -267,6 +294,11 @@ public class Controller {
         return -1;
     }
 
+    /**
+     * Método que trata do menu de aluguer
+     * @param nif Nif do utilizador
+     * @return -1 para regrassar ao menu anterior
+     */
     @SuppressWarnings("Duplicates")
     private int runAluguer(int nif){
         String[] opcoes = {
@@ -358,7 +390,8 @@ public class Controller {
                             double distancia = Double.parseDouble(campos4[View.DISTANCIA]);
                             try {
                                 view.imprimeCarro(servico.carroProximoMaisBarato(nif, distancia));
-                                view.imprimeCusto(servico.pedidoAluguer(nif, destino4, servico.carroProximoMaisBarato(nif, distancia)));
+                                view.imprimeCusto(servico.pedidoAluguer(nif, destino4,
+                                        servico.carroProximoMaisBarato(nif, distancia)));
                                 view.enterContinuar();
                                 escolha = 0;
                             } catch (CarroException | AluguerException | AtorException e) {
@@ -403,6 +436,11 @@ public class Controller {
         return -1;
     }
 
+    /**
+     * Método que trata do menu de proprietário
+     * @return Retorna -1 para regrassar ao menu anterior
+     */
+    @SuppressWarnings("Duplicates")
     private int runProprietario(){
         String[] opcoes = {"Registar carro",
                 "Lista de carros registados",
@@ -435,21 +473,24 @@ public class Controller {
                             double autonomia = Double.parseDouble(registo[View.AUTONOMIA]);
                             if (tipo.contains("Electrico")) {
                                 try {
-                                    servico.adicionaCarroEletrico(marca, matricula, nif, velocidade, preco, localizacao, consumo, autonomia);
+                                    servico.adicionaCarroEletrico(marca, matricula, nif, velocidade,
+                                            preco, localizacao, consumo, autonomia);
                                 } catch (CarroException | AtorException e) {
                                     System.out.println(e.getMessage());
                                     view.enterContinuar();
                                 }
                             } else if (tipo.contains("Gasolina")) {
                                 try {
-                                    servico.adicionaCarroGasolina(marca, matricula, nif, velocidade, preco, localizacao, consumo, autonomia);
+                                    servico.adicionaCarroGasolina(marca, matricula, nif, velocidade,
+                                            preco, localizacao, consumo, autonomia);
                                 } catch (CarroException | AtorException e) {
                                     System.out.println(e.getMessage());
                                     view.enterContinuar();
                                 }
                             } else if (tipo.contains("Hibrido")) {
                                 try {
-                                    servico.adicionaCarroHibrido(marca, matricula, nif, velocidade, preco, localizacao, consumo, autonomia);
+                                    servico.adicionaCarroHibrido(marca, matricula, nif, velocidade,
+                                            preco, localizacao, consumo, autonomia);
                                 } catch (CarroException | AtorException e) {
                                     System.out.println(e.getMessage());
                                     view.enterContinuar();
@@ -566,6 +607,10 @@ public class Controller {
         return -1;
     }
 
+    /**
+     * Método que trata do menu de extras
+     * @return Retorna -1 para voltar ao menu anterior
+     */
     public int runExtras(){
         String[] opcoes = {"Total faturado por uma viatura num determinado período",
                 "Top 10 clientes que mais utilizam o sistema em número de vezes",
@@ -583,7 +628,8 @@ public class Controller {
                     LocalDateTime datainicio = stringParaData(campos3[View.DATAINICIO]);
                     LocalDateTime datafim = stringParaData(campos3[View.DATAFIM]);
                     try {
-                        view.imprimeTotalFaturado(matricula3,servico.totalFaturadoPeriodo(matricula3,datainicio,datafim));
+                        view.imprimeTotalFaturado(matricula3,
+                                servico.totalFaturadoPeriodo(matricula3,datainicio,datafim));
                         view.enterContinuar();
                     }catch (CarroException e){
                         System.out.println(e.getMessage());
@@ -610,6 +656,11 @@ public class Controller {
         return 0;
     }
 
+    /**
+     * Tranforma uma string numa data
+     * @param dma String com data DD/MM/AAAA
+     * @return Data
+     */
     public LocalDateTime stringParaData(String dma){
         String[] dataf = dma.split("/");
         int dia = Integer.valueOf(dataf[0]);
@@ -618,6 +669,11 @@ public class Controller {
         return LocalDateTime.of(ano,mes,dia,0,0);
     }
 
+    /**
+     * Tranforma uma string num ponto
+     * @param xy String com o ponto no tipo x,y
+     * @return Ponto
+     */
     public Point2D stringParaPonto(String xy)throws ArrayIndexOutOfBoundsException{
         String[] locs = xy.split(",");
         double x = Double.parseDouble(locs[0]);
@@ -625,6 +681,10 @@ public class Controller {
         return new Point2D.Double(x,y);
     }
 
+    /**
+     * Metodo para ler inteiro
+     * @return Inteiro lido
+     */
     public int lerInt() {
         Scanner input = new Scanner(System.in);
         boolean flag = false;
