@@ -93,8 +93,10 @@ public class CarroEletrico extends Veiculo {
      */
     public String showCarro(){
         return "Eletrico | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()
-                +"km | Preço: "+getPreco()+"€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+
-                ") | Consumo: "+ getConsumo()+" | Autonomia: "+getAutonomia();
+                +"km | Preço: "+getPreco()+
+                "€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+")\n"+
+                "Consumo: "+ getConsumo()+" | Autonomia: "+getAutonomia()+
+                " | Classificação: "+getClassificacao().classificacaoMedia();
     }
 
     public String toString(){

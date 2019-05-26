@@ -1,9 +1,9 @@
-
 /**
- * Write a description of class AluguerException here.
+ * Class Exception para os alugueres
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class AluguerException extends Exception
 {

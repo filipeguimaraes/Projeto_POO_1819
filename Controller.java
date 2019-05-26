@@ -74,7 +74,7 @@ public class Controller {
                     double temperatura = Double.valueOf(campos3[View.TEMPERATURA]);
                     double precipitacao = Double.valueOf(campos3[View.PRECIPITACAO]);
                     double velocidadevento = Double.valueOf(campos3[View.VELOCIDADEVENTO]);
-                    servico.introduzMeteorologia(precipitacao,temperatura,velocidadevento);
+                    servico.atualizaMetereologia(velocidadevento,temperatura,precipitacao);
                     escolha = 0;
                     break;
                 // Gravar estado
@@ -269,18 +269,30 @@ public class Controller {
 
     @SuppressWarnings("Duplicates")
     private int runAluguer(int nif){
-        String[] opcoes = {"Veiculo Específico",
+        String[] opcoes = {
+                "Localização atual",
+                "Veiculo Específico",
                 "Veiculo mais barato",
                 "Veiculo mais proximo",
                 "Veiculo mais barato dentro de uma determinada distância",
                 "Veiculo com uma autonomia desejada",
-                "Terminar sessão"};
-        int escolha=0;
+                "Voltar"};
+        int escolha;
             do{
                 view.mainMenu(opcoes);
                 escolha = lerInt();
                 switch (escolha){
                     case 1:
+                        try {
+                            servico.atualizaLocalizacaoCliente(nif,stringParaPonto(view.localizacaoAtual()));
+                            view.enterContinuar();
+                        }catch (AtorException e){
+                            System.out.println(e.getMessage());
+                            view.enterContinuar();
+                            continue;
+                        }
+                        break;
+                    case 2:
                         String[] campos1 = view.aluguerCarroEspecifico();
                         try {
                             Point2D destino1 = stringParaPonto(campos1[View.DESTINO]);
@@ -300,7 +312,7 @@ public class Controller {
                             continue;
                         }
                         break;
-                    case 2:
+                    case 3:
                         String[] campos2 = view.aluguerDestino();
                         try {
                             Point2D destino2 = stringParaPonto(campos2[View.DESTINO]);
@@ -319,7 +331,7 @@ public class Controller {
                                 continue;
                         }
                         break;
-                    case 3:
+                    case 4:
                         String[] campos3 = view.aluguerDestino();
 
                         try {
@@ -339,7 +351,7 @@ public class Controller {
                             continue;
                         }
                         break;
-                    case 4:
+                    case 5:
                         String[] campos4 = view.aluguerDistancia();
                         try {
                             Point2D destino4 = stringParaPonto(campos4[View.DESTINO]);
@@ -359,7 +371,7 @@ public class Controller {
                             continue;
                         }
                         break;
-                    case 5:
+                    case 6:
                         String[] campos5 = view.aluguerAutonomia();
                         try {
                             Point2D destino5 = stringParaPonto(campos5[View.DESTINO]);
@@ -380,14 +392,14 @@ public class Controller {
                             continue;
                         }
                         break;
-                    case 6:
+                    case 7:
                         break;
                     default:
                         System.out.println("Ocorreu um erro.");
                         view.enterContinuar();
                         break;
                 }
-            }while (escolha!=6);
+            }while (escolha!=7);
         return -1;
     }
 

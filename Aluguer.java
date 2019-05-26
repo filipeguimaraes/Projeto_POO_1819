@@ -1,7 +1,7 @@
 import java.awt.geom.Point2D;
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 
 public class Aluguer implements Serializable {
@@ -177,11 +177,14 @@ public class Aluguer implements Serializable {
         return Point2D.distance(pontoInicial.getX(), pontoInicial.getY(), destino.getX(), destino.getY());
     }
 
-    public double  distanciaAoCarro(){
+    public double distanciaAoCarro(){
         return Point2D.distance(cli.getCoordenada().getX(),cli.getCoordenada().getY(),
                 car.getCoordenada().getX(),car.getCoordenada().getY());
     }
 
+    public long tempoReal(){
+        return Duration.between(this.dataInicio, this.dataFim).toMinutes();
+    }
     /**
      * Método que calcura o tempo que o cliente demorou a chegar ao carro
      * @return tempo em minutos
@@ -202,6 +205,7 @@ public class Aluguer implements Serializable {
         return "Carro: " + getCar().getMatricula() + " | Cliente: NIF " + getCli().getNif() + " Nome " + getCli().getNome() +
                 " | Proprietario: NIF " + getP().getNif() + " Nome " + getP().getNome() + '\n' +
                 "Tempo que o cliente demora a chegar ao carro: "+tempoCliente()+" | Data início: "+getDataInicio()+'\n'+
-                "Distancia: " + this.kmsPercorridos() +" | Preço: " + this.precoAluguer() + "€ | Estado: " + estado;
+                "Distancia: " + this.kmsPercorridos() +" | Preço: " + this.precoAluguer() + "€ | Estado: " + estado+
+                " | Tempo real da viagem (min): "+tempoReal();
     }
 }

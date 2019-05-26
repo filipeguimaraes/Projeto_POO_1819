@@ -98,8 +98,9 @@ public class CarroHibrido extends Veiculo {
      */
     public String showCarro(){
         return "Hibrido | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()+"km | Preço: "
-                +getPreco()+"€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+") | Consumo: "+
-                getConsumo()+" | Autonomia: "+getAutonomia();
+                +getPreco()+"€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+")\nConsumo: "+
+                getConsumo()+" | Autonomia: "+getAutonomia()+
+                " | Classificação: "+getClassificacao().classificacaoMedia();
     }
 
     public String toString(){

@@ -97,7 +97,8 @@ public class CarroGasolina extends Veiculo {
     public String showCarro(){
         return "Gasolina | "+getMatricula()+" | "+getMarca()+" | Velocidade media: "+getVelocidade()+
                 "km | Preço: "+getPreco()+ "€ | Localização: ("+getCoordenada().getX()+","+getCoordenada().getY()+
-                ") | Consumo: "+ getConsumo()+" | Autonomia: "+getAutonomia();
+                ")\nConsumo: "+ getConsumo()+" | Autonomia: "+getAutonomia()+
+                " | Classificação: "+getClassificacao().classificacaoMedia();
     }
 
     public CarroGasolina clone(){

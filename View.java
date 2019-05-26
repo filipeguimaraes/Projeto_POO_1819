@@ -4,7 +4,6 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-
 /**
  * Write a description of class View here.
  *
@@ -596,6 +595,19 @@ public class View {
         mudarLinha();
         return campos;
     }
+
+    public String localizacaoAtual(){
+        clear(ECRA);
+        ban();
+        mudarLinha();
+        System.out.print("Introduza a sua localização atual "+RED+"x,y"+RESET+":");
+        String loc=lerString();
+        mudarLinha();
+        cyan();
+        line(1);
+        resetColor();
+        return loc;
+   }
 
     public String lerString() {
         Scanner input = new Scanner(System.in);

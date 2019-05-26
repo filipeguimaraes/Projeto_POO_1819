@@ -6,10 +6,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Write a description of class Servico here.
+ * Serviço, contém todos os dados do sistema
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class Servico implements Serializable {
     private Map<String, Veiculo> listaCarros;
@@ -17,13 +18,12 @@ public class Servico implements Serializable {
     private List<Aluguer> listaAlugueres;
     private Meteorologia meteorologia;
         
-    public Servico(){
+    public Servico() {
         this.listaCarros = new HashMap<>();
         this.listaAtores = new HashMap<>();
         this.listaAlugueres = new ArrayList<>();
-        this.meteorologia=new Meteorologia();
+        this.meteorologia = new Meteorologia();
     }
-
 
     public Servico(Map<String, Veiculo> lsCarros, Map<Integer, Ator> lsAtores, List<Aluguer> lsAlugueres,
                    Meteorologia meteorologia) {
@@ -39,8 +39,6 @@ public class Servico implements Serializable {
         this.listaAlugueres = umServico.getListaAlugueres();
         this.meteorologia = umServico.getMeteorologia();
     }
-
-
 
     public Map<String, Veiculo> getListaCarros() {
         return listaCarros.entrySet().stream()
@@ -82,11 +80,11 @@ public class Servico implements Serializable {
         this.meteorologia = new Meteorologia(meteorologia);
     }
 
-
     /**
-     * Método para adicionar um carro eletrico à lista de carros
-     * @param e carro elétrico
-     * @throws CarroException caso o carro já exista
+     * Adiciona um carro elétrico à lista de carros
+     * @param e Carro elétrico
+     * @throws CarroException Caso o carro já exista
+     * @throws AtorException Caso o proprietário não exista
      */
     @SuppressWarnings("Duplicates")
     public void adicionaCarroEletrico(CarroEletrico e) throws CarroException,AtorException{
@@ -97,6 +95,19 @@ public class Servico implements Serializable {
             }else throw new CarroException("O carro "+e.getMatricula()+" já existe!");
     }
 
+    /**
+     * Adiciona um carro elétrico à lista de carros
+     * @param marca Marca do carro
+     * @param matricula Matrícula do carro
+     * @param nif Nif do proprietário
+     * @param velocidade Pelocidade do carro
+     * @param preco Preco do carro
+     * @param loc Localizacao do carro
+     * @param consumo Consumo do carro
+     * @param autonomia Autonomia do carro
+     * @throws CarroException Caso o carro já exista
+     * @throws AtorException Caso o proprietário não exista
+     */
     @SuppressWarnings("Duplicates")
     public void adicionaCarroEletrico(String marca, String matricula, int nif, int velocidade, double preco,
                                       Point2D loc, double consumo, double autonomia) throws CarroException,AtorException{
@@ -109,6 +120,12 @@ public class Servico implements Serializable {
         }else throw new CarroException("O carro "+matricula+" já existe!");
     }
 
+    /**
+     * Adiciona um carro a gasolina à lista de carros
+     * @param g Carro a gasolina
+     * @throws CarroException Caso o carro já exista
+     * @throws AtorException Caso o proprietário não exista
+     */
     @SuppressWarnings("Duplicates")
     public void adicionaCarroGasolina(CarroGasolina g) throws CarroException,AtorException{
             if (!this.listaCarros.containsKey(g.getMatricula())){
@@ -118,15 +135,37 @@ public class Servico implements Serializable {
             }else throw new CarroException("O carro "+g.getMatricula()+" já existe!");
     }
 
-    public void adicionaCarroGasolina(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{
+    /**
+     * Adiciona um carro a gasolina à lista de carros
+     * @param marca Marca do carro
+     * @param matricula Matrícula do carro
+     * @param nif Nif do proprietário
+     * @param velocidade Pelocidade do carro
+     * @param preco Preco do carro
+     * @param localizacao Localizacao do carro
+     * @param consumo Consumo do carro
+     * @param autonomia Autonomia do carro
+     * @throws CarroException Caso o carro já exista
+     * @throws AtorException Caso o proprietário não exista
+     */
+    public void adicionaCarroGasolina(String marca, String matricula, int nif, int velocidade, double preco,
+                                      Point2D localizacao, double consumo, double autonomia)
+                                        throws CarroException, AtorException{
         if(!listaCarros.containsKey(matricula)){
             Proprietario p = procuraProprietario(nif);
-            CarroGasolina car = new CarroGasolina(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
+            CarroGasolina car = new CarroGasolina(marca,matricula,p,velocidade,preco,new Classificacao(),
+                    localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
             listaCarros.put(matricula,car);
             p.adicionaCarro(listaCarros.get(matricula));
         }else throw new CarroException("O carro "+matricula+" já existe!");
     }
 
+    /**
+     * Adiciona um carro hibrido à lista de carros
+     * @param h Carro hibrido
+     * @throws CarroException Caso o carro já exista
+     * @throws AtorException Caso o proprietário não exista
+     */
     @SuppressWarnings("Duplicates")
     public void adicionaCarroHibrido(CarroHibrido h) throws CarroException,AtorException{
         if (!this.listaCarros.containsKey(h.getMatricula())){
@@ -137,15 +176,36 @@ public class Servico implements Serializable {
 
     }
 
-    public void adicionaCarroHibrido(String marca, String matricula, int nif, int velocidade, double preco, Point2D localizacao, double consumo, double autonomia) throws CarroException, AtorException{
+    /**
+     * Adiciona um carro  hibrido à lista de carros
+     * @param marca Marca do carro
+     * @param matricula Matrícula do carro
+     * @param nif Nif do proprietário
+     * @param velocidade Pelocidade do carro
+     * @param preco Preco do carro
+     * @param localizacao Localizacao do carro
+     * @param consumo Consumo do carro
+     * @param autonomia Autonomia do carro
+     * @throws CarroException Caso o carro já exista
+     * @throws AtorException Caso o proprietário não exista
+     */
+    public void adicionaCarroHibrido(String marca, String matricula, int nif, int velocidade, double preco,
+                                     Point2D localizacao, double consumo, double autonomia)
+                                        throws CarroException, AtorException{
         if(!listaCarros.containsKey(matricula)){
             Proprietario p = procuraProprietario(nif);
-            CarroHibrido car = new CarroHibrido(marca,matricula,p,velocidade,preco,new Classificacao(),localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
+            CarroHibrido car = new CarroHibrido(marca,matricula,p,velocidade,preco,new Classificacao(),
+                    localizacao,new ArrayList<Aluguer>(),consumo,autonomia);
             listaCarros.put(matricula,car);
             p.adicionaCarro(listaCarros.get(matricula));
         }else throw new CarroException("O carro "+matricula+" já existe!");
     }
 
+    /**
+     * Adicionar cliente ao sistema
+     * @param c Cliente
+     * @throws AtorException Caso o cliente já exista
+     */
     public void adicionaCliente(Cliente c) throws AtorException{
         if(!listaAtores.containsKey(c.getNif())){
             this.listaAtores.put(c.getNif(),c.clone());
@@ -154,15 +214,32 @@ public class Servico implements Serializable {
         }
     }
 
-    public void adicionaCliente(String email, String password, int nif, String nome, String morada, LocalDateTime data) throws AtorException{
+    /**
+     * Adicionar Cliente ao sistema
+     * @param email Email do novo cliente
+     * @param password Password do novo cliente
+     * @param nif Nif do novo cliente
+     * @param nome Nome do novo cliente
+     * @param morada Morada do novo cliente
+     * @param data Data de nascimento do novo cliente
+     * @throws AtorException Caso o cliente já exista
+     */
+    public void adicionaCliente(String email, String password, int nif, String nome, String morada, LocalDateTime data)
+            throws AtorException{
         if(!listaAtores.containsKey(nif)){
-            Cliente c = new Cliente(email, nif, nome, password, morada, data, new Point2D.Double(), new Classificacao(), new ArrayList<Aluguer>());
+            Cliente c = new Cliente(email, nif, nome, password, morada, data, new Point2D.Double(),
+                    new Classificacao(), new ArrayList<Aluguer>());
             listaAtores.put(nif,c);
         } else {
             throw new AtorException("Cliente "+nif+" já existe!");
         }
     }
 
+    /**
+     * Adicionar proprietário ao sistema
+     * @param p Proprietário
+     * @throws AtorException Caso o proprietário já exista
+     */
     public void adicionaProprietario(Proprietario p) throws AtorException{
         if(!listaAtores.containsKey(p.getNif())){
             this.listaAtores.put(p.getNif(),p.clone());
@@ -171,75 +248,110 @@ public class Servico implements Serializable {
         }
     }
 
-    public void adicionaProprietario(String email, String password, int nif, String nome, String morada, LocalDateTime data) throws AtorException{
+    /**
+     * Adicionar Proprietário ao sistema
+     * @param email Email do novo proprietário
+     * @param password Password do novo proprietário
+     * @param nif Nif do novo proprietário
+     * @param nome Nome do novo proprietário
+     * @param morada Morada do novo proprietário
+     * @param data Data de nascimento do novo proprietário
+     * @throws AtorException Caso o proprietário já exista
+     */
+    public void adicionaProprietario(String email, String password, int nif, String nome, String morada,
+                                     LocalDateTime data) throws AtorException{
         if(!listaAtores.containsKey(nif)){
-            Proprietario p = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(), new ArrayList<Aluguer>(),new HashMap<String, Veiculo>());
+            Proprietario p = new Proprietario(email,nif,nome,password,morada,data, new Classificacao(),
+                    new ArrayList<Aluguer>(),new HashMap<String, Veiculo>());
             this.listaAtores.put(nif,p);
         } else {
             throw new AtorException("Proprietário "+nif+" já existe!");
         }
     }
 
+    /**
+     * Adiciona um novo aluguer ao sistema
+     * @param a Aluguer
+     * @throws AluguerException Caso este aluguer já tenha sido adicionado
+     */
     public void adicionaAluguer(Aluguer a)throws AluguerException{
         if(listaAlugueres.contains(a)){
             throw new AluguerException("Esse aluguer já existe!");
         }else this.listaAlugueres.add(a.clone());
     }
 
+    /**
+     * Procura um ator no sistema
+     * @param nif Nif do utilizador
+     * @return Utilizador
+     * @throws AtorException Caso o utilizador em questão não exista
+     */
     public Ator procuraAtor(int nif) throws AtorException{
         if (listaAtores.containsKey(nif)) return this.listaAtores.get(nif);
         else throw new AtorException("Não existe este Ator "+nif);
     }
 
+    /**
+     * Procura um proprietário no sistema
+     * @param nif Nif do proprietário
+     * @return Utilizador
+     * @throws AtorException Caso o proprietário em questão não exista
+     */
     public Proprietario procuraProprietario(int nif) throws AtorException{
         if (listaAtores.containsKey(nif)) return (Proprietario)this.listaAtores.get(nif);
         else throw new AtorException("Não existe o Proprietario "+nif);
     }
 
+    /**
+     * Procura um carro no sistema
+     * @param matricula Matrícula do carro
+     * @return Carro
+     * @throws AtorException Caso o carro em questão não exista
+     */
     public Veiculo procuraCarro(String matricula) throws CarroException{
         if (listaCarros.containsKey(matricula)) return listaCarros.get(matricula);
         else throw new CarroException("Não existe o carro "+matricula);
     }
 
+    /**
+     * Procura um cliente no sistema
+     * @param nif Nif do cliente
+     * @return Utilizador
+     * @throws AtorException Caso o cliente em questão não exista
+     */
     public Cliente procuraCliente(int nif) throws AtorException{
         if (listaAtores.containsKey(nif)) return (Cliente)this.listaAtores.get(nif);
         else throw new AtorException("Não existe o Cliente "+nif);
     }
 
+    /**
+     * Procura um aluguer no sistema
+     * @param a Aluguer
+     * @return Utilizador
+     * @throws AtorException Caso o cliente em questão não exista
+     */
     public Aluguer procuraAluguer(Aluguer a) throws AluguerException{
         if(listaAlugueres.contains(a)){
             return this.listaAlugueres.stream().filter(l -> l.equals(a)).collect(Collectors.toList()).get(0);
         }else throw new AluguerException("Esse aluguer não existe!");
     }
 
-    public void atualizaMetereologia(int velocidadeVento,int temperatura,int precepitacao){
+    /**
+     * Atualiza o estado da metereologia na aplicação
+     * @param velocidadeVento Velocidade atual do vento km/h
+     * @param temperatura Temperatuara atual em ºC
+     * @param precepitacao Precipitação atual em %
+     */
+    public void atualizaMetereologia(double velocidadeVento,double temperatura,double precepitacao){
         this.meteorologia = new Meteorologia(velocidadeVento,temperatura,precepitacao);
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Servico servico = (Servico) o;
-        return Objects.equals(listaCarros, servico.listaCarros) &&
-                Objects.equals(listaAtores, servico.listaAtores) &&
-                Objects.equals(listaAlugueres, servico.listaAlugueres) &&
-                Objects.equals(meteorologia, servico.meteorologia);
-    }
-
-    public String toString() {
-        return "Servico{" +
-                "listaCarros=" + listaCarros +
-                ", listaAtores=" + listaAtores +
-                ", listaAlugueres=" + listaAlugueres +
-                ", meteorologia=" + meteorologia +
-                '}';
-    }
-
-    public Servico clone(){
-        return new Servico(this);
-    }
-
-
+    /**
+     * Verifica se um dado veiculo tem autonomia para a viagem
+     * @param c Veículo
+     * @param f Destino da viagem
+     * @return true se tiver autonomia, false se não tiver
+     */
     public boolean temAutonomia(Veiculo c, Point2D f){
         double autonomia;
         double distancia;
@@ -252,10 +364,23 @@ public class Servico implements Serializable {
         return(autonomiaFinal>10);
     }
 
+    /**
+     * Calcula a distância do cliente ao veículo
+     * @param cli Cliente
+     * @param car Veiculo
+     * @return
+     */
     public double  distanciaAoCarro(Cliente cli, Veiculo car){
-        return Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2));
+        return (Math.sqrt(Math.pow(cli.getCoordenada().getX()-car.getCoordenada().getX(), 2) +
+                Math.pow(cli.getCoordenada().getY()-car.getCoordenada().getY(), 2)));
     }
 
+    /**
+     * Custo estimado da viagem
+     * @param c Veículo
+     * @param f Destino da viagem
+     * @return
+     */
     public double custo(Veiculo c, Point2D f){
         double distancia;
         Point2D i = c.getCoordenada();
@@ -263,9 +388,15 @@ public class Servico implements Serializable {
         return c.getPreco()*distancia;
     }
 
-
+    /**
+     * Calcula a distância a um determinado ponto
+     * @param cli Cliente
+     * @param ponto Ponto
+     * @return Distância do cliente ao ponto
+     */
     public double  distanciaAoPonto(Cliente cli,Point2D ponto){
-        return Math.sqrt(Math.pow(cli.getCoordenada().getX()-ponto.getX(), 2) +Math.pow(cli.getCoordenada().getY()-ponto.getY(), 2));
+        return (Math.sqrt(Math.pow(cli.getCoordenada().getX()-ponto.getX(), 2) +
+                Math.pow(cli.getCoordenada().getY()-ponto.getY(), 2)));
     }
 
 
@@ -288,33 +419,30 @@ public class Servico implements Serializable {
 
         if (!listaCarros.isEmpty()) {
             if (tipo.contains("Gasolina")) {
-                String cG = listaCarros.values().stream()
+                return listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroGasolina"))
                         .sorted(c)
                         .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
-                return cG;
             }
 
             if (tipo.contains("Electrico")) {
-                String cE = listaCarros.values().stream()
+                return listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroEletrico"))
                         .sorted(c)
                         .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
-                return cE;
             }
 
             if (tipo.contains("Hibrido")) {
-                String cH = listaCarros.values().stream()
+                return listaCarros.values().stream()
                         .filter(car -> car.getClass().getSimpleName().equals("CarroHibrido"))
                         .sorted(c)
                         .map(Veiculo::getMatricula)
                         .findFirst()
                         .orElse("N/A");
-                return cH;
             }
 
         } else throw new CarroException("Não há carros no sistema!");
@@ -739,10 +867,32 @@ public class Servico implements Serializable {
         return LocalDateTime.of(ano, mes, dia,0,0);
     }
 
-    public void introduzMeteorologia(double precipitacao,double temperatura, double velocidadeVento){
-        this.meteorologia.setPrecipitacao(precipitacao);
-        this.meteorologia.setTemperatura(temperatura);
-        this.meteorologia.setVelocidadeVento(velocidadeVento);
+    public void atualizaLocalizacaoCliente(int nifCliente, Point2D ponto) throws AtorException{
+        this.procuraCliente(nifCliente).getCoordenada().setLocation(ponto);
     }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Servico servico = (Servico) o;
+        return Objects.equals(listaCarros, servico.listaCarros) &&
+                Objects.equals(listaAtores, servico.listaAtores) &&
+                Objects.equals(listaAlugueres, servico.listaAlugueres) &&
+                Objects.equals(meteorologia, servico.meteorologia);
+    }
+
+    public Servico clone(){
+        return new Servico(this);
+    }
+
+    public String toString() {
+        return "Servico{" +
+                "listaCarros=" + listaCarros +
+                ", listaAtores=" + listaAtores +
+                ", listaAlugueres=" + listaAlugueres +
+                ", meteorologia=" + meteorologia +
+                '}';
+    }
+
 
 }

@@ -50,7 +50,7 @@ public class Classificacao implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Classificacao that = (Classificacao) o;
-        return Objects.equals(classificacoes, that.classificacoes);
+        return classificacoes.equals(that.classificacoes);
     }
 
     public String toString() {

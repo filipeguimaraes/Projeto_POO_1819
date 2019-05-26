@@ -18,7 +18,7 @@ public class Meteorologia implements Serializable {
         this.precipitacao=0;
     }
 
-    public Meteorologia(int velocidadeVento, int temperatura, int precepitacao) {
+    public Meteorologia(double velocidadeVento, double temperatura, double precepitacao) {
         this.velocidadeVento = velocidadeVento;
         this.temperatura = temperatura;
         this.precipitacao = precepitacao;

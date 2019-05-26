@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
 /**
  * Cliente, com o ponto que indica a sua localização
  *
