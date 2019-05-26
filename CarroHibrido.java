@@ -1,6 +1,5 @@
 import java.awt.geom.Point2D;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Carro Híbrido, com o seu consumo e autonomia

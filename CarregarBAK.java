@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Write a description of class CarregarBAK here.
+ * Carregamento, contém metodos para ler e analizar o ficheiro de carregamento inicial
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class CarregarBAK {
 
@@ -38,6 +39,10 @@ public class CarregarBAK {
         this.excecoes = excecoes;
     }
 
+    /**
+     * Carrega ficheiro inicial
+     * @param servico Serviço
+     */
     public void carregaFicheiro(Servico servico) throws IOException {
         BufferedReader inicio = new BufferedReader(new FileReader(this.path));
 
@@ -90,7 +95,11 @@ public class CarregarBAK {
         inicio.close();
     }
 
-
+    /**
+     * Trata as linhas com proprietários
+     * @param aux Linha
+     * @param servico Serviço
+     */
     @SuppressWarnings("Duplicates")
     public void prop(String[] aux, Servico servico) throws AtorException{
         String[] campos = aux[1].split(",");
@@ -103,6 +112,11 @@ public class CarregarBAK {
         servico.adicionaProprietario(email,password,nif,nome,rua,data);
     }
 
+    /**
+     * Trata as linhas com clientes
+     * @param aux Linha
+     * @param servico Serviço
+     */
     @SuppressWarnings("Duplicates")
     public void cli(String[] aux, Servico servico) throws AtorException{
         String[] camposCli = aux[1].split(",");
@@ -115,7 +129,11 @@ public class CarregarBAK {
         Point2D ponto = new Point2D.Double(Double.parseDouble(camposCli[4]), Double.parseDouble(camposCli[5]));
         servico.adicionaCliente(email,password,nif,nome,rua,data);
     }
-
+    /**
+     * Trata as linhas com carros
+     * @param aux Linha
+     * @param servico Serviço
+     */
     public void car(String[] aux, Servico servico) throws CarroException,AtorException{
         String[] camposCar = aux[1].split(",");
         String marca = camposCar[1];
@@ -135,7 +153,11 @@ public class CarregarBAK {
             servico.adicionaCarroHibrido(marca,matricula,nif,velocidadeMedia,preco,ponto,consumo,autonomia);
         }
     }
-
+    /**
+     * Trata as linhas com classificações
+     * @param aux Linha
+     * @param servico Serviço
+     */
     public void classificar(String[] aux, Servico servico) throws AtorException,CarroException{
         String[] campos = aux[1].split(",");
         if (campos[0].length()==8){
@@ -150,6 +172,11 @@ public class CarregarBAK {
         }
     }
 
+    /**
+     * Trata as linhas com alugueres
+     * @param aux Linha
+     * @param servico Serviço
+     */
     public void aluguer(String[] aux, Servico servico) throws CarroException,AluguerException,AtorException{
         String[] campos = aux[1].split(",");
         int nifCliente = Integer.valueOf(campos[0]);
@@ -159,7 +186,8 @@ public class CarregarBAK {
         if (preferencia.contains("MaisBarato")) {
             servico.AluguerProf(nifCliente, ponto, servico.procuraCarro(servico.carroMaisBarato(tipoCombustivel)));
         }else{
-            servico.AluguerProf(nifCliente, ponto, servico.procuraCarro(servico.carroMaisProximo(nifCliente, tipoCombustivel)));
+            servico.AluguerProf(nifCliente, ponto,
+                    servico.procuraCarro(servico.carroMaisProximo(nifCliente, tipoCombustivel)));
         }
     }
 

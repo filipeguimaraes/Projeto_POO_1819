@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Write a description of class View here.
+ * View, imprime os menus do sistema
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class View {
     private int ator;
@@ -73,42 +74,76 @@ public class View {
         this.ator = ator;
     }
 
+    /**
+     * Define o utilizador como cliente
+     */
     public void souCliente(){
         this.ator=CLIENTE;
     }
 
+    /**
+     * Define o utilizador como cliente
+     */
     public void souProprietario(){
         this.ator=PROPRIETARIO;
     }
 
+    /**
+     * Avança o numero de linhas introduzidas
+     * @param number Numero de linhas
+     */
     public void clear(int number){
         for (int i = 0; i < number; ++i) System.out.println();
     }
 
+    /**
+     * Impre um determinado número de linhas de separação
+     * @param numeroDeLinhas Número de linhas
+     */
     public void line(int numeroDeLinhas){
         for (int i=0;i<numeroDeLinhas;i++) System.out.println(LINE);
     }
 
+    /**
+     * Avança uma linha
+     */
     public void mudarLinha(){
         System.out.println();
     }
 
+    /**
+     * Texto a azul
+     */
     public void cyan(){
         System.out.println("\033[0;36m");
     }
 
+    /**
+     * Texto a vermelho
+     */
     public void red(){
         System.out.println("\033[0;31m");
     }
 
+    /**
+     * Volta a colocar a cor "normal"
+     */
     public void resetColor(){
         System.out.println("\033[0m");
     }
 
+    /**
+     * Formata uma opção
+     * @param i Numero da opção
+     * @param s Opção
+     */
     public void printOpcao(int i,String s){
         System.out.println("     "+CYAN_BOLD+i+")"+RESET+"  "+s);
     }
 
+    /**
+     * Banner do projeto
+     */
     public void ban() {
         cyan();
         line(2);
@@ -124,6 +159,9 @@ public class View {
         resetColor();
     }
 
+    /**
+     * Banner do fim do projeto
+     */
     public void fim(){
         cyan();
         int number=(ECRA-10)/2;
@@ -142,6 +180,9 @@ public class View {
         resetColor();
     }
 
+    /**
+     * Banner para o top 10
+     */
     public void top10() {
         cyan();
         line(2);
@@ -157,6 +198,10 @@ public class View {
         resetColor();
     }
 
+    /**
+     * Imprime as opções fornecidas
+     * @param opcoes Opções
+     */
     public void mainMenu(String[] opcoes){
         clear(ECRA);
         ban();
@@ -174,6 +219,10 @@ public class View {
         System.out.println("     Opção pretendida: ");
     }
 
+    /**
+     * Imprime o menu de login
+     * @return Strings dos campos do login
+     */
     public String[] loginMenu(){
         String[] emailPassword = new String[2];
         clear(ECRA);
@@ -187,6 +236,10 @@ public class View {
         return emailPassword;
     }
 
+    /**
+     * Imprime o menu de registo para um utilizador
+     * @return Strings dos campos do registo
+     */
     public String[] registarAtorMenu(){
         String[] registos = new String[6];
         clear(ECRA);
@@ -211,6 +264,10 @@ public class View {
         return registos;
     }
 
+    /**
+     * Imprime o menu de registo para um carro
+     * @return Strings dos campos do registo
+     */
     public String[] registarCarroMenu(){
         String[] registos= new String[8];
         clear(ECRA);
@@ -242,6 +299,10 @@ public class View {
         return registos;
     }
 
+    /**
+     * Menu para escolher uma carro especifico
+     * @return Destino da vigem e matricula
+     */
     public String[] aluguerCarroEspecifico(){
         String[] aluguer = new String[2];
         clear(ECRA);
@@ -255,6 +316,10 @@ public class View {
         return aluguer;
     }
 
+    /**
+     * Menu para escolher o destino da viagem
+     * @return Destino da vigem
+     */
     public String[] aluguerDestino(){
         String[] aluguer = new String[1];
         clear(ECRA);
@@ -266,6 +331,10 @@ public class View {
         return aluguer;
     }
 
+    /**
+     * Imprime menu da distancia que está diposto a percorrer a pé
+     * @return Destino e distancia
+     */
     public String[] aluguerDistancia(){
         String[] aluguer = new String[3];
         clear(ECRA);
@@ -279,6 +348,10 @@ public class View {
         return aluguer;
     }
 
+    /**
+     * Menu para escolher uma carro  com uma autonomia especifica
+     * @return Destino da vigem e autonomia desejada
+     */
     public String[] aluguerAutonomia(){
         String[] aluguer = new String[4];
         clear(ECRA);
@@ -292,6 +365,11 @@ public class View {
         return aluguer;
     }
 
+    /**
+     * Imprime uma lista de carro com autonomia desejada
+     * @param carros Lista de carros
+     * @return MAtricula
+     */
     public String listaCarroAutonomia(List<String> carros){
         clear(ECRA);
         cyan();
@@ -312,6 +390,10 @@ public class View {
         return lerString();
     }
 
+    /**
+     * Imprime o cust de um aluguer
+     * @param custo Custo de um aluguer
+     */
     public void imprimeCusto(double custo){
         DecimalFormat df = new DecimalFormat("#.##");
         System.out.println("Este aluguer vai ter um custo de "+df.format(custo)+"€");
@@ -319,11 +401,18 @@ public class View {
         System.out.println(CYAN+"Obrigado por preferir a UMCarroJá!"+RESET);
     }
 
-
+    /**
+     * Imprime o carro que satisfaz o pedido
+     * @param matricula MAtricula do carro
+     */
     public void imprimeCarro(String matricula){
         System.out.println("O Veiculo que satisfaz o seu pedido é "+CYAN_BOLD+matricula+RESET);
     }
 
+    /**
+     * Imprime a liste de exceções do carregamento inicial
+     * @param ex Lista de exceções
+     */
     @SuppressWarnings("Duplicates")
     public void printExcecoes(List<String> ex){
         clear(ECRA);
@@ -345,6 +434,10 @@ public class View {
         enterContinuar();
     }
 
+    /**
+     * Imprime uma lista de carros
+     * @param elementos Lista de carros
+     */
     @SuppressWarnings("Duplicates")
     public void listaCarros(List<String> elementos){
         clear(ECRA);
@@ -365,6 +458,10 @@ public class View {
         enterContinuar();
     }
 
+    /**
+     * Imprime o menu para escolher o período de alugueres
+     * @return Data inicial e data final
+     */
     @SuppressWarnings("Duplicates")
     public String[] datasAlugueres(){
         String[] aluguer = new String[3];
@@ -380,6 +477,10 @@ public class View {
         return aluguer;
     }
 
+    /**
+     * Imprime uma liste de alugueres
+     * @param ls Lista de alugueres
+     */
     @SuppressWarnings("Duplicates")
     public void listaAlugueres(List<String> ls){
         clear(ECRA);
@@ -401,6 +502,10 @@ public class View {
         enterContinuar();
     }
 
+    /**
+     * Imprime o menu para introdução de dados do total faturado
+     * @return Matricula do carro, Data de início e Data de fim
+     */
     public String[] totalFaturado(){
         String[] fatura = new String[3];
         clear(ECRA);
@@ -418,12 +523,19 @@ public class View {
         return fatura;
     }
 
+    /**
+     * Imprime o total faturado por um veículo
+     * @param matricula Matricula
+     * @param faturado Total faturado
+     */
     public void imprimeTotalFaturado(String matricula, double faturado){
         DecimalFormat df = new DecimalFormat("#.##");
         System.out.println("O Veiculo "+matricula+" faturou, no período de tempo fornecido :"+df.format(faturado)+"€");
     }
 
-
+    /**
+     * Imprime erro de carregar/escrever ficheiro
+     */
     public void erroFicheiro(){
         red();
         System.out.println("Erro ao carregar/escrever ficheiro");
@@ -431,12 +543,19 @@ public class View {
         enterContinuar();
     }
 
-    void enterContinuar() {
+    /**
+     * Imprime o "enter para continuar"
+     */
+    public void enterContinuar() {
         Scanner s=new Scanner(System.in);
         System.out.print("Pressione enter para continuar . . . ");
         s.nextLine();
     }
 
+    /**
+     * Imprime o top 10
+     * @param nifs Lista de clientes
+     */
     @SuppressWarnings("Duplicates")
     public void imprimeTop10(List<String> nifs){
         clear(ECRA);
@@ -455,6 +574,10 @@ public class View {
         enterContinuar();
     }
 
+    /**
+     * Imprime o menu para introduzir dados para alterar o preço de um veículo
+     * @return Matrícula e preço
+     */
     @SuppressWarnings("Duplicates")
     public String[] alteraPreco(){
         String[] preco = new String[4];
@@ -470,11 +593,18 @@ public class View {
         return preco;
     }
 
+    /**
+     * Imprime "Preço alterado"
+     */
     public void precoAlterado(){
         System.out.println(RED+"Preço alterado!"+RESET);
         enterContinuar();
     }
 
+    /**
+     * Imprime menu para receber dados do carro a abastecer
+     * @return Matricula e tipo de combustivel
+     */
     @SuppressWarnings("Duplicates")
     public String[] abasteceCarro(){
         String[] abastece = new String[4];
@@ -490,6 +620,10 @@ public class View {
         return abastece;
     }
 
+    /**
+     * Imprime se o carro foi abastecido e a autonomia
+     * @param autonomia Autonomia
+     */
     public void carroAbastecido(double autonomia){
         line(1);
         System.out.println("Veiculo abastecido!");
@@ -498,6 +632,11 @@ public class View {
         enterContinuar();
     }
 
+    /**
+     * Imprime os alugueres pendentes e recebe os dados de qual quer tratar
+     * @param ls Lista de alugueres pendentes
+     * @return Nif do cliente e a escolha
+     */
     @SuppressWarnings("Duplicates")
     public String[] tratarAlugueres(List<String> ls){
         String[] campos = new String[3];
@@ -526,6 +665,16 @@ public class View {
         return campos;
     }
 
+    /**
+     * Imprime o perfil
+     * @param nome Nome do utilizador
+     * @param email Email do utilizador
+     * @param nif Nif do utilizador
+     * @param morada Moradado utilizador
+     * @param dataNascimento Data de nascimento do utilizador
+     * @param classificacao Classificação média do utilizador
+     * @param numeroAlugueres Número de alugueres realizados pelo utilizador
+     */
     public void verInformacoes(String nome, String email, int nif, String morada, LocalDateTime dataNascimento,
                                double classificacao, int numeroAlugueres){
         clear(ECRA);
@@ -551,6 +700,10 @@ public class View {
         enterContinuar();
     }
 
+    /**
+     * Imprime o menu que recebe a classificação do carro
+     * @return Matricula e classificação
+     */
     @SuppressWarnings("Duplicates")
     public String[] classificarCarro(){
         String[] campos = new String[2];
@@ -566,6 +719,10 @@ public class View {
         return campos;
     }
 
+    /**
+     * Imprime o menu que recebe a classificação de um utilizador
+     * @return Nif e classificação
+     */
     public String[] classificarAtor(){
         String[] campos = new String[3];
         clear(ECRA);
@@ -580,6 +737,10 @@ public class View {
         return campos;
     }
 
+    /**
+     * Imprime menu que recebe as informações metereologicas
+     * @return Precipitacao, Velocidade e Temperatura
+     */
     public String[] introduzirMeteo(){
         String[] campos = new String[3];
         clear(ECRA);
@@ -597,6 +758,10 @@ public class View {
         return campos;
     }
 
+    /**
+     * Imprime menu que recebe a localização atual do cliente
+     * @return Localização
+     */
     public String localizacaoAtual(){
         clear(ECRA);
         ban();

@@ -6,12 +6,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * Classe responsável por guardar o estado do "serviço" em ficheiro objeto bem como os carregar no início da proxima sessão
+ * Carregamento, contém metodos para guardar e ler ficheiro de objetos
  *
- * @authors Beatriz Rocha, Filipe Guimarães, Gonçalo Ferreira
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
  */
 public class Carregamento {
 
+    /**
+     * Metodo para escrever o estado atual do serviço num ficheiro objeto
+     * @param servico Serviço atual
+     * @param path Caminho do ficheiro
+     */
     public static void escreverFicheiroOjeto(Servico servico, String path) throws IOException {
         File arq = new File(path);
         arq.delete();
@@ -21,6 +28,10 @@ public class Carregamento {
         objOutput.close();
     }
 
+    /**
+     * Metodo para escrever o estado atual do serviço num ficheiro objeto
+     * @param path Caminho do ficheiro
+     */
     public static Servico lerFicheiroObjeto(String path) throws IOException, ClassNotFoundException {
         Servico servico = new Servico();
         File arq = new File(path);

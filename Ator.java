@@ -2,7 +2,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -163,17 +162,15 @@ public abstract class Ator implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Ator ator = (Ator) o;
         return nif == ator.nif &&
-                Objects.equals(nome, ator.nome) &&
-                Objects.equals(email, ator.email) &&
-                Objects.equals(password, ator.password) &&
-                Objects.equals(morada, ator.morada) &&
-                Objects.equals(data, ator.data) &&
-                Objects.equals(classificacao, ator.classificacao);
+                nome.equals(ator.nome) &&
+                email.equals(ator.email) &&
+                password.equals(ator.password) &&
+                morada.equals(ator.morada) &&
+                data.equals(ator.data) &&
+                classificacao.equals(ator.classificacao);
     }
 
-
     public abstract Ator clone();
-
 
     public String toString(){
         StringBuilder s= new StringBuilder();
