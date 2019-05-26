@@ -1,4 +1,3 @@
-
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -399,7 +398,6 @@ public class Servico implements Serializable {
                 Math.pow(cli.getCoordenada().getY()-ponto.getY(), 2)));
     }
 
-
     /**
      * Metodo que retorna o carro mais proximo do cliente que realiza o aluguer
      * @param nifcli nif do cliente
@@ -451,10 +449,16 @@ public class Servico implements Serializable {
         return "N/A";
     }
 
+    /**
+     * Procura na lista de veículos o mais proximo de um determinado cliente
+     * @param nifcli Nif do cliente
+     * @return Matrícula do carro mais próximo
+     * @throws AtorException Caso o cliente fornecido não exista
+     * @throws CarroException Caso não haja veículos
+     */
     @SuppressWarnings("Duplicates")
     public String carroMaisProximo(int nifcli) throws AtorException, CarroException{
         Cliente cli= procuraCliente(nifcli);
-        Point2D localizacaoCliente = cli.getCoordenada();
         Comparator<Veiculo> c = (Veiculo c1, Veiculo c2) -> {
             if(distanciaAoPonto(cli,c1.getCoordenada())<distanciaAoPonto(cli,c2.getCoordenada())) return -1;
             if(distanciaAoPonto(cli,c1.getCoordenada())>distanciaAoPonto(cli,c2.getCoordenada())) return 1;
@@ -471,11 +475,9 @@ public class Servico implements Serializable {
     }
 
     /**
-     *
-     * Método que determina o carro mais barato de um certo tipo
-     *
-     * @param tipo do carro
-     * @return carro mais barato
+     * Determina o Veículo mais barato de um certo tipo
+     * @param tipo Tipo de Carro
+     * @return MAtricula do carro mais barato
      */
     @SuppressWarnings("Duplicates")
     public String carroMaisBarato(String tipo) throws CarroException{
@@ -516,6 +518,11 @@ public class Servico implements Serializable {
         return "N/A";
     }
 
+    /**
+     * Determina o Veículo mais barato de um certo tipo
+     * @return Matricula do carro mais barato
+     * @throws CarroException Caso o sistema não tenha veículos
+     */
     public String carroMaisBarato() throws CarroException{
 
         if (!listaCarros.isEmpty()) {
@@ -529,7 +536,7 @@ public class Servico implements Serializable {
     }
 
     /**
-     * Metodo que retorna a matricula do carro mais barato mais proximo do cliente
+     * Determina qual o veículo mais barato e mais proximo do cliente
      * @param nifCli nif do cliente
      * @param distancia distancia que o cliente está disposto a percorrer a pé
      * @return matricula
@@ -547,6 +554,11 @@ public class Servico implements Serializable {
         return car;
     }
 
+    /**
+     * Determina a lista de carros com a autonomia desejada
+     * @param autonomia Autonomia
+     * @return Lista de carros com a autonomia desejada
+     */
     public List<String> carroAutonomiaDesejada(double autonomia){
         return this.listaCarros.values().stream()
                                         .filter(l -> l.getAutonomia()>=autonomia)
@@ -554,9 +566,8 @@ public class Servico implements Serializable {
                                         .collect(Collectors.toList());
     }
 
-
     /**
-     * Método que atribui classificações aos carros
+     * Atribui classificações aos carros
      * @param matricula matricula do carro em questão
      * @param classificacao classificação a atribuir
      * @throws CarroException Quando não existe o carro no sistema
@@ -568,7 +579,7 @@ public class Servico implements Serializable {
     }
 
     /**
-     * Método que calcula o total faturado por uma viatura num determinado período
+     * Determina o total faturado por uma viatura num determinado período
      * @param matricula matricula do carro
      * @param inicio Data inicial
      * @param fim Data final
@@ -583,7 +594,7 @@ public class Servico implements Serializable {
     }
 
     /**
-     * Método que atribui classificações aos utilizadores
+     * Atribui classificações aos utilizadores
      * @param nif nif do utilizador em questão
      * @param classificacao classificação a atribuir
      * @throws AtorException Quando não existe o utilizador no sistema
@@ -594,9 +605,8 @@ public class Servico implements Serializable {
         } else listaAtores.get(nif).adicionaClassificacao(classificacao);
     }
 
-
     /**
-     * Método que calcura o tempo que o cliente demora a chegar ao carro
+     * Calcula o tempo que o cliente demora a chegar ao carro
      * @param cli cliente
      * @param car carro
      * @return tempo em minutos
@@ -606,8 +616,7 @@ public class Servico implements Serializable {
     }
 
     /**
-     * Método que calcula a duração estimada da viagem
-     *
+     * Calcula a duração estimada da viagem
      * @param cli cliente
      * @param car carro
      * @param destino destino da viagem
@@ -617,6 +626,16 @@ public class Servico implements Serializable {
         return Math.round(this.meteorologia.medicaoMinutos()+tempoCliente(cli,car)+car.tempoViagem(destino));
     }
 
+    /**
+     * Metodo que realiza os alugueres do ficheiro de logs
+     * @param nifCliente Nif do cliente
+     * @param destino Destino da viagem
+     * @param car Carro
+     * @return Custo da viagem
+     * @throws AtorException Caso o cliente não esteja registado no sistema
+     * @throws CarroException Caso o veículo não exista
+     * @throws AluguerException Caso o veículo não tenha autonomia suficiente
+     */
     @SuppressWarnings("Duplicates")
     public double AluguerProf(int nifCliente,Point2D destino, Veiculo car) throws AtorException,CarroException,AluguerException{
         double custo=0;
@@ -639,6 +658,16 @@ public class Servico implements Serializable {
         return custo;
     }
 
+    /**
+     * Metodo que realiza os alugueres do ficheiro de logs
+     * @param nifCliente Nif do cliente
+     * @param destino Destino da viagem
+     * @param matricula Matrícula do carro
+     * @return Custo da viagem
+     * @throws AtorException Caso o cliente não esteja registado no sistema
+     * @throws CarroException Caso o veículo não exista
+     * @throws AluguerException Caso o veículo não tenha autonomia suficiente
+     */
     @SuppressWarnings("Duplicates")
     public double pedidoAluguer(int nifCliente,Point2D destino, String matricula) throws AtorException,CarroException,AluguerException{
         double custo=0;
@@ -661,8 +690,13 @@ public class Servico implements Serializable {
         return custo;
     }
 
-
-    public void terminaAluguer(String estado, int nifCliente) throws CarroException{
+    /**
+     * Aceita/Rejeita e termina uma aluguer
+     * @param estado Aceitar/Rejeitar
+     * @param nifCliente nif do cliente
+     * @throws CarroException Caso o carro não exista
+     */
+    public void terminaAluguer(String estado, int nifCliente) throws CarroException,AluguerException{
         List<Aluguer> la = new ArrayList<>();
         for (Aluguer a : this.listaAlugueres){
             if(a.getEstado()==Aluguer.PENDENTE && a.getCli().getNif()==nifCliente){
@@ -670,7 +704,7 @@ public class Servico implements Serializable {
             }
         }
 
-        Aluguer alug = la.get(0);
+        Aluguer alug = procuraAluguer(la.get(0));
 
         if(estado.equals("Aceitar")){
             alug.aceitaEstado();
@@ -681,33 +715,43 @@ public class Servico implements Serializable {
         }
     }
 
+    /**
+     * Determina da lista de alugueres aqueles que estão pendentes
+     * @param nifProp Nif do proprietário
+     * @return Lista de alugueres pendentes
+     */
     public List<Aluguer> alugueresPendentes(int nifProp){
         return this.listaAlugueres.stream()
                 .filter(l -> l.getEstado()==Aluguer.PENDENTE && l.getP().getNif()==nifProp)
                 .collect(Collectors.toList());
     }
 
-
-
+    /**
+     * Metodo auxiliar que atribui os alugueres aos atores e carros do sistema
+     * @param aluguer Aluguer
+     * @param c Cliente
+     * @param p Proprietario
+     * @param car Carro
+     * @throws AluguerException Caso o aluguer não exista
+     */
     public void atribuiAluguer(Aluguer aluguer, Cliente c, Proprietario p, Veiculo car) throws AluguerException{
         c.adicionaAluguer(procuraAluguer(aluguer));
         p.adicionaAluguer(procuraAluguer(aluguer));
         car.adicionaAluguer(procuraAluguer(aluguer));
     }
 
-
-
     /**
-     * Método que trata do login dos atores do sistema devoldo o seu identificador caso estejam registados no sistema.
+     * Trata do login dos atores do sistema devoldo o seu identificador caso estejam registados no sistema.
      * @param email inserido pelo utilizador
      * @param password inserido pelo utilizador
-     * @return nif do ator dentro do sistema
-     * @throws AutenticacaoException caso o utilizador não esteja registado ou a password não esteja correta mas o utilizador exista
+     * @return Nif do ator dentro do sistema
+     * @throws AutenticacaoException Caso o utilizador não esteja registado ou a password não esteja correta mas o utilizador exista
      */
     public int login(String email,String password) throws AutenticacaoException{
         int nif;
         if(this.listaAtores.values().stream().anyMatch(ator-> ator.getEmail().equals(email))){
-            Ator a = this.listaAtores.values().stream().filter(ator-> ator.getEmail().equals(email)).findFirst().get().clone();
+            Ator a = this.listaAtores.values().stream().filter(ator->
+                    ator.getEmail().equals(email)).findFirst().get().clone();
             if(a.getPassword().equals(password)){
                 nif= a.getNif();
             } else {
@@ -719,14 +763,12 @@ public class Servico implements Serializable {
         return nif;
     }
 
-
-    public double precoViagem(String matricula, LocalDateTime inicio, LocalDateTime fim){
-        return this.listaAlugueres.stream()
-                                  .filter(l->l.getCar().getMatricula().equals(matricula) && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
-                                  .mapToDouble(Aluguer :: precoAluguer)
-                                  .sum();
-    }
-
+    /**
+     * Cria uma lista de strings de carros de um dado proprietário
+     * @param nif Nif do proprietário
+     * @return Lista de carros
+     * @throws AtorException Caso o proprietário não exista
+     */
     public List<String> listaCarrosProprietario(int nif) throws AtorException{
         return procuraProprietario(nif).getListaCarros()
                 .values()
@@ -735,6 +777,12 @@ public class Servico implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Lista de carros com autonomia abaixo de 10 de um dado proprietário
+     * @param nif Nif do proprietário
+     * @return Lista de carros
+     * @throws AtorException Caso o proprietário não exista
+     */
     public List<String> listaCarrosAtonomiaDez(int nif) throws AtorException{
         Proprietario prop=procuraProprietario(nif);
         return procuraProprietario(nif).getListaCarros()
@@ -745,22 +793,40 @@ public class Servico implements Serializable {
                 .collect(Collectors.toList());
     }
 
-
-
+    /**
+     * Cria uma lista de strings de Alugueres, de um dado cliente, num determinado período de tempo
+     * @param nifCli Nif cliente
+     * @param inicio Data inicial
+     * @param fim Data final
+     * @return Lista de alugueres
+     */
     public List<String> alugueresEntreDatasCliente(int nifCli, LocalDateTime inicio, LocalDateTime fim){
         return this.listaAlugueres.stream()
-                .filter(l -> l.getCli().getNif()==nifCli && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
+                .filter(l -> l.getCli().getNif()==nifCli
+                        && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
                 .map(Aluguer::showAluguer)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Cria uma lista de strings de Alugueres, de um dado proprietário, num determinado período de tempo
+     * @param nifProp Nif proprietario
+     * @param inicio Data inicial
+     * @param fim Data final
+     * @return Lista de alugueres
+     */
     public List<String> alugueresEntreDatasProprietario(int nifProp, LocalDateTime inicio, LocalDateTime fim){
         return this.listaAlugueres.stream()
-                .filter(l -> l.getP().getNif()==nifProp && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
+                .filter(l -> l.getP().getNif()==nifProp
+                        && l.getDataFim().isBefore(fim) && l.getDataInicio().isAfter(inicio))
                 .map(Aluguer::showAluguer)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Determina o Top 10 de clientes por numero de vezes que utilizaram o sistema
+     * @return Lista de clientes
+     */
     public List<String> dezClientesNVezes(){
         Comparator<Cliente> c = (Cliente c1, Cliente c2) -> {
             if(c1.getHistorico().size()>c2.getHistorico().size()) return -1;
@@ -777,6 +843,10 @@ public class Servico implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Determina o Top 10 de clientes por kms percorridos com o sistema
+     * @return Lista de clientes
+     */
     public List<String> dezClientesKms(){
         Comparator<Cliente> c = (Cliente c1, Cliente c2) -> {
             if(c1.kmsPercorridosTotal()>c2.kmsPercorridosTotal()) return -1;
@@ -792,6 +862,13 @@ public class Servico implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Metodo para classificar um determinado carro
+     * @param nifCliente Cliente que vai classificar
+     * @param matricula Matricula do carro
+     * @param classificacao Classificação do carro
+     * @throws CarroException Caso não possa classificar o carro
+     */
     public void classificaCarro(int nifCliente, String matricula, int classificacao)
             throws AluguerException,CarroException{
         boolean flag = this.procuraCarro(matricula).listaAlugueresAceites().stream()
@@ -802,6 +879,14 @@ public class Servico implements Serializable {
         } else throw new CarroException("Não pode classificar o carro "+matricula);
     }
 
+    /**
+     * Metodo para classificar um determinado cliente
+     * @param nifProp Proprietario que vai classificar
+     * @param nifCli Cli
+     * @param classificacao
+     * @throws AtorException
+     * @throws AluguerException
+     */
     public void classificaCliente(int nifProp, int nifCli, int classificacao) throws AtorException,AluguerException{
         boolean flag = this.procuraProprietario(nifProp).listaAlugueresAceites().stream()
                 .anyMatch(l -> l.getCli().getNif()==nifCli && l.getEstado()==Aluguer.ACEITE);
@@ -819,11 +904,6 @@ public class Servico implements Serializable {
             this.procuraProprietario(nifProp).adicionaClassificacao(classificacao);
         } else throw new AtorException("Não pode classificar o proprietario "+nifProp);
     }
-
-
-
-
-
 
     public String verNome(int nif)throws AtorException{
         return this.procuraAtor(nif).getNome();
@@ -893,6 +973,4 @@ public class Servico implements Serializable {
                 ", meteorologia=" + meteorologia +
                 '}';
     }
-
-
 }
