@@ -19,6 +19,7 @@ public class View {
     public static String LINE =
             "#################################################################################################";
 
+
     public static final String RESET = "\033[0m";  // Text Reset
     public static final String RED = "\033[0;31m";     // RED
     public static final String CYAN_BOLD = "\033[1;36m";   // Cyan Bold

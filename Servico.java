@@ -16,7 +16,7 @@ public class Servico implements Serializable {
     private Map<Integer,Ator> listaAtores;
     private List<Aluguer> listaAlugueres;
     private Meteorologia meteorologia;
-        
+   
     public Servico() {
         this.listaCarros = new HashMap<>();
         this.listaAtores = new HashMap<>();
